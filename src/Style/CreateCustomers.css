@@ -1,0 +1,190 @@
+.CreateCustomers{
+    width: 100%;
+    margin-left: 270px;
+    overflow: hidden;
+}
+.CreateCustomers-content{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+.CreateCust{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #DCE1EF;
+    width: 60%
+}
+.CreateCustomers-saidbar{
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 20px;
+}
+.CreateCustomers-saidbar button{
+    width: 100%;
+    padding:10px 20px;
+    background-color: white;
+    border: 1px solid #DCE1EF;
+    cursor: pointer;
+}
+.createCust_btn-active{
+    background-color: #2563EB !important;
+    color: white;
+}
+.CreateCustomers-content form{
+    width: 100%;
+}
+.CreateCustomers-content form h2{
+    margin-bottom: 20px;
+    color: #4C5569;
+}
+.CreateCustomers-content form label{
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+.CreateCustomers-content label input{
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #DCE1EF;
+    outline-color: #2563EB;
+}
+.CreateCustomers-content form  h3{
+    color: #4C5569;
+    font-weight: 400;
+    cursor: pointer;
+    margin-bottom: 2px;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.CreateCustomers-content form textarea{
+    resize: none;
+    overflow: hidden;
+    width: 100%;
+    height: 100px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #DCE1EF;
+    outline-color: #2563EB;
+}
+.CreateCustomers-content form button{
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid #2563EB;
+    padding: 10px 20px;
+    background-color: #2563EB;
+    color: white;
+    font-size: 15px;
+    transition: 0.5s;
+    margin-top: 30px;
+}
+.CreateCustomers-content form button:hover{
+    background-color: transparent;
+    color: #2563EB;
+}
+.CreateCustoers-content-grid{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.CreateCustomers-search{
+    display: flex !important;
+    align-items: center !important;
+    gap: 1px !important;
+    margin-top: 0px !important;
+}
+.CreateCustomers-search-svg{
+    display: block;
+    border: 2px solid #DCE1EF;
+    outline-color: #2563EB;
+    padding: 5px;
+    font-size: 30px;
+    /* padding: 20px; */
+    border-radius: 12px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4C5569;
+}
+.CreateCustomers-cuntract{
+    margin-top: 20px;
+}
+.CreateCustomers-cuntract-item{
+    background-color: transparent !important;
+    color: #4C5569 !important;
+}
+.CreateCustomers-cuntract-item-start{
+    background-color: #2563EB !important;
+    color: white !important;
+}
+.CreateCustomers-cuntract span{
+    border-radius: 20px;
+    margin-top: 20px;
+    border: 2px solid #2563EB;
+    width: 100%;
+    display: block;
+    padding: 10px 20px;
+    color: #4C5569;
+}
+.CreateCustomers-saidbar{
+    width: 100%;
+
+}
+.CustCreateActive{
+    display: block;
+}
+.dn{
+    display: none;
+}
+.soz{
+    color: white !important;
+}
+.file-input-container:hover{
+    .soz{
+        color: #2563EB !important;
+    }
+}
+@media(max-width:1100px){
+    .CreateCustomers{
+        margin-left: 0;
+    }
+}
+@media(max-width:860px){
+    .CreateCust{
+        width: 97%;
+    }
+}
+@media(max-width:900px){
+    .CreateCustomers-content form{
+        width: 90%;
+    }
+}
+@media(max-width:430px){
+    .CreateCustomers-saidbar{
+        flex-direction: column;
+        
+    }
+}
+@media(max-width:300px){
+    .CreateCustomers-content form h2{
+        font-size: 20px;
+    }
+    .CreateCustomers-content form h3{
+        font-size: 15px;
+    }
+}

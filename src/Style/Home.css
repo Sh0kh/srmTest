@@ -1,0 +1,296 @@
+.Home{
+    width: 100%;
+    height: 100vh;
+    background-color: #F1F5F9;
+    overflow: hidden;
+    margin-left: 270px;
+    min-height: 100px;
+}
+.Home-content{
+    padding: 0 30px;
+}
+.Home-card-wrapper{
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 30px;
+}
+.Home-card{
+    /* width: 300px; */
+    padding: 30px;
+    background-color: white;    
+    border-radius: 10px;
+    border: 1px solid #DCE1EF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.Home-card h3{  
+    color: #32373f; 
+    display: flex;
+    align-items: end;
+    gap: 8px;
+}
+.Home-card h3 svg{
+    font-size: 25px;
+}
+.Home-card span{
+    font-weight: bold;
+    font-size: 20px;
+    color: #32373f; 
+}
+.Home-table-wrapper{
+    border-radius: 10px;
+    padding:20px;
+    margin-top: 50px;
+    background-color: white;
+    border: 1px solid #DCE1EF;
+}
+.Home-table-main-top{
+
+}
+.Home-table-search-grid select{
+    padding:5px 20px;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #32373f;
+    outline: none; /* Убираем стандартное выделение */
+}
+.Home-table-AllDocument{
+    margin: 20px 0;
+    display: inline-block;
+    color: #646DEF;
+    transition: 0.5s;
+}
+.Home-table-AllDocument:hover{
+    color: black;
+}
+.Home-table-search-grid{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+.Home-table-search-doc{
+    padding: 5px 20px;
+    background-color: white;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.Down-modal{
+    position: absolute;
+    top: 50px;
+    right: -2px;
+    display: none;
+    background-color: white;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+}
+.Down-modal a{
+    display: block;
+    padding: 10px 25px;
+    color: #32373f; 
+}
+.Down-modal-active{
+    display: block !important;
+}
+.Down-modal a:hover{
+    background-color: #DCE1EF;
+}
+.Home-table-search-ser label{
+    display: flex;
+    align-items: center;
+    
+}
+.Home-table-search-ser svg{
+    background-color: transparent;
+    padding: 4px;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-right: none;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    color: black;
+}
+.Home-table-search-ser input{
+    padding: 5px;
+}
+.Home-table-main-search{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.Home-table{
+    width: 100%;
+    margin-top: 10px;
+}
+.Home-table-main{
+    height: 100%;
+}
+.Home-table thead{
+    width: 100%;
+}
+.Home-table thead tr{
+    width: 100%;
+
+}
+.Home-table thead tr th h3{
+    color: #32373f; 
+    text-align: center;
+}
+.Home-table thead tr th {
+    background-color: #f8f8f8;
+    /* padding:10px 16px; */
+    padding: 10px;
+    width: 511px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.Home-table-num{
+    width: 50px !important;
+}
+tbody tr td h3{
+    text-align: center;
+    padding: 20px;
+}
+tbody tr td a{
+    display: block;
+    text-align: center;
+    background-color: transparent !important;
+
+}
+tbody tr td svg{
+    color: #32373f;
+    font-size:30px;
+}
+.Home tbody tr td {
+    padding:  10px 0px;
+}
+.Saidbar-bg{
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.705);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    /* overflow: hidden; */
+    display: none;
+}
+.Hamburger{
+    position: fixed;
+    top: 10px;
+    right:10px;
+}
+.shared-class{
+    display: block !important;
+}
+.Home-table-footer{
+    margin-top: 10px;
+    padding: 30px;
+     background-color: white;    
+     border-radius: 10px;
+    border: 1px solid #DCE1EF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.Home-table-footer button{
+    background-color: #2563EB;
+    border: 2px solid #2563EB;
+    border-radius: 10px;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+}
+.Home-table-footer button svg{
+    font-size: 20px;
+
+}
+.Home-table-footer button:hover{
+    background-color: transparent;
+    color: black;
+}
+.Home-table-main-search{
+    margin-top: 10px;
+}
+.Home table img{
+    width: 80px;
+    display: block;
+    margin:  0 auto;
+}
+@media(max-width:1360px){
+    .Home-card-wrapper{
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+@media(max-width:1100px){
+   .Home
+    {
+        margin-left: 0px;
+    }
+}
+@media(max-width:610px){
+    .Home-table{
+        /* width: 480px; */
+        margin-top: 10px;
+        /* overflow-y: scroll; */
+        overflow: auto;
+        height: 300px;
+        overflow-x: scroll;
+    }
+    .Home-table table{
+        width: 480px;
+        overflow: auto;
+    }
+    .Home-card-wrapper{
+        grid-template-columns: repeat(1,1fr);
+    }
+    .Home-table-main{
+       
+    }
+
+    .Home{
+        min-height: 1200px;
+    }
+}
+@media(max-width:500px){
+    .Home-table-main-search{
+        flex-direction: column;
+        gap: 10px;
+     }
+     .Home-table-search-doc {
+        font-size: 18px;
+     }
+     .Home-table-main-search select{
+        font-size: 18px;
+     }
+     .Home-table-search-ser{
+        width: 100%;
+     }
+     .Home-table-main-search label{
+        width: 100%;
+     }
+     .Home-table-main-search label input {
+        width: 100%;
+     }
+}
+@media(max-width:280px){
+    .Home-table-header h2{
+        font-size: 18px;
+    }
+    .Home-table-search-grid{
+        flex-direction: column;
+        gap: 5px;
+    }
+}

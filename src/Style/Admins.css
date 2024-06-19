@@ -1,0 +1,261 @@
+.Admins{
+    width: 100%;
+    margin-left: 270px;
+    background-color: #F1F5F9;
+    padding-bottom: 20px;
+    overflow: hidden;
+}
+.Admins-content{
+    width: 100%;
+    padding: 0 30px;
+}
+.Admins-content-header{
+    margin-top: 30px;
+}
+.Admins-content-header a{
+    padding: 8px 15px;
+    background-color: #2563EB;
+    color: white;
+    border-radius: 5px;
+    transition: 0.5s;
+    border: 2px solid #2563EB;
+    font-size: 15px;
+}
+.Admins-content-header a:hover{
+    background-color: transparent;
+    color: #2563EB;
+ }
+ .Admins-content-main{
+    border-radius: 10px;
+    padding:20px;
+    margin-top: 20px;
+    background-color: white;
+    border: 1px solid #DCE1EF;
+}
+.Admins-content-table{
+    width: 100%;
+}
+.Admins-content-table thead{
+    width: 100%;
+}
+.Admins-content-table thead tr{
+    width: 100%;
+}
+.Admins-content-table thead tr th h3{
+    color: #32373f; 
+    text-align: center;
+}
+.Admins-content-table thead tr th {
+    background-color: #f8f8f8;
+    /* padding:10px 16px; */
+    padding: 10px;
+    width: 511px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.admins-table-num{
+    width: 50px !important;
+}
+.admins-edit{
+    display: inline;
+    margin-right: 10px;
+}
+.admins-nas{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+}
+.admins-nas div{
+    padding: 30px !important;
+}
+.admins-delete{
+    background-color:transparent;
+    border: none;
+    cursor: pointer;
+}
+.admins-delete svg:hover{
+    color: red;
+}
+.admins-edit svg:hover{
+    color: rgb(190, 190, 190);
+    
+}
+.Admins-content-table tbody td{
+    padding: 20px;
+}
+.Admins-content-search-grid select{
+    padding:5px 20px;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #32373f;
+    outline: none; /* Убираем стандартное выделение */
+}
+.Admins-content-search-grid{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+.Admins-cotent-search-btn{
+    padding: 5px 20px;
+    background-color: white;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.Admins-content-search-input label{
+    display: flex;
+    align-items: center;
+    
+}
+.Admins-content-search-input svg{
+    background-color: transparent;
+    padding: 4px;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-right: none;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    color: black;
+}
+.Admins-content-search-input input{
+    padding: 5px;
+}
+.Admins-content-search{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+.Admins-content-top h2{
+    color: #32373f; 
+}
+.DeleteModal{
+    /* display: none; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #00000085;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-100%);
+	transition: all 1s ease;
+    z-index: 11;
+}
+.DeleteModal-content{
+    background-color: #32373f;
+    padding: 30px;
+    border-radius: 10px;
+
+}
+.DeleteModal-content-grid{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 20px;
+}
+.DeleteModal button{
+    padding: 10px 20px;
+    background-color: #2563EB;
+    color: white;
+    border: 2px solid #2563EB;
+    border-radius: 10px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.DeleteModal button:hover{
+    background-color: transparent;
+    color: #2563EB;
+}
+.DeleteModal h2{
+    color:white;
+    text-align: center; 
+}
+.DeleteActive{
+    /* z-index: 1000; */
+    /* display: block !important; */
+    transform: translateX(0);
+}
+.Admins-content-table p{
+    font-size: 12px;
+    text-align: center;
+}
+.Admins-footer{
+    margin-top: 10px;
+    padding: 30px;
+     background-color: white;    
+     border-radius: 10px;
+    border: 1px solid #DCE1EF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.Admins-footer button{
+    background-color: #2563EB;
+    border: 2px solid #2563EB;
+    border-radius: 10px;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+}
+.Admins-footer button svg{
+    font-size: 20px;
+
+}
+.Admins-footer button:hover{
+    background-color: transparent;
+    color: black;
+}
+.Admins table img{
+    width: 80px;
+    display: block;
+    margin: 0 auto;
+}
+@media(max-width:1100px){
+    .Admins{
+        margin-left: 0;
+    }
+}
+@media(max-width:975px){
+   .Admins-content-table{
+    overflow-x: scroll;
+   }
+   .Admins-content-table table{
+    width: 900px;
+   }
+}
+@media(max-width:790px){
+  .Admins-content-table table td{
+    padding: 5px;
+  }
+  .Admins-content-table table th{
+    padding: 5px;
+  }
+}
+@media(max-width:500px){
+    .Admins-content-search{
+        flex-direction: column;
+        gap: 10px;
+     }
+}
+
+@media(max-width:400px){
+    .Admins-content-header{
+        flex-direction: column;
+        gap: 10px;
+    }
+}

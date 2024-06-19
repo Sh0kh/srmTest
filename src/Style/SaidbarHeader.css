@@ -1,0 +1,61 @@
+.SaidbarHeader{
+    position: fixed;
+    width: 270px;
+    height:100%;
+    background-color: #1E293B;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+}
+.saidbar-header{
+    width: 100%;
+    background-color: #334155;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.saidbar-header h1{
+    color: white;
+
+}
+.SaidbarHeader-main{
+    width: 100%;
+    /* padding: 20px; */
+    padding-top: 10px;
+    padding: 10px 5px;
+}
+.SaidbarHeader-main a{
+    display: block;
+    color: #EFF3F7;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* background-color: #334155; */
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.5s;
+}
+.SaidbarHeader-main a:hover{
+    background-color: #334155;
+}
+.SaidbarHeader-main a svg{
+    font-size: 25px;
+}
+.SaidbarHeader-main nav{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+.active{
+    background-color: #334155;
+}
+.active-class{
+    display: block !important;
+}
+.saidbar-header img{
+    width: 100px;
+}

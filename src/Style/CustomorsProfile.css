@@ -1,0 +1,100 @@
+.CustomorsProfile{
+    margin-left: 270px;
+    overflow: hidden;
+    width: 100%;
+}
+.CustomersProfile-content{
+    margin-top: 30px;
+    padding:  0 10px;
+}
+.CustomersProfile-content1{
+    width: 50%;
+
+}
+.CustomersProfile-content13{
+    padding: 30px;
+    background-color: white;    
+    border-radius: 10px;
+    border: 1px solid #DCE1EF;
+}
+.CustomersProfile-grid{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+.CustomersProfile-foto{
+    padding: 30px;
+    background-color: white;    
+    border-radius: 10px;
+    border: 1px solid #DCE1EF;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.CustomersProfile-content h2{
+    color: #32373f; 
+}
+.CustomersProfile-content h3{
+    font-size: 22px;
+}
+.CustomersProfile-content2{
+    padding: 30px;
+    background-color: white;    
+    border-radius: 10px;
+    border: 1px solid #DCE1EF;
+    width: 100%;
+}
+.CustomersProfile-content{
+    display: flex;
+    gap: 10px;
+}
+.CustomersProfile-grid2{
+    margin-top: 20px;
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   flex-wrap: wrap;
+}
+.CustomersProfile-grid2 a{
+    padding: 10px 20px ;
+    background-color: #2563EB;
+    color: white;
+    border-radius: 10px;
+    border: 2px solid #2563EB;
+}
+.CustomersProfile-grid2 a:hover{
+    background-color: transparent;
+    color: #2563EB;
+}
+.customersfoto{
+    width: 200px;
+    
+}
+@media(max-width:1100px){
+    .CustomorsProfile{
+        margin-left: 0;
+    }
+
+}
+@media(max-width:790px){
+    .CustomersProfile-content{
+        flex-direction: column;
+        gap: 10px;
+    }
+    .CustomersProfile-content1{
+        width: 100%;
+    }
+}
+@media(max-width:400px){
+    .CustomersProfile-content h3{
+        font-size: 14px;
+    }
+    .CustomersProfile-content h2{
+        font-size: 15px;
+    }
+    .CustomersProfile-content a{
+        font-size: 12px !important;
+    }
+}

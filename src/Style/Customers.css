@@ -1,0 +1,315 @@
+.Customers{
+    width: 100%;
+    /* height: 100%; */
+    /* height: 100vh; */
+    margin-left: 270px;
+    background-color: #F1F5F9;
+    /* min-height: 100px; */
+    /* overflow: hidden; */
+    overflow: hidden;
+    padding-bottom: 20px;
+}
+.Customers-content{
+    width: 100%;
+    padding: 0 30px;
+}
+.Customers-content-header{
+    margin-top: 30px;
+
+}
+.Customers-content-header a{
+    padding: 8px 15px;
+    background-color: #2563EB;
+    color: white;
+    border-radius: 5px;
+    transition: 0.5s;
+    border: 2px solid #2563EB;
+    font-size: 15px;
+}
+.Customers-content-header a:hover{
+   background-color: transparent;
+   color: #2563EB;
+}
+.Customers-content-header button{
+    padding: 8px 15px;
+    background-color: #2563EB;
+    color: white;
+    border-radius: 5px;
+    transition: 0.5s;
+    border: 2px solid #2563EB;
+    font-size: 15px;
+    cursor: pointer;
+}
+.Customers-content-header button:hover{
+    background-color: transparent;
+    color: #2563EB;
+}
+.Customers-content-header{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.Customers-content-main{
+    border-radius: 10px;
+    padding:20px;
+    margin-top: 20px;
+    background-color: white;
+    border: 1px solid #DCE1EF;
+}
+.Customers-content-table{
+    width: 100%;
+}
+.Customers-content-table thead{
+    width: 100%;
+}
+.Customers-content-table thead tr{
+    width: 100%;
+}
+.Customers-content-table thead tr th h3{
+    color: #32373f; 
+    text-align: center;
+}
+.Customers-content-table thead tr th {
+    background-color: #f8f8f8;
+    /* padding:10px 16px; */
+    padding: 10px;
+    width: 511px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.customers-table-num{
+    width: 50px !important;
+}
+.customers-edit{
+    display: inline;
+    margin-right: 10px;
+}
+.customers-nas{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px !important;
+}
+.customers-delete{
+    background-color:transparent;
+    border: none;
+    cursor: pointer;
+}
+.customers-delete svg:hover{
+    color: red;
+}
+.customers-edit svg:hover{
+    color: rgb(190, 190, 190);
+    
+}
+.Customers-content-table tbody td{
+    padding: 20px;
+}
+.Customers-content-search-grid select{
+    padding:5px 20px;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #32373f;
+    outline: none; /* Убираем стандартное выделение */
+}
+.Customers-content-search-grid{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+.Customers-cotent-search-btn{
+    padding: 5px 20px;
+    background-color: white;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.Customers-content-search-input label{
+    display: flex;
+    align-items: center;
+    
+}
+.Customers-content-search-input svg{
+    background-color: transparent;
+    padding: 4px;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-right: none;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    color: black;
+}
+.Customers-content-search-input input{
+    padding: 5px;
+}
+.Customers-content-search{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+.Customers-content-top h2{
+    color: #32373f; 
+}
+.DeleteModal{
+    /* display: none; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #00000085;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-100%);
+	transition: all 1s ease;
+    z-index: 11;
+}
+.DeleteModal-content{
+    background-color: #32373f;
+    padding: 30px;
+    border-radius: 10px;
+
+}
+.DeleteModal-content-grid{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 20px;
+}
+.DeleteModal button{
+    padding: 10px 20px;
+    background-color: #2563EB;
+    color: white;
+    border: 2px solid #2563EB;
+    border-radius: 10px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.DeleteModal button:hover{
+    background-color: transparent;
+    color: #2563EB;
+}
+.DeleteModal h2{
+    color:white;
+    text-align: center; 
+}
+.DeleteActive{
+    /* z-index: 1000; */
+    /* display: block !important; */
+    transform: translateX(0);
+}
+.Customers-footer{
+    margin-top: 10px;
+    padding: 30px;
+     background-color: white;    
+     border-radius: 10px;
+    border: 1px solid #DCE1EF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.Customers-footer button{
+    background-color: #2563EB;
+    border: 2px solid #2563EB;
+    border-radius: 10px;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+}
+.Customers-footer button svg{
+    font-size: 20px;
+
+}
+.Customers-footer button:hover{
+    background-color: transparent;
+    color: black;
+}
+.Customers table img{
+    width: 70px;
+    display: block;
+    margin: 0 auto;
+}
+.cus-grid{
+    display: flex;
+    align-items: center;
+}
+.customers-edit{
+    margin: 0 10px  !important;
+}
+@media(max-width:1100px){
+    .Customers{
+        margin-left: 0;
+    }
+}
+@media(max-width:975px){
+   .Customers-content-table{
+    overflow-x: scroll;
+   }
+   .Customers-content-table table{
+    width: 900px;
+   }
+}
+@media(max-width:790px){
+  .Customers-content-table table td{
+    padding: 5px;
+  }
+  .Customers-content-table table th{
+    padding: 5px;
+  }
+}
+@media(max-width:500px){
+    .Customers-content-search{
+        flex-direction: column;
+        gap: 10px;
+     }
+}
+
+@media(max-width:400px){
+    .Customers-content-header{
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+@media(max-width:500px){
+    .Customers-content-header{
+        flex-direction: column;
+        gap: 10px;
+     }
+     .Customers-cotent-search-btn {
+        font-size: 18px;
+     }
+     .Customers-content-search select{
+        font-size: 18px;
+     }
+     .Customers-content-search-input{
+        width: 100%;
+     }
+     .Customers-content-search-input label{
+        width: 100%;
+     }
+     .Customers-content-search-input label input {
+        width: 100%;
+     }
+}
+@media(max-width:280px){
+    .Customers-content-header h2{
+        font-size: 18px;
+    }
+    .Customers-content-search-grid{
+        flex-direction: column;
+        gap: 5px;
+    }
+}

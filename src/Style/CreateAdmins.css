@@ -1,0 +1,95 @@
+.CreateAdmins{
+    width: 100%;
+    margin-left: 270px;
+    overflow: hidden;
+}
+.CreateAdmins-content{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+.CreateAdmins-content form{
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #DCE1EF;
+    width: 60%
+}
+.CreateAdmins-content form h2{
+    margin-bottom: 20px;
+    color: #4C5569;
+}
+.CreateAdmins-content form label{
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+.CreateAdmins-content label input{
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #DCE1EF;
+    outline-color: #2563EB;
+}
+.CreateAdmins-content form label h3{
+    color: #4C5569;
+    font-weight: 400;
+    cursor: pointer;
+    margin-bottom: 2px;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.CreateAdmins-content form textarea{
+    resize: none;
+    overflow: hidden;
+    width: 100%;
+    height: 100px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #DCE1EF;
+    outline-color: #2563EB;
+}
+.CreateAdmins-content form button{
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid #2563EB;
+    padding: 10px 20px;
+    background-color: #2563EB;
+    color: white;
+    font-size: 15px;
+    transition: 0.5s;
+    margin-top: 30px;
+}
+.CreateAdmins-content form button:hover{
+    background-color: transparent;
+    color: #2563EB;
+}
+.CreateCustoers-content-grid{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+@media(max-width:1100px){
+    .CreateAdmins{
+        margin-left: 0;
+    }
+}
+@media(max-width:900px){
+    .CreateAdmins-content form{
+        width: 90%;
+    }
+}
+@media(max-width:300px){
+    .CreateAdmins-content form h2{
+        font-size: 20px;
+    }
+    .CreateAdmins-content form h3{
+        font-size: 15px;
+    }
+}

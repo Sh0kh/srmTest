@@ -1,0 +1,301 @@
+.Contracts{
+    width: 100%;
+    /* height: 100%; */
+    /* height: 100vh; */
+    margin-left: 270px;
+    background-color: #F1F5F9;
+    /* min-height: 100px; */
+    overflow: hidden;
+    padding-bottom: 20px;
+}
+.Contracts-content{
+    width: 100%;
+    padding: 0 30px;
+}
+.Contracts-content-header{
+    margin-top: 30px;
+
+}
+.Contracts-content-header a{
+    padding: 8px 15px;
+    background-color: #2563EB;
+    color: white;
+    border-radius: 5px;
+    transition: 0.5s;
+    border: 2px solid #2563EB;
+    font-size: 15px;
+}
+.Contracts-content-header a:hover{
+   background-color: transparent;
+   color: #2563EB;
+}
+.Contracts-content-header button{
+    padding: 8px 15px;
+    background-color: #2563EB;
+    color: white;
+    border-radius: 5px;
+    transition: 0.5s;
+    border: 2px solid #2563EB;
+    font-size: 15px;
+    cursor: pointer;
+}
+.Contracts-content-header button:hover{
+    background-color: transparent;
+    color: #2563EB;
+}
+.Contracts-content-header{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.Contracts-content-main{
+    border-radius: 10px;
+    padding:20px;
+    margin-top: 20px;
+    background-color: white;
+    border: 1px solid #DCE1EF;
+}
+.Contracts-content-table{
+    width: 100%;
+}
+.Contracts-content-table thead{
+    width: 100%;
+}
+.Contracts-content-table thead tr{
+    width: 100%;
+}
+.Contracts-content-table thead tr th h3{
+    color: #32373f; 
+    text-align: center;
+}
+.Contracts-content-table thead tr th {
+    background-color: #f8f8f8;
+    /* padding:10px 16px; */
+    padding: 10px;
+    width: 511px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.contracts-table-num{
+    width: 50px !important;
+}
+.contracts-edit{
+    display: inline;
+    margin-right: 10px;
+}
+.contracts-nas{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px !important;
+}
+.contracts-delete{
+    background-color:transparent;
+    border: none;
+    cursor: pointer;
+}
+.contracts-delete svg:hover{
+    color: red;
+}
+.contracts-edit svg:hover{
+    color: rgb(190, 190, 190);
+    
+}
+.Contracts-content-table tbody td{
+    padding: 20px;
+}
+.Contracts-content-search-grid select{
+    padding:5px 20px;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #32373f;
+    outline: none; /* Убираем стандартное выделение */
+}
+.Contracts-content-search-grid{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+.Contracts-cotent-search-btn{
+    padding: 5px 20px;
+    background-color: white;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.Contracts-content-search-input label{
+    display: flex;
+    align-items: center;
+    
+}
+.Contracts-content-search-input svg{
+    background-color: transparent;
+    padding: 4px;
+    border: 1px solid #878a94;
+    border-radius: 5px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-right: none;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    color: black;
+}
+.Contracts-content-search-input input{
+    padding: 5px;
+}
+.Contracts-content-search{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+.Contracts-content-top h2{
+    color: #32373f; 
+}
+.DeleteModal{
+    /* display: none; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #00000085;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-100%);
+	transition: all 1s ease;
+    z-index: 11;
+}
+.DeleteModal-content{
+    background-color: #32373f;
+    padding: 30px;
+    border-radius: 10px;
+
+}
+.DeleteModal-content-grid{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 20px;
+}
+.DeleteModal button{
+    padding: 10px 20px;
+    background-color: #2563EB;
+    color: white;
+    border: 2px solid #2563EB;
+    border-radius: 10px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.DeleteModal button:hover{
+    background-color: transparent;
+    color: #2563EB;
+}
+.DeleteModal h2{
+    color:white;
+    text-align: center; 
+}
+.DeleteActive{
+    /* z-index: 1000; */
+    /* display: block !important; */
+    transform: translateX(0);
+}
+.Contracts-footer{
+    margin-top: 10px;
+    padding: 30px;
+     background-color: white;    
+     border-radius: 10px;
+    border: 1px solid #DCE1EF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.Contracts-footer button{
+    background-color: #2563EB;
+    border: 2px solid #2563EB;
+    border-radius: 10px;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+}
+.Contracts-footer button svg{
+    font-size: 20px;
+
+}
+.Contracts-footer button:hover{
+    background-color: transparent;
+    color: black;
+}
+@media(max-width:1100px){
+    .Contracts{
+        margin-left: 0;
+    }
+}
+@media(max-width:975px){
+   .Contracts-content-table{
+    overflow-x: scroll;
+   }
+   .Contracts-content-table table{
+    width: 900px;
+   }
+}
+@media(max-width:790px){
+  .Contracts-content-table table td{
+    padding: 5px;
+  }
+  .Contracts-content-table table th{
+    padding: 5px;
+  }
+}
+@media(max-width:500px){
+    .Contracts-content-search{
+        flex-direction: column;
+        gap: 10px;
+     }
+}
+@media(max-width:400px){
+    .Contracts-content-header{
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+@media(max-width:500px){
+    .Contracts-content-header{
+        flex-direction: column;
+        gap: 10px;
+     }
+     .Contracts-cotent-search-btn {
+        font-size: 18px;
+     }
+     .Contracts-content-header select{
+        font-size: 18px;
+     }
+     .Contracts-content-search-input{
+        width: 100%;
+     }
+     .Contracts-content-search-input label{
+        width: 100%;
+     }
+     .Contracts-content-search-input label input {
+        width: 100%;
+     }
+}
+@media(max-width:280px){
+    .Contracts-content-header h2{
+        font-size: 18px;
+    }
+    .Contracts-content-search-grid{
+        flex-direction: column;
+        gap: 5px;
+    }
+}
