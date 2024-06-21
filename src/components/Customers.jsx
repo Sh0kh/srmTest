@@ -40,9 +40,9 @@ function Customers() {
         <Header/>
         <div className='Customers-content'>
             <div className='Customers-content-header'>
-                    <NavLink to="/CreateCustomers">
+                    {/* <NavLink to="/CreateCustomers">
                         + Создать новый клиент 
-                    </NavLink>
+                    </NavLink> */}
                     {/* <button>
                         Контакты
                     </button> */}

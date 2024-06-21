@@ -141,10 +141,7 @@ function CreateContracts() {
           </div>
           <div style="display:flex;   flex-direction: column; border: 2px solid black; padding: 5px ;" >
               <h4 style="text-align: center;">
-                  Исполнитель:
-              </h4>
-              <h4 style="text-align: center;">
-                  ООО «SMART CONSULT»
+                  Заказчик
               </h4>
               <p>
                 Адрес:______________________________________
@@ -301,10 +298,10 @@ function CreateContracts() {
           </div>
           <div style="display:flex;   flex-direction: column; border: 2px solid black; padding: 5px ;" >
               <h4 style="text-align: center;">
-                  Исполнитель:
+                 Заказчик
               </h4>
               <h4 style="text-align: center;">
-                  ООО «SMART CONSULT»
+                  ООО «______________»
               </h4>
               <p>
                Адрес: Сырдарьинская область, г.Янгиер
@@ -352,7 +349,7 @@ function CreateContracts() {
             <button className={isActive === 1 ? 'ConActive' : ''}
               onClick={() => activeCon(1)}
             >
-               Физическое лицо
+              Физическое лицо
             </button>
             <button className={isActive === 2 ? 'ConActive' : ''}
               onClick={() => activeCon(2)} >
@@ -366,7 +363,7 @@ function CreateContracts() {
           <form className={`${isActive === 1 ? "yozperson-active" : "dn"}`}>
             <h2>Создать Контракт для Физических лиц</h2>
             <label htmlFor="name">
-              <h3>Названия</h3>
+              <h3>Наименование</h3>
               <input id='name' type="text" />
             </label>
             <label htmlFor="pasport">
@@ -377,16 +374,35 @@ function CreateContracts() {
               <h3>Телефон номера</h3>
               <input id='tel' type="number" />
             </label>
+            <label htmlFor="data">
+              <h3>Дата контракта</h3>
+              <input
+                type="datetime-local"
+                id="meeting-time"
+                name="meeting-time"
+              />
+            </label>
             <label htmlFor="info">
               <h3>Информация (банк)</h3>
               <textarea name="" id="info"></textarea>
             </label>
+            <label htmlFor="adres">
+              <h3>Информация (Адрес)</h3>
+              <textarea name="" id="adres"></textarea>
+            </label>
+            <div className="modal-foto">
+              <h3>Фото</h3>
+              <label className="file-input-container" htmlFor="photo">
+                <span className='soz'>Фото</span>
+                <input id="photo" accept="image/*" type="file" />
+              </label>
+            </div>
             <button type='submit'>Создать</button>
           </form>
           <form className={`${isActive === 2 ? "yozperson-active" : "dn"}`}>
             <h2>Создать Контракт для Юридических лиц </h2>
             <label htmlFor="name">
-              <h3>Названия</h3>
+              <h3>Наименование</h3>
               <input id='name' type="text" />
             </label>
             <label htmlFor="inn">
@@ -397,10 +413,6 @@ function CreateContracts() {
               <h3>Телефон номера</h3>
               <input id='tel' type="number" />
             </label>
-            <label htmlFor="bank">
-              <h3>Банк</h3>
-              <input id='bank' type="text" />
-            </label>
             <label htmlFor="rs">
               <h3>Р/с</h3>
               <input id='rs' type="number" />
@@ -409,16 +421,35 @@ function CreateContracts() {
               <h3>МФО</h3>
               <input id='mfo' type="number" />
             </label>
+            <label htmlFor="data">
+              <h3>Дата контракта</h3>
+              <input
+                type="datetime-local"
+                id="meeting-time"
+                name="meeting-time"
+              />
+            </label>
             <label htmlFor="info">
-              <h3>Адрес</h3>
+              <h3>Информация (банк)</h3>
               <textarea name="" id="info"></textarea>
             </label>
+            <label htmlFor="bank">
+              <h3>Информация (адрес)</h3>
+              <textarea name="" id="bank"></textarea>
+            </label>
+            <div className="modal-foto">
+              <h3>Фото</h3>
+              <label className="file-input-container" htmlFor="photo">
+                <span className='soz'>Фото</span>
+                <input id="photo" accept="image/*" type="file" />
+              </label>
+            </div>
             <button type='submit'>Создать</button>
           </form>
           <form className={`${isActive === 3 ? "yozperson-active" : "dn"}`}>
-            <h2>Аукцион, тендер</h2>
+            <h2>Аукцион тендер</h2>
             <label htmlFor="name">
-              <h3>Названия</h3>
+              <h3>Наименование</h3>
               <input id='name' type="text" />
             </label>
             <label htmlFor="nmkon">
@@ -431,10 +462,7 @@ function CreateContracts() {
                 type="datetime-local"
                 id="meeting-time"
                 name="meeting-time"
-                value="2018-06-12T19:30"
-                min="2018-06-07T00:00"
-                max="2018-06-14T00:00"
-              />  
+              />
             </label>
             <label htmlFor="inn">
               <h3>ИНН</h3>
