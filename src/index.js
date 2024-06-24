@@ -17,6 +17,7 @@ import CreateAdmins from './components/CreateAdmins';
 import AdminsEdit from './components/AdminsEdit';
 import CustomersEdit from './components/CustomersEdit';
 import CustomersProfile from './components/CustomersProfile';
+import Cmc from './components/Cmc';
 
 const appRouter = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const appRouter = createBrowserRouter([
       {
         path:"/CustomersProfile",
         element:<CustomersProfile/>
+      },
+      {
+        path:"/Cmc",
+        element:<Cmc/>
       },
     
     ]

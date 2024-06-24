@@ -1,0 +1,152 @@
+.Cmc{
+    width: 100%;
+    margin-left: 270px;
+    overflow: hidden;
+}
+.Cmc-content{
+   padding: 20px;
+}
+.Create-cmc button{
+    padding:  10px 20px;
+    background-color: #2563EB;
+    border:2px solid  #2563EB;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.Create-cmc button:hover{
+    background-color: transparent;
+    color: #2563EB;
+}
+.Cmc-modal-bg{
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.76);
+    z-index: 111;
+    display: none;
+}
+.Cmc-modal-content{
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    width: 60%;
+}
+.Cmc-modal-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.Cmc-modal-header button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #2563EB;
+    border-radius: 10px;
+    color: white;
+    border: 2px solid #2563EB;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.Cmc-modal-header button:hover{
+    background-color: transparent;
+    color: #2563EB;
+}
+.Cmc-modal-content form label{
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+.Cmc-modal-content form label input{
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #DCE1EF;
+    outline-color: #2563EB;
+}
+.Cmc-modal-content  form label h3{
+    color: #4C5569;
+    font-weight: 400;
+    cursor: pointer;
+    margin-bottom: 2px;
+}
+.Cmc-modal-content form textarea{
+    resize: none;
+    overflow: hidden;
+    width: 100%;
+    height: 100px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #DCE1EF;
+    outline-color: #2563EB;
+}
+.Cmc-modal-content form button{
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid #2563EB;
+    padding: 10px 20px;
+    background-color: #2563EB;
+    color: white;
+    font-size: 15px;
+    transition: 0.5s;
+    margin-top: 30px;
+}
+.Cmc-modal-content form button:hover{
+    background-color: transparent;
+    color: #2563EB;
+}
+.db{
+    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.Cmc-content table{
+    width: 100%;
+}
+.Cmc-content table thead{
+    width: 100%;
+}
+.Cmc-content thead tr{
+    width: 100%;
+}
+.Cmc-content thead tr th h3{
+    color: #32373f; 
+    text-align: center;
+}
+.Cmc-content thead tr th {
+    background-color: #f8f8f8;
+    /* padding:10px 16px; */
+    padding: 10px;
+    width: 511px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.cmc-table-num{
+    width: 50px !important;
+}
+.Cmc-content tbody td{
+    padding: 20px;
+}
+.Cmc-table{
+    border-radius: 10px;
+    padding:20px;
+    margin-top: 20px;
+    background-color: white;
+    border: 1px solid #DCE1EF;
+}
+@media(max-width:1100px){
+    .Cmc{
+        margin-left: 0;
+    }
+    
+}
+@media(max-width:520px){
+    .Cmc-table table{
+        width: 520px;
+    }
+    .Cmc-table{
+        overflow-x: scroll;
+    }
+}
