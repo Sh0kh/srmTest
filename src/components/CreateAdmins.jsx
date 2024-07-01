@@ -1,12 +1,54 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../Style/CreateAdmins.css'
 import Header from './Header'
+import axios from '../Service/axios'
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 function CreateAdmins() {
+
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [selectedFile, setSelectedFile] = useState(null)
+    const createAdmin = (e) =>{
+        e.preventDefault();
+        const NewData = {
+            name:name,
+            description:description,
+            email:email,
+            password:password
+        }
+        const formData = new FormData();
+        for (let key of Object.keys(NewData)) {
+            formData.append(key, NewData[key]);
+        }
+        if (selectedFile) {
+            formData.append('image', selectedFile);
+        }
+        axios.post('/user/create', formData,{
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then((respons)=>{
+            console.log("yes");
+            
+        })
+        .catch((error)=>{
+              console.log(error);
+        })
+    }
+    const postFoto = (event) =>{
+        setSelectedFile(event.target.files[0]);
+    }
+
     return (
         <div className='CreateAdmins'>
             <Header />
             <div className='CreateAdmins-content'>
-                <form>
+                <form onSubmit={createAdmin}>
                     <h2>
                         Создать Админа
                     </h2>
@@ -15,7 +57,10 @@ function CreateAdmins() {
                             <h3>
                                 Имя
                             </h3>
-                            <input id='name' type="text" />
+                            <input 
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            id='name' type="text" />
                         </label>
 
                     </div>
@@ -23,32 +68,46 @@ function CreateAdmins() {
                         <h3>Фото</h3>
                         <label className="file-input-container" htmlFor="photo">
                             <span className='soz'>Фото</span>
-                            <input id="photo" accept="image/*" type="file" />
+                            <input
+                            onChange={postFoto}
+                            id="photo" accept="image/*" type="file" />
                         </label>
                     </div>
                     <label htmlFor="em">
                         <h3>
                             Email
                         </h3>
-                        <input id='em' type='email' />
+                        <input
+                        value={email}
+                        onChange={(e)=> setEmail(e.target.value)}
+                        id='em' type='email' />
                     </label>
                     <label htmlFor="pass">
                         <h3>
                             Пароль
                         </h3>
-                        <input id='pass' type="text" />
+                        <input
+                        value={password}
+                        onChange={(e)=> setPassword(e.target.value)}
+                        id='pass' type="text" />
                     </label>
                     <label htmlFor="info">
                         <h3>
                             Описание
                         </h3>
-                        <textarea name="" id="info"></textarea>
+
+                        <textarea
+                        value={description}
+                        onChange={(e)=>setDescription(e.target.value)}
+                        name="" id="info"></textarea>
                     </label>
                     <button type='submit'>
                         Создать
                     </button>
                 </form>
             </div>
+            {/* <ToastContainer /> */}
+
         </div>
     )
 }

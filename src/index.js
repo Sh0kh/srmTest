@@ -62,7 +62,7 @@ const appRouter = createBrowserRouter([
         element:<CreateAdmins/>
       },
       {
-        path:"/AdminsEdit",
+        path:"/AdminsEdit/:id",
         element:<AdminsEdit/>
       },
       {
