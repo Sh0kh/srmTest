@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import '../Style/Contracts.css'
 import Header from '../components/Header'
 import { NavLink } from 'react-router-dom'
+// import axios from '../Service/axios'
+// import CONFIG from '../Service/config'
 function Contracts() {
     const [isActiveDelete, setActiveDelete] = useState(null)
   const deleteModal = ()=>{
@@ -34,6 +36,10 @@ function Contracts() {
       document.removeEventListener('mousedown', ClickOut);
     };
   }, [isActive]);
+
+
+
+
 
   return (
     <div className='Contracts'>

@@ -8,6 +8,7 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 
 
+// import axios from '../Service/axios';
 
 function CreateContracts() {
   const [isActive, setActive] = useState(1)

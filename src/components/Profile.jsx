@@ -29,7 +29,42 @@ function Profile() {
       console.log(error);
     });
   };
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [ editItem, setEditItem ] = useState({
+    name:'',
+    email:'',
+    image:'',
+  })
+  const editAdmins = (e) =>{
+    e.preventDefault();
+    const formData = new FormData()
+    formData.append('name', editItem.name );
+    formData.append('email', editItem.email);
+    if (selectedFile) {
+      formData.append('image', selectedFile);
+  } else {
+      formData.append('image', editItem.image);
+  }
 
+    const localId = localStorage.getItem('id');
+    axios.put(`/user/${localId}`,{
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+    .then((response)=>{
+      setEditItem(prevState => ({
+        ...prevState,
+        image: selectedFile 
+    }));
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+  }
+    const postFoto = (event) => {
+        setSelectedFile(event.target.files[0]);
+    };
   useEffect(() => {
     getAdmins();
   }, []);
@@ -62,27 +97,30 @@ function Profile() {
         </div>
         <div className={`Profile-form ${isActiveProfile ? 'Profile-content-dn' : ''}`}>
           <h1>Профиль</h1>
-          <form>
+          <form onSubmit={editAdmins}>
             <div className='Profile-form-grid'>
               <label htmlFor="Name">
                 <h3>Имя</h3>
-                <input id='Name' type="text" value={userData.name} />
-              </label>
-              <label htmlFor="Familiya">
-                <h3>Фамилия</h3>
-                <input id='Familiya' type="text" />
+                <input id='Name' type="text" 
+                value={editItem.name}
+                onChange={(e)=> setEditItem({...editItem, name:e.target.value})}
+                />
               </label>
             </div>
             <div className="modal-foto">
               <h3>Фото</h3>
               <label className="file-input-container" htmlFor="photo">
                 <span className='soz'>Выберите файл</span>
-                <input id="photo" accept="image/*" type="file" />
+                <input
+                onChange={postFoto}  id="photo" accept="image/*" type="file" />
               </label>
             </div>
             <label htmlFor="Email">
               <h3>Email Адрес</h3>
-              <input type="email" id="email" />
+              <input 
+              value={editItem.email}
+              onChange={(e)=> setEditItem({...editItem,email:e.target.value})}
+              type="email" id="email"  />
             </label>
             <button type='submit'>Сохранить</button>
           </form>

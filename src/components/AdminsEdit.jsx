@@ -60,10 +60,8 @@ function AdminsEdit() {
                 ...prevState,
                 image: selectedFile // Обновляем изображение, если оно выбрано
             }));
-            console.log('Admin updated:', response.data);
         })
         .catch((error) => {
-            console.error('Error updating admin:', error);
         });
     };
 

@@ -21,6 +21,7 @@ function Login() {
             localStorage.setItem('token', respons.data.tokens.refresh_token);
             // console.log(respons.data.user.id);
             localStorage.setItem("id",respons.data.user.id );
+            localStorage.setItem('Role',respons.data.user.role)
             window.location.href = '/';
         })
         .catch((error)=>{

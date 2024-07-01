@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../Style/Header.css';
 import { NavLink } from 'react-router-dom';
 import SaidBarHeader from './SaidBarHeader';
+import axios from '../Service/axios';
+import CONFIG from '../Service/config';
+
 function Header() {
 
     // ---------------------- SaidBar ------------------------- satrt
@@ -75,8 +78,29 @@ function Header() {
         };
     }, [isActive, isProfileActive]);
 
+    const [img, setImg] = useState({
+        image:''
+    })
+    const getAdmins = () =>{
+        const localId = localStorage.getItem('id')
+        axios.get(`/user/${localId}`,{
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+        })
+        .then((response)=>{
+            setImg({
+                image:response.data.image ||  'https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg='
+            })
+        })
+        .catch((error)=>{
+        })
+    }
 
 
+useEffect(()=>{
+    getAdmins()
+},[])
 
 
     return (
@@ -134,7 +158,7 @@ function Header() {
                         onMouseEnter={ProfileHover1}
                         onMouseLeave={ProfileHover2}
                         className='header-acount'>
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH6vYUb0RXepzhbzyQskZEsKRB1tWbQ_j2PFQjtDLvcCH_xEXFGK4YqwxG1S2_ljoj5RU&usqp=CAU" alt="foto" />
+                        <img src={CONFIG.API_URL + img.image} alt="Profile" onError={(e) => { e.target.onerror = null; e.target.src = 'https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg=' }} />
                     </div>
                     <div className={`header-profile-modal ${isHoverdedProfile ? 'header-profile-modal-active' : ''}`}>
                         <span>

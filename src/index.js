@@ -55,15 +55,15 @@ const appRouter = createBrowserRouter([
       },
       {
         path:"/Admins",
-        element:<Admins/>
+        element:localStorage.getItem('Role') === 'SUPER-ADMIN' ? <Admins/> : <Home/>
       },
       {
         path:"/CreateAdmins",
-        element:<CreateAdmins/>
+        element: localStorage.getItem('Role') === 'SUPER-ADMIN' ? <CreateAdmins/> : <Home/>
       },
       {
         path:"/AdminsEdit/:id",
-        element:<AdminsEdit/>
+        element: localStorage.getItem("Role") === 'SUPER-ADMIN' ? <AdminsEdit/> : <Home/>
       },
       {
         path:"/CustomersEdit",
@@ -75,7 +75,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path:"/Cmc",
-        element:<Cmc/>
+        element: localStorage.getItem('Role') === 'SUPER-ADMIN' ? <Cmc/> : <Home/>
       },
     
     ]
