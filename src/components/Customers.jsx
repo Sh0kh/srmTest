@@ -2,11 +2,15 @@ import React, { useState, useEffect, useRef } from 'react'
 import Header from './Header'
 import '../Style/Customers.css'
 import { NavLink } from 'react-router-dom'
+import axios from '../Service/axios'
+import CONFIG from '../Service/config'
 function Customers() {
   const [isActiveDelete, setActiveDelete] = useState(null)
-  const deleteModal = ()=>{
-    setActiveDelete(!isActiveDelete)
-  }
+  const [customersIdToDelete, setCustomersIdToDelete] = useState(null);
+  const deleteModal = (id = null) => {
+    setActiveDelete(!isActiveDelete);
+    setCustomersIdToDelete(id);
+  };
   const [isActive, setActive] = useState(null);
   const DownBtn = useRef(null);
   const modalRef = useRef(null);
@@ -34,6 +38,69 @@ function Customers() {
       document.removeEventListener('mousedown', ClickOut);
     };
   }, [isActive]);
+
+
+
+
+
+const [data, setData] = useState([])
+  const getcustomers = ()=>{
+    axios.get('/client',{
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+    .then((response)=>{
+      const sortedData = response.data.sort((a, b) => a.name.localeCompare(b.name))
+      setData(sortedData)
+      console.log(response.data);
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+  }
+        
+const deleteCustomers = (id) =>{
+  if(!customersIdToDelete) return;
+  axios.delete(`/client/${customersIdToDelete}`,{
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+  .then((response)=>{
+    getcustomers()
+    deleteModal()
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+}
+
+  useEffect(()=>{
+    getcustomers()
+  },[])
+
+const [CustomersPage, setCustomersPage] = useState(1)
+const CustomersItem = 3;
+  const indexOfLastItem = CustomersPage * CustomersItem;
+  const indexOfFirstItem = indexOfLastItem - CustomersItem;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(data.length / CustomersItem);
+
+  const nextPage = () => {
+    if (CustomersPage < totalPages) {
+      setCustomersPage(CustomersPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (CustomersPage > 1) {
+      setCustomersPage(CustomersPage - 1);
+    }
+  };
+  const defaultImageUrl = 'https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg='
+
   return (
    
     <div className='Customers'>
@@ -55,13 +122,6 @@ function Customers() {
                   
                   <div className='Customers-content-search'>
                       <div className='Customers-content-search-grid'>
-                      <select name="" id="">
-                        <option value="default">10</option>
-                        <option value="20">20</option>
-                        <option value="30">30</option>
-                        <option value="40">40</option>
-                        <option value="50">50</option>
-                    </select>
                     <button className='Customers-cotent-search-btn'
                      ref={DownBtn}
                      onClick={DocumentDown}
@@ -112,7 +172,7 @@ function Customers() {
                       </th>
                       <th>
                         <h3>
-                          Дата создания
+                          Паспорт
                         </h3>
                       </th>
                       <th>
@@ -123,134 +183,64 @@ function Customers() {
                     </tr>
                   </thead>
                   <tbody> 
-                      <tr>
+                    {currentItems.map((item, index)=>(
+                      <tr key={item.id}>
                         <td>
                           <h3>
-                            1
+                          {indexOfFirstItem + index + 1 }
                           </h3>
                         </td>
                         <td>
-                          <img  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSikUkwyzB7VALLf0LRzaqPkoxy1ciySTvePw&s" alt="foto" />
+                          <img  src={CONFIG.API_URL + item.image } 
+                           onError={(e) => {
+                            e.target.onerror = null; 
+                            e.target.src = defaultImageUrl;
+                          }} alt="foto" />
                         </td>
                         <td>
                           <h3>
-                            John Doe
-                          </h3>
-                        </td>
-                        <td>
-                          <h3>
-                            970206565
-                          </h3>
-                        </td>
-                        <td>
-                          <h3>
-                            27-05-2024
-                          </h3>
-                        </td>
-                        <td className='customers-nas'>
-                        <div className='cus-grid'>
-                          <NavLink to="/CustomersProfile">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
-                          </NavLink>
-                          <NavLink className="customers-edit" to="/CustomersEdit">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1c-.1.1-.15.22-.15.36M20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75z"/></svg>
-                          </NavLink>
-                          <button onClick={deleteModal} className='customers-delete'>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"/></svg>
-                          </button>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <h3>
-                            2
-                          </h3>
-                        </td>
-                        <td>
-                          <img  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSikUkwyzB7VALLf0LRzaqPkoxy1ciySTvePw&s" alt="foto" />
-                        </td>
-                        <td>
-                          <h3>
-                            John Doe
+                            {item.name}
                           </h3>
                         </td>
                         <td>
                           <h3>
-                            970206565
+                            {item.phone_number}
                           </h3>
                         </td>
                         <td>
                           <h3>
-                            27-05-2024
-                          </h3>
-                        </td>
-                        <td className='customers-nas'>
-                          <div className='cus-grid'>
-                          <NavLink to="/CustomersProfile">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
-                          </NavLink>
-                          <NavLink className="customers-edit" to="/CustomersEdit">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1c-.1.1-.15.22-.15.36M20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75z"/></svg>
-                          </NavLink>
-                          <button onClick={deleteModal} className='customers-delete'>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"/></svg>
-                          </button>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <h3>
-                            3
-                          </h3>
-                        </td>
-                        <td>
-                          <img  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSikUkwyzB7VALLf0LRzaqPkoxy1ciySTvePw&s" alt="foto" />
-                        </td>
-                        <td>
-                          <h3>
-                            John Doe
-                          </h3>
-                        </td>
-                        <td>
-                          <h3>
-                            970206565
-                          </h3>
-                        </td>
-                        <td>
-                          <h3>
-                            27-05-2024
+                            {item.passport_series}
                           </h3>
                         </td>
                         <td className='customers-nas'>
                         <div className='cus-grid'>
-                          <NavLink to="/CustomersProfile">
+                          <NavLink to={`/CustomersProfile/${item.id}`}>
                           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
                           </NavLink>
-                          <NavLink className="customers-edit" to="/CustomersEdit">
+                          <NavLink className="customers-edit" to={`/CustomersEdit/${item.id}`}>
                           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1c-.1.1-.15.22-.15.36M20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75z"/></svg>
                           </NavLink>
-                          <button onClick={deleteModal} className='customers-delete'>
+                          <button onClick={() => deleteModal(item.id)} className='customers-delete'>
                           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"/></svg>
                           </button>
                           </div>
                         </td>
                       </tr>
+                    ))}
                   </tbody>
                 </table>
                </div>
             </div>
             <div className='Customers-footer'>
-            <button>
+            <button onClick={prevPage}>
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/></svg>
             </button>
             <div>
-              <span>1</span>
+              <span>{CustomersPage}</span>
               <span>/</span>
-              <span>2</span>
+              <span>{totalPages}</span>
             </div>
-            <button>
+            <button onClick={nextPage}>
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256"><path fill="currentColor" d="m220.24 132.24l-72 72a6 6 0 0 1-8.48-8.48L201.51 134H40a6 6 0 0 1 0-12h161.51l-61.75-61.76a6 6 0 0 1 8.48-8.48l72 72a6 6 0 0 1 0 8.48"/></svg>
             </button>
             </div>
@@ -261,7 +251,7 @@ function Customers() {
                   Удалить ?
                 </h2>
                 <div className='DeleteModal-content-grid'>
-                    <button>
+                    <button onClick={deleteCustomers}>
                         Да
                     </button>
                     <button onClick={deleteModal}>

@@ -47,6 +47,8 @@ function Admins() {
     });
   };
 
+  const defaultImageUrl = 'https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg='
+
   const indexOfLastItem = AdminPage * AdminItems;
   const indexOfFirstItem = indexOfLastItem - AdminItems;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
@@ -115,7 +117,11 @@ function Admins() {
                         </h3>
                     </td>
                     <td>
-                      <img src={CONFIG.API_URL + item.image} alt="foto" />
+                    <img  src={CONFIG.API_URL + item.image } 
+                           onError={(e) => {
+                            e.target.onerror = null; 
+                            e.target.src = defaultImageUrl;
+                          }} alt="foto" />
                     </td>
                     <td>
                       <h3>{item.name}</h3>

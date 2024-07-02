@@ -44,7 +44,6 @@ function AdminsEdit() {
         } else {
             formData.append('image', editItem.image);
         }
-
         axios.put(`/user/${editItem.id}`, formData, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,

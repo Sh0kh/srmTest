@@ -4,12 +4,15 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from '../Service/axios';
+// import { useParams } from 'react-router-dom';
 function ContractEdit() {
-    const [isActive, setActive] = useState(1)
-    const activeCon = (a) => {
-      setActive(a)
-    }
+ 
+  const [isActive, setActive] = useState(2)
+  const activeCon = (id) => {
+    setActive(id)
+  }
     const initialContent = `
     <h2 style="text-align: center;">
         Д О Г О В О Р    № __ / ___ Ф
@@ -328,6 +331,25 @@ function ContractEdit() {
 </div>
 `;
 
+
+
+const [category, setCategory] = useState([])
+    const getCategory = () =>{
+    axios.get('/category-contract',{
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then((response)=>{
+      setCategory(response.data)
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+  }
+
+
 const [content, setContent] = useState(initialContent);
 const [content2, setContent2] = useState(initialContent2);
 
@@ -337,25 +359,23 @@ const handleModelChange = (newContent) => {
 const handleModelChange2 = (newContent2) => {
   setContent2(newContent2);
 };
+
+useEffect(()=>{
+  getCategory()
+}, [])
   return (
     <div className='ContractEdit'>
       <Header/>
       <div className='ContractEdit-content'>
       <div className='CreateContracts2'>
           <div className='CreateContract-saidbar'>
-            <button className={isActive === 1 ? 'ConActive' : ''}
-              onClick={() => activeCon(1)}
+          {category.map((item,)=>(
+            <button key={item} className={isActive === item.id ? 'ConActive' : ''}
+              onClick={() => activeCon(item.id)}
             >
-              Физическое лицо
+              {item.name}
             </button>
-            <button className={isActive === 2 ? 'ConActive' : ''}
-              onClick={() => activeCon(2)} >
-              Юридическое лицо
-            </button>
-            <button className={isActive === 3 ? 'ConActive' : ''}
-              onClick={() => activeCon(3)}>
-              Аукцион тендер
-            </button>
+            ))}
           </div>
           <form className={`${isActive === 1 ? "yozperson-active" : "dn"}`}>
             <h2>Создать Контракт для Физических лиц</h2>

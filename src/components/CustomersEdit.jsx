@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import '../Style/CustomersEdit.css'
 import Header from './Header'
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
 function CustomersEdit() {
     // const [isActive, setActive] = useState(null)
     // const ClikcButton = ()=>{
@@ -11,234 +13,120 @@ function CustomersEdit() {
     // const ButtonClick = (a) => {
     //     setActiveBtn(a)
     // }
-  return (
-    <div className='CustomersEdit'>
-    <Header/>
-    <div className='CustomersEdit-content'>
-    <div className='CreateCust'>
-                    {/* <div className='CreateCustomers-saidbar'>
-                        <button className={isActiveBtn === 1 ? 'createCust_btn-active' : ''}
-                            onClick={() => ButtonClick(1)}
-                        >
-                            Физическое лицо
-                        </button>
-                        <button
-                            className={isActiveBtn === 2 ? 'createCust_btn-active' : ''}
-                            onClick={() => ButtonClick(2)}
-                        >
-                            Юридик лицо
-                        </button>
-                        <button
-                            className={isActiveBtn === 3 ? 'createCust_btn-active' : ''}
-                            onClick={() => ButtonClick(3)}
-                        >
-                            Акцион тендер
-                        </button>
-                    </div> */}
-                    {/* <form className={`${isActiveBtn === 1 ? 'CustCreateActive' : 'dn'}`}>
+    const {id} = useParams()
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [editItem, setEditItem] = useState({
+        id: '',
+        name: '',
+        passport_series: '',
+        phone_number: '',
+        image: ''
+    })
+    useEffect(() => {
+        axios.get(`/client/${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(response => {
+            
+            const { id, name, passport_series, phone_number, image } = response.data;
+            setEditItem({ id, name, passport_series, phone_number,image });
+        })
+        .catch(error => {
+            console.error('Error fetching admin data:', error);
+        });
+    }, [id]); 
+
+    const editCustomers = (e) => {
+        e.preventDefault()
+        const formData = new FormData()
+        formData.append('name', editItem.name)
+        formData.append('passport_series', editItem.passport_series)
+        formData.append('phone_number', editItem.phone_number)
+        if (selectedFile) {
+            formData.append('image', selectedFile);
+        } else {
+            formData.append('image', editItem.image);
+        }
+
+        axios.put(`/client/${editItem.id}`, formData, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then((response) => {
+                setEditItem(prevState => ({
+                    ...prevState,
+                    image: selectedFile
+                }));
+                console.log("ura");
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+    const postFoto = (event) => {
+        setSelectedFile(event.target.files[0]);
+    };
+    return (
+        <div className='CustomersEdit'>
+            <Header />
+            <div className='CustomersEdit-content'>
+                <div className='CreateCust'>
+                    <form onSubmit={editCustomers}>
                         <h2>
-                            Создать клиента (Физическое лицо)
+                            Изменить клиента
                         </h2>
                         <div className='CreateCustoers-content-gridd'>
                             <label htmlFor="name">
                                 <h3>
                                     Имя
                                 </h3>
-                                <input id='name' type="text" />
+                                <input
+                                    value={editItem.name}
+                                    onChange={(e) => setEditItem({ ...editItem, name: e.target.value })}
+                                    id='name' type="text" />
+                            </label>
+                            <label htmlFor="passport">
+                                <h3>
+                                    Пасспорт
+                                </h3>
+                                <input
+                                    value={editItem.passport_series}
+                                    onChange={(e) => setEditItem({ ...editItem, passport_series: e.target.value })}
+                                    id='passport' type="text" />
                             </label>
                             <div className="modal-foto">
                                 <h3>Фото</h3>
                                 <label className="file-input-container" htmlFor="photo">
                                     <span className='soz'>Фото</span>
-                                    <input id="photo"  accept="image/*" type="file" />
-                                </label>
-                            </div>
-                            <label htmlFor="Last_name">
-                                <h3>
-                                    Фамилия
-                                </h3>
-                                <input id='Last_name' type="text" />
-                            </label>
-                            <label htmlFor="Last_name2">
-                                <h3>
-                                    Отчество
-                                </h3>
-                                <input id='Last_name2' type="text" />
-                            </label>
-                            <label htmlFor="Tel">
-                                <h3>
-                                    Номер телефона
-                                </h3>
-                                <input id='Tel' type="number" />
-                            </label>
-                        </div>
-                        <div className='CreateCustomers-cuntract'>
-                            <h3>
-                                Искать контракт
-                            </h3>
-                            <label className='CreateCustomers-search'>
-                                <div className='CreateCustomers-search-svg'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14" /></svg>
-                                </div>
-                                <input type="text" />
-                            </label>
-                            <span onClick={ClikcButton} className={`CreateCustomers-cuntract-item ${isActive ? 'CreateCustomers-cuntract-item-start' : ''}`}>
-                        Контракт 2
-                    </span>
-                    <span className='CreateCustomers-cuntract-item2'>
-                        Контракт не найден 
-                    </span>
-                        </div>
-                        <button type='submit'>
-                            Создать
-                        </button>
-                    </form>
-                    <form className={`${isActiveBtn === 2 ? 'CustCreateActive' : 'dn'}`}>
-                        <h2>
-                            Создать клиента (Юридическое лицо )
-                        </h2>
-                        <div className='CreateCustoers-content-gridd'>
-                            <label htmlFor="name">
-                                <h3>
-                                    Названия
-                                </h3>
-                                <input id='name' type="text" />
-                            </label>
-                            <div className="modal-foto">
-                                <h3>Фото</h3>
-                                <label className="file-input-container" htmlFor="photo">
-                                    <span className='soz'>Фото</span>
-                                    <input id="photo"  accept="image/*" type="file" />
+                                    <input onChange={postFoto} id="photo" accept="image/*" type="file" />
                                 </label>
                             </div>
                             <label htmlFor="Tel">
                                 <h3>
                                     Номер телефона
                                 </h3>
-                                <input id='Tel' type="number" />
+                                <input
+                                    value={editItem.phone_number}
+                                    onChange={(e) => setEditItem({ ...editItem, phone_number: e.target.value })}
+                                    id='Tel' type="number" />
                             </label>
-                        </div>
-                        <div className='CreateCustomers-cuntract'>
-                            <h3>
-                                Искать контракт
-                            </h3>
-                            <label className='CreateCustomers-search'>
-                                <div className='CreateCustomers-search-svg'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14" /></svg>
-                                </div>
-                                <input type="text" />
-                            </label>
-                            <span onClick={ClikcButton} className={`CreateCustomers-cuntract-item ${isActive ? 'CreateCustomers-cuntract-item-start' : ''}`}>
-                        Контракт 2
-                    </span>
-                    <span className='CreateCustomers-cuntract-item2'>
-                        Контракт не найден 
-                    </span>
+                            {/* <label htmlFor="info">
+                                <h3>Адрес</h3>
+                                <textarea name="" id="info"></textarea>
+                            </label> */}
                         </div>
                         <button type='submit'>
-                            Создать
-                        </button>
-                    </form>
-                    <form className={`${isActiveBtn === 3 ? 'CustCreateActive' : 'dn'}`}>
-                        <h2>
-                            Создать клиента (Акцинер тендер)
-                        </h2>
-                        <div className='CreateCustoers-content-gridd'>
-                            <label htmlFor="name">
-                                <h3>
-                                    Названия
-                                </h3>
-                                <input id='name' type="text" />
-                            </label>
-                            <div className="modal-foto">
-                                <h3>Фото</h3>
-                                <label className="file-input-container" htmlFor="photo">
-                                    <span className='soz'>Фото</span>
-                                    <input id="photo"  accept="image/*" type="file" />
-                                </label>
-                            </div>
-                            <label htmlFor="Tel">
-                                <h3>
-                                    Номер телефона
-                                </h3>
-                                <input id='Tel' type="number" />
-                            </label>
-                        </div>
-                        <div className='CreateCustomers-cuntract'>
-                            <h3>
-                                Искать контракт
-                            </h3>
-                            <label className='CreateCustomers-search'>
-                                <div className='CreateCustomers-search-svg'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14" /></svg>
-                                </div>
-                                <input type="text" />
-                            </label>
-                            <span onClick={ClikcButton} className={`CreateCustomers-cuntract-item ${isActive ? 'CreateCustomers-cuntract-item-start' : ''}`}>
-                        Контракт 2
-                    </span>
-                    <span className='CreateCustomers-cuntract-item2'>
-                        Контракт не найден 
-                    </span>
-                        </div>
-                        <button type='submit'>
-                            Создать
-                        </button>
-                    </form> */}
-                    <form>
-                        <h2>
-                            Создать клиента 
-                        </h2>
-                        <div className='CreateCustoers-content-gridd'>
-                            <label htmlFor="name">
-                                <h3>
-                                    Имя
-                                </h3>
-                                <input id='name' type="text" />
-                            </label>
-                            <div className="modal-foto">
-                                <h3>Фото</h3>
-                                <label className="file-input-container" htmlFor="photo">
-                                    <span className='soz'>Фото</span>
-                                    <input id="photo"  accept="image/*" type="file" />
-                                </label>
-                            </div>
-                            <label htmlFor="Tel">
-                                <h3>
-                                    Номер телефона
-                                </h3>
-                                <input id='Tel' type="number" />
-                            </label>
-                            <label htmlFor="info">
-              <h3>Адрес</h3>
-              <textarea name="" id="info"></textarea>
-            </label>
-                        </div>
-                        <div className='CreateCustomers-cuntract'>
-                            <h3>
-                                Искать контракт
-                            </h3>
-                            <label className='CreateCustomers-search'>
-                                <div className='CreateCustomers-search-svg'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14" /></svg>
-                                </div>
-                                <input type="text" />
-                            </label>
-                            {/* <span onClick={ClikcButton} className={`CreateCustomers-cuntract-item ${isActive ? 'CreateCustomers-cuntract-item-start' : ''}`}>
-                        Контракт 2
-                    </span>
-                    <span className='CreateCustomers-cuntract-item2'>
-                        Контракт не найден 
-                    </span> */}
-                        </div>
-                        <button type='submit'>
-                            Создать
+                            Изменить
                         </button>
                     </form>
                 </div>
-    </div>
-</div>
-  )
+            </div>
+        </div>
+    )
 }
 
 export default CustomersEdit

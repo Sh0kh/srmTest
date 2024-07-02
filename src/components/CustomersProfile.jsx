@@ -1,18 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../Style/CustomorsProfile.css'
 import Header from './Header'
-import { NavLink } from 'react-router-dom'
+import {  useParams } from 'react-router-dom'
+import axios from '../Service/axios'
+import CONFIG from '../Service/config'
 function CustomersProfile() {
+  const [data, setData] = useState([])
+  const {id} = useParams()
+  useEffect(()=>{
+    const getCustomers = () =>{
+      axios.get(`/client/${id}`,{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+      })
+      .then((response)=>{
+        setData(response.data)
+        console.log(response.data.image);
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    }
+    getCustomers()
+  },[id])
+  
   return (
     <div className='CustomorsProfile'>
         <Header/>
         <div className='CustomersProfile-content'>
           <div className='CustomersProfile-content1'>
           <div className='CustomersProfile-foto'>
-          <img className='customersfoto' src="https://static-00.iconduck.com/assets.00/person-icon-1901x2048-a9h70k71.png" alt="" />
+          <img className='customersfoto' src={CONFIG.API_URL + data.image} alt="Profile" onError={(e) => { e.target.onerror = null; e.target.src = 'https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg=' }} />
           </div>
           <div className='CustomersProfile-content13'>
-                <div className='CustomersProfile-grid'>
+                {/* <div className='CustomersProfile-grid'>
               <h2>
                   Контракты:
                 </h2>
@@ -27,7 +49,7 @@ function CustomersProfile() {
                   <NavLink to="/ContractEdit">
                       Юридическое лицо
                   </NavLink>
-              </div>
+              </div> */}
             </div>
           </div>
            
@@ -38,23 +60,7 @@ function CustomersProfile() {
                     Имя:
                   </h2>
                   <h3>
-                    John
-                  </h3>
-                  </div>
-                  <div className='CustomersProfile-grid'>
-                  <h2>
-                    Фамилия:
-                  </h2>
-                  <h3>
-                    Doe
-                  </h3>
-                  </div>
-                  <div className='CustomersProfile-grid'>
-                  <h2>
-                    Отчество:
-                  </h2>
-                  <h3>
-                    Doe
+                    {data.name}
                   </h3>
                   </div>
                   <div className='CustomersProfile-grid'>
@@ -62,15 +68,15 @@ function CustomersProfile() {
                     Телефон номер:
                   </h2>
                   <h3>
-                    980205656
+                    {data.phone_number}
                   </h3>
                   </div>
                   <div className='CustomersProfile-grid'>
                   <h2>
-                    Время создания:
+                    Паспорт:
                   </h2>
                   <h3>
-                    05-08-2024
+                    {data.passport_series}
                   </h3>
                   </div>
             </div>

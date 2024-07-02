@@ -11,7 +11,8 @@ import 'froala-editor/js/froala_editor.pkgd.min.js';
 import axios from '../Service/axios';
 
 function CreateContracts() {
-  const [isActive, setActive] = useState(1)
+
+  const [isActive, setActive] = useState(0)
   const activeCon = (id) => {
     setActive(id)
   }
@@ -331,6 +332,7 @@ function CreateContracts() {
         </div>
     `;
 
+
     const [category, setCategory] = useState([])
     const getCategory = () =>{
     axios.get('/category-contract',{
@@ -346,6 +348,174 @@ function CreateContracts() {
       console.log(error);
     })
   }
+  
+  // Физическое лицо
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [name, setName] = useState('')
+    const [Passport, setPassport] = useState('')
+    const [tel, setTel]  = useState('')
+    const [Sana, setSana] = useState('')
+    const [bank, setBank] = useState('')
+    const [ address, setAddress] = useState('')
+    const [ inn, setInn] = useState('')
+    const [rs, setRs] = useState('')
+    const [mfo, setMfo] = useState('')
+  const createContract = (e) =>{
+    e.preventDefault();
+    const newData ={
+      name:name,
+      passport_series:Passport,
+      phone_number:tel,
+      contract_date:Sana,
+      info_bank:bank,
+      info_address:address,
+      inn:inn,
+      rs:rs,
+      mfo:mfo,
+      category_contract_id:isActive
+    }
+    const formData = new FormData()
+    for (let key of Object.keys(newData)) {
+      formData.append(key, newData[key]);
+    }
+    if (selectedFile) {
+        formData.append('image', selectedFile);
+    }
+
+    axios.post('/contract', formData,{
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((respons)=>{
+        console.log("Ura");
+        setAddress('')
+        setBank('')
+        setInn('')
+        setMfo('')
+        setName('')
+        setRs('')
+        setTel('')
+        setSana('')
+        setPassport('')
+        console.log(isActive);
+      })
+      .catch((error)=>{
+        console.log("error", error);
+      })
+  }
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+};
+// Физическое лицо
+
+const createContract2 = (e) =>{
+  e.preventDefault();
+  const newData ={
+    name:name,
+    passport_series:Passport,
+    phone_number:tel,
+    contract_date:Sana,
+    info_bank:bank,
+    info_address:address,
+    inn:inn,
+    rs:rs,
+    mfo:mfo,
+    category_contract_id:isActive
+  }
+  const formData = new FormData()
+  for (let key of Object.keys(newData)) {
+    formData.append(key, newData[key]);
+  }
+  if (selectedFile) {
+      formData.append('image', selectedFile);
+  }
+
+  axios.post('/contract', formData,{
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+    .then((respons)=>{
+
+      console.log("Ura2");
+      setAddress('')
+      setBank('')
+      setInn('')
+      setMfo('')
+      setName('')
+      setRs('')
+      setTel('')
+      setSana('')
+      setPassport('')
+      console.log(isActive);
+    })
+    .catch((error)=>{
+      console.log("error", error);
+    })
+}
+
+
+
+
+const createContract3 = (e) =>{
+  e.preventDefault();
+  const newData ={
+    name:name,
+    passport_series:Passport,
+    phone_number:tel,
+    contract_date:Sana,
+    info_bank:bank,
+    info_address:address,
+    inn:inn,
+    rs:rs,
+    mfo:mfo,
+    category_contract_id:isActive
+  }
+  const formData = new FormData()
+  for (let key of Object.keys(newData)) {
+    formData.append(key, newData[key]);
+  }
+  if (selectedFile) {
+      formData.append('image', selectedFile);
+  }
+
+  axios.post('/contract', formData,{
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+    .then((respons)=>{
+
+      console.log("Ura2");
+      setAddress('')
+      setBank('')
+      setInn('')
+      setMfo('')
+      setName('')
+      setRs('')
+      setTel('')
+      setSana('')
+      setPassport('')
+      console.log(isActive);
+    })
+    .catch((error)=>{
+      console.log("error", error);
+    })
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -382,25 +552,34 @@ function CreateContracts() {
             </button>
             ))}
           </div>
-          <form className={`${isActive === 1 ? "yozperson-active" : "dn"}`}>
+          <form className={`${isActive === 1 ? "yozperson-active" : "dn"}`} onSubmit={createContract}>
             <h2>Создать Контракт для Физических лиц</h2>
             <label htmlFor="name">
               <h3>Наименование</h3>
               <input
-              
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               id='name' type="text" />
             </label>
             <label htmlFor="pasport">
               <h3>Серия паспорта</h3>
-              <input id='pasport' type="text" />
+              <input
+              value={Passport}
+              onChange={(e)=> setPassport(e.target.value)}
+              id='pasport' type="text" />
             </label>
             <label htmlFor="tel">
               <h3>Телефон номера</h3>
-              <input id='tel' type="number" />
+              <input
+              value={tel}
+              onChange={(e)=> setTel(e.target.value)}
+              id='tel' type="number" />
             </label>
             <label htmlFor="data">
               <h3>Дата контракта</h3>
               <input
+              value={Sana}
+              onChange={(e)=> setSana(e.target.value)}
                 type="datetime-local"
                 id="meeting-time"
                 name="meeting-time"
@@ -408,46 +587,71 @@ function CreateContracts() {
             </label>
             <label htmlFor="info">
               <h3>Информация (банк)</h3>
-              <textarea name="" id="info"></textarea>
+              <textarea
+              value={bank}
+              onChange={(e)=> setBank(e.target.value)}
+              name="" id="info"></textarea>
             </label>
             <label htmlFor="adres">
               <h3>Информация (Адрес)</h3>
-              <textarea name="" id="adres"></textarea>
+              <textarea
+              value={address}
+              onChange={(e)=> setAddress(e.target.value)}
+              name="" id="adres"></textarea>
             </label>
             <div className="modal-foto">
               <h3>Фото</h3>
               <label className="file-input-container" htmlFor="photo">
                 <span className='soz'>Фото</span>
-                <input id="photo" accept="image/*" type="file" />
+                <input
+                  onChange={handleFileChange}
+                id="photo" accept="image/*" type="file" />
               </label>
             </div>
             <button type='submit'>Создать</button>
           </form>
-          <form className={`${isActive === 2 ? "yozperson-active" : "dn"}`}>
+          <form className={`${isActive === 2 ? "yozperson-active" : "dn"}`} onSubmit={createContract2}>
             <h2>Создать Контракт для Юридических лиц </h2>
             <label htmlFor="name">
               <h3>Наименование</h3>
-              <input id='name' type="text" />
+              <input 
+              value={name}
+              onChange={(e)=> setName(e.target.value)}
+              id='name' type="text" />
             </label>
             <label htmlFor="inn">
               <h3>ИНН</h3>
-              <input id='inn' type="number" />
+              <input
+              value={inn}
+              onChange={(e)=> setInn(e.target.value)}
+              id='inn' type="number" />
             </label>
             <label htmlFor="tel">
               <h3>Телефон номера</h3>
-              <input id='tel' type="number" />
+              <input
+              value={tel}
+              onChange={(e)=>setTel(e.target.value)}
+              id='tel' type="number" />
             </label>
             <label htmlFor="rs">
               <h3>Р/с</h3>
-              <input id='rs' type="number" />
+              <input 
+              value={rs}
+              onChange={(e)=> setRs(e.target.value)}
+              id='rs' type="number" />
             </label>
             <label htmlFor="mfo">
               <h3>МФО</h3>
-              <input id='mfo' type="number" />
+              <input
+              value={mfo}
+              onChange={(e)=>setMfo(e.target.value)}
+              id='mfo' type="number" />
             </label>
             <label htmlFor="data">
               <h3>Дата контракта</h3>
               <input
+              value={Sana}
+              onChange={(e)=>setSana(e.target.value)}
                 type="datetime-local"
                 id="meeting-time"
                 name="meeting-time"
@@ -455,63 +659,85 @@ function CreateContracts() {
             </label>
             <label htmlFor="info">
               <h3>Информация (банк)</h3>
-              <textarea name="" id="info"></textarea>
+              <textarea
+              value={bank}
+              onChange={(e)=>setBank(e.target.value)}
+              name="" id="info"></textarea>
             </label>
             <label htmlFor="bank">
               <h3>Информация (адрес)</h3>
-              <textarea name="" id="bank"></textarea>
+              <textarea
+              value={address}
+              onChange={(e)=> setAddress(e.target.value)}
+              name="" id="bank"></textarea>
             </label>
             <div className="modal-foto">
               <h3>Фото</h3>
               <label className="file-input-container" htmlFor="photo">
                 <span className='soz'>Фото</span>
-                <input id="photo" accept="image/*" type="file" />
+                <input 
+                onChange={handleFileChange}
+                id="photo" accept="image/*" type="file" />
               </label>
             </div>
             <button type='submit'>Создать</button>
           </form>
-          <form className={`${isActive === 3 ? "yozperson-active" : "dn"}`}>
+          <form className={`${isActive === 3 ? "yozperson-active" : "dn"}`} onSubmit={createContract3}>
             <h2>Аукцион тендер</h2>
             <label htmlFor="name">
-              <h3>Наименование</h3>
-              <input id='name' type="text" />
+            <h3>Наименование</h3>
+              <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              id='name' type="text" />
             </label>
-            <label htmlFor="nmkon">
-              <h3>Номер контракта</h3>
-              <input id='nmkon' type="number" />
+            <label htmlFor="pasport">
+              <h3>Серия паспорта</h3>
+              <input
+              value={Passport}
+              onChange={(e)=> setPassport(e.target.value)}
+              id='pasport' type="text" />
+            </label>
+            <label htmlFor="tel">
+              <h3>Телефон номера</h3>
+              <input
+              value={tel}
+              onChange={(e)=> setTel(e.target.value)}
+              id='tel' type="number" />
             </label>
             <label htmlFor="data">
               <h3>Дата контракта</h3>
               <input
+              value={Sana}
+              onChange={(e)=> setSana(e.target.value)}
                 type="datetime-local"
                 id="meeting-time"
                 name="meeting-time"
               />
             </label>
-            <label htmlFor="inn">
-              <h3>ИНН</h3>
-              <input id='inn' type="number" />
-            </label>
-            <label htmlFor="tel">
-              <h3>Телефон номера</h3>
-              <input id='tel' type="number" />
-            </label>
-            <label htmlFor="bank">
-              <h3>Банк</h3>
-              <input id='bank' type="text" />
-            </label>
-            <label htmlFor="rs">
-              <h3>Р/с</h3>
-              <input id='rs' type="number" />
-            </label>
-            <label htmlFor="mfo">
-              <h3>МФО</h3>
-              <input id='mfo' type="number" />
-            </label>
             <label htmlFor="info">
-              <h3>Адрес</h3>
-              <textarea name="" id="info"></textarea>
+              <h3>Информация (банк)</h3>
+              <textarea
+              value={bank}
+              onChange={(e)=> setBank(e.target.value)}
+              name="" id="info"></textarea>
             </label>
+            <label htmlFor="adres">
+              <h3>Информация (Адрес)</h3>
+              <textarea
+              value={address}
+              onChange={(e)=> setAddress(e.target.value)}
+              name="" id="adres"></textarea>
+            </label>
+            <div className="modal-foto">
+              <h3>Фото</h3>
+              <label className="file-input-container" htmlFor="photo">
+                <span className='soz'>Фото</span>
+                <input
+                  onChange={handleFileChange}
+                id="photo" accept="image/*" type="file" />
+              </label>
+              </div>
             <button type='submit'>Создать</button>
           </form>
         </div>

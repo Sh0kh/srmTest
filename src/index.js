@@ -50,7 +50,7 @@ const appRouter = createBrowserRouter([
         element:<CreateContracts/>
       },
       {
-        path:"/ContractEdit",
+        path:"/ContractEdit/:id",
         element:<ContractEdit/>
       },
       {
@@ -66,11 +66,11 @@ const appRouter = createBrowserRouter([
         element: localStorage.getItem("Role") === 'SUPER-ADMIN' ? <AdminsEdit/> : <Home/>
       },
       {
-        path:"/CustomersEdit",
+        path:"/CustomersEdit/:id",
         element:<CustomersEdit/>
       },
       {
-        path:"/CustomersProfile",
+        path:"/CustomersProfile/:id",
         element:<CustomersProfile/>
       },
       {

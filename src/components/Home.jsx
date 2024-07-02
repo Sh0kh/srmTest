@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../Style/Home.css';
 import Header from './Header';
 import { NavLink } from 'react-router-dom';
+import axios from '../Service/axios';
+import CONFIG from '../Service/config';
 function Home() {
   const [isActive, setActive] = useState(null);
   const DownBtn = useRef(null);
@@ -31,6 +33,80 @@ function Home() {
     };
   }, [isActive]);
 
+  const [ CustomersPage, setCustomersPage] = useState(1)
+  const CustomersItem = 3
+  const [data, setData] = useState([])
+  const getCustomers = () =>{
+    axios.get('/client',{
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+    .then((respons)=>{
+      setData(respons.data)
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+  }
+
+
+  const defaultImageUrl = 'https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg='
+
+  const indexOfLastItem = CustomersPage * CustomersItem;
+  const indexOfFirstItem = indexOfLastItem - CustomersItem;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  
+
+  const totalPages = Math.ceil(data.length / CustomersItem);
+
+  const nextPage = () => {
+    if (CustomersPage < totalPages) {
+      setCustomersPage(CustomersPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (CustomersPage > 1) {
+      setCustomersPage(CustomersPage - 1);
+    }
+  };
+const [ConData, setConData] = useState([])
+const getContract = () =>{
+  axios.get('/contract',{
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+  .then((respons)=>{
+    setConData(respons.data)
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+}
+
+const [UserData, setUserData] = useState([])
+const getAdmin = () =>{
+  axios.get('/user',{
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+  .then((respons)=>{
+      setUserData(respons.data)
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+}
+useEffect(()=>{
+  getCustomers()
+  getContract()
+  getAdmin()
+}, [])
   return (
     <div className='Home'>
       <Header />
@@ -43,7 +119,7 @@ function Home() {
               </svg>
               Клиенты
             </h3>
-            <span>10</span>
+            <span>{data.length}</span>
           </div>
           <div className='Home-card'>
             <h3>
@@ -53,7 +129,7 @@ function Home() {
               </svg>
                 Контракты
             </h3>
-            <span>10</span>
+            <span>{ConData.length}</span>
           </div>
           <div className='Home-card'>
             <h3>
@@ -62,7 +138,7 @@ function Home() {
               </svg>
               Админы
             </h3>
-            <span>10</span>
+            <span>{UserData.length}</span>
           </div>
         </div>
         <div className='Home-table-wrapper'>
@@ -73,13 +149,6 @@ function Home() {
             <div className='Home-table-main-top'>
               <div className='Home-table-main-search'>
                 <div className='Home-table-search-grid'>
-                  <select name="" id="">
-                    <option value="default">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="40">40</option>
-                    <option value="50">50</option>
-                  </select>
                   <button
                     ref={DownBtn}
                     onClick={DocumentDown}
@@ -136,96 +205,52 @@ function Home() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  {currentItems.map((item, index)=>(
+                  <tr key={item.id}>
                     <td>
                       <h3>
-                        1
+                        {indexOfFirstItem + index + 1}
                       </h3>
                     </td>
                     <td>
-                      <img src="https://static-00.iconduck.com/assets.00/person-icon-1901x2048-a9h70k71.png" alt="foto" />
+                    <img  src={CONFIG.API_URL + item.image } 
+                           onError={(e) => {
+                            e.target.onerror = null; 
+                            e.target.src = defaultImageUrl;
+                          }} alt="foto" />
                     </td>
                     <td>
                       <h3>
-                        John Doe
+                        {item.name}
                       </h3>
                     </td>
                     <td>
                       <h3>
-                          04-06-2024
+                          {item.passport_series}
                       </h3>
                     </td>
                     <td>
-                    <NavLink to="/CustomersProfile">
+                    <NavLink to={`/CustomersProfile/${item.id}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
                     </NavLink>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <h3>
-                        2
-                      </h3>
-                    </td>
-                    <td>
-                      <img src="https://static-00.iconduck.com/assets.00/person-icon-1901x2048-a9h70k71.png" alt="foto" />
-                    </td>
-                    <td>
-                      <h3>
-                        John Doe
-                      </h3>
-                    </td>
-                    <td>
-                      <h3>
-                          04-06-2024
-                      </h3>
-                    </td>
-                    <td>
-                    <NavLink to="/CustomersProfile">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
-                    </NavLink>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <h3>
-                        3
-                      </h3>
-                    </td>
-                    <td>
-                      <img src="https://static-00.iconduck.com/assets.00/person-icon-1901x2048-a9h70k71.png" alt="foto" />
-                    </td>
-                    <td>
-                      <h3>
-                        John Doe
-                      </h3>
-                    </td>
-                    <td>
-                      <h3>
-                          04-06-2024
-                      </h3>
-                    </td>
-                    <td>
-                    <NavLink to="/CustomersProfile">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
-                    </NavLink>
-                    </td>
-                  </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
         <div className='Home-table-footer'>
-            <button>
+            <button onClick={prevPage}>
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/></svg>
             </button>
             <div>
-              <span>1</span>
+              <span>{CustomersPage}</span>
               <span>/</span>
-              <span>2</span>
+              <span>{totalPages}</span>
             </div>
-            <button>
+            <button onClick={nextPage}>
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256"><path fill="currentColor" d="m220.24 132.24l-72 72a6 6 0 0 1-8.48-8.48L201.51 134H40a6 6 0 0 1 0-12h161.51l-61.75-61.76a6 6 0 0 1 8.48-8.48l72 72a6 6 0 0 1 0 8.48"/></svg>
             </button>
           </div>
