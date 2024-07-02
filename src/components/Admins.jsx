@@ -96,6 +96,9 @@ function Admins() {
                     <h3>Email</h3>
                   </th>
                   <th>
+                    <h3>Пароль</h3>
+                  </th>
+                  <th>
                     <h3>Описание</h3>
                   </th>
                   <th>
@@ -119,6 +122,9 @@ function Admins() {
                     </td>
                     <td>
                       <h3>{item.email}</h3>
+                    </td>
+                    <td>
+                      <h3>{item.password}</h3>
                     </td>
                     <td>
                       <p>{item.description}</p>

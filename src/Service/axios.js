@@ -1,4 +1,4 @@
 import axios from 'axios' 
-axios.defaults.baseURL = 'https://back-smart.onrender.com/api'
+axios.defaults.baseURL = 'https://smart-consult-backend.onrender.com/api'
 
 export default axios

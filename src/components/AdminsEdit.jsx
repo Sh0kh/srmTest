@@ -17,22 +17,19 @@ function AdminsEdit() {
     });
 
     useEffect(() => {
-        // Этот эффект выполнится при первом рендере компонента и каждый раз,
-        // когда значение `id` изменяется.
         axios.get(`/user/${id}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
         .then(response => {
-            // Обновляем состояние `editItem` с полученными данными админа
             const { id, name, email, description, password, image } = response.data;
             setEditItem({ id, name, email, description, password, image });
         })
         .catch(error => {
             console.error('Error fetching admin data:', error);
         });
-    }, [id]); // `id` здесь является зависимостью, при изменении которой будет запускаться эффект
+    }, [id]); 
 
     const adminEdit = (e) => {
         e.preventDefault();

@@ -1,5 +1,5 @@
 const CONFIG = {
-    API_URL: 'https://back-smart.onrender.com/',
+    API_URL: 'https://smart-consult-backend.onrender.com/',
   };
   
   export default CONFIG;
