@@ -93,6 +93,22 @@ function Contracts() {
     })
   }
 
+//   const [data2, setData2] = useState([])
+// const getContractCategory = () =>{
+//   axios.get('/category-contract',{
+//     headers:{
+//       Authorization: `Bearer ${localStorage.getItem('token')}`,
+//       'Content-Type': 'multipart/form-data',
+//     }
+//   })
+//   .then((respons)=>{
+//     setData2(respons.data)
+//   })
+//   .catch((error)=>{
+//     console.log(error);
+//   })
+// }
+
   const indexOfLastItem = contractPage * contractItem;
   const indexOfFirstItem = indexOfLastItem - contractItem;
   const filteredData = data.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -116,6 +132,7 @@ function Contracts() {
 
   useEffect(() => {
     getContract()
+    // getContractCategory()
   }, [])
   return (
     <div className='Contracts'>

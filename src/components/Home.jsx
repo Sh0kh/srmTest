@@ -247,7 +247,7 @@ function Home() {
                 </table>
               ) : (
                 <div className='no-customers-message'>
-                <h3>Нет клиентов, соответствующих поисковому запросу.</h3>
+                <h3>Нет клиентов</h3>
               </div>
               )}
 
