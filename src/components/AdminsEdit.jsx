@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import Header from './Header';
 import '../Style/AdminsEdit.css';
 import axios from '../Service/axios';
-
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 function AdminsEdit() {
     const { id } = useParams(); // Извлекаем параметр `id` из URL
     const [selectedFile, setSelectedFile] = useState(null);
@@ -56,8 +57,22 @@ function AdminsEdit() {
                 ...prevState,
                 image: selectedFile // Обновляем изображение, если оно выбрано
             }));
+            Toastify({
+                text: "Изменено",
+                duration: 3000,
+                gravity: "top", // `top` or `bottom`
+                position: "right", 
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
         })
         .catch((error) => {
+            Toastify({
+                text: "Ошибка",
+                duration: 3000,
+                gravity: "top", // `top` or `bottom`
+                position: "right", 
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
         });
     };
 

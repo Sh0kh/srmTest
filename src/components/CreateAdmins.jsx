@@ -4,6 +4,8 @@ import Header from './Header'
 import axios from '../Service/axios'
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 function CreateAdmins() {
 
     const [name, setName] = useState('')
@@ -33,11 +35,27 @@ function CreateAdmins() {
             },
         })
         .then((respons)=>{
-            console.log("yes");
+            Toastify({
+                text: "Qoshildi",
+                duration: 3000,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
+            setEmail('')
+            setName('')
+            setDescription('')
+            setPassword('')
             
         })
         .catch((error)=>{
-              console.log(error);
+            Toastify({
+                text: "Hato!",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+            }).showToast();
         })
     }
     const postFoto = (event) =>{

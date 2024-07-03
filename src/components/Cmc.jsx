@@ -1,11 +1,51 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../Style/Cmc.css'
 import Header from './Header'
+import axios from '../Service/axios'
 function Cmc() {
     const [isActive, setActive] = useState(null)
     const modalActive = () =>{
         setActive(!isActive)
     }
+
+const [data, setData] = useState([])
+    const getClient = () =>{
+        axios.get('/client',{
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+        })
+        .then((respons)=>{
+            setData(respons.data)
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+
+
+    const [CustomersPage, setCustomersPage] = useState(1)
+const CustomersItem = 3;
+  const indexOfLastItem = CustomersPage * CustomersItem;
+  const indexOfFirstItem = indexOfLastItem - CustomersItem;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(data.length / CustomersItem);
+
+  const nextPage = () => {
+    if (CustomersPage < totalPages) {
+      setCustomersPage(CustomersPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (CustomersPage > 1) {
+      setCustomersPage(CustomersPage - 1);
+    }
+  };
+    useEffect(()=>{
+        getClient()
+    },[])
   return (
     <div className='Cmc'>
         <Header/>
@@ -37,36 +77,39 @@ function Cmc() {
                         </tr>
                     </thead>
                     <tbody>
+                        {currentItems.map((item, index)=>(
                         <tr>
                             <td>
                                 <h3>
-                                    1
+                                    {indexOfFirstItem + index + 1}
                                 </h3>
                             </td>
                             <td>
                                 <h3>
-                                    Сардор
+                                    {item.name}
                                 </h3>
                             </td>
                             <td>
                                 <h3>
-                                    988585656
+                                    {item.phone_number}
                                 </h3>
                             </td>
                         </tr>
+
+                        ))}
                     </tbody>
                 </table>
             </div>
             <div className='Contracts-footer'>
-            <button>
+            <button onClick={prevPage}>
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/></svg>
             </button>
             <div>
-              <span>1</span>
+              <span>{CustomersPage}</span>
               <span>/</span>
-              <span>2</span>
+              <span>{totalPages}</span>
             </div>
-            <button>
+            <button onClick={nextPage}>
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256"><path fill="currentColor" d="m220.24 132.24l-72 72a6 6 0 0 1-8.48-8.48L201.51 134H40a6 6 0 0 1 0-12h161.51l-61.75-61.76a6 6 0 0 1 8.48-8.48l72 72a6 6 0 0 1 0 8.48"/></svg>
             </button>
             </div>

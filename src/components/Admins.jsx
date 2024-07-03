@@ -4,7 +4,8 @@ import Header from './Header';
 import { NavLink } from 'react-router-dom';
 import axios from '../Service/axios';
 import CONFIG from '../Service/config';
-
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 function Admins() {
   const [isActiveDelete, setActiveDelete] = useState(false);
   const [data, setData] = useState([]);
@@ -25,9 +26,10 @@ function Admins() {
     })
     .then((response) => {
       setData(response.data);
+    
     })
     .catch((error) => {
-      console.log(error);
+ 
     });
   };
 
@@ -39,11 +41,24 @@ function Admins() {
       },
     })
     .then((response) => {
+      Toastify({
+        text: "Удалено",
+        duration: 3000,
+        gravity: "top", // `top` or `bottom`
+        position: "right", 
+        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
       getAdmins();
       deleteModal();
     })
     .catch((error) => {
-      console.log(error);
+      Toastify({
+        text: "Ошибка!",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+    }).showToast();
     });
   };
 

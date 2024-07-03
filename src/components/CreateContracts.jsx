@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import '../Style/CreateContracts.css';
 import Header from './Header';
-
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
-
-
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 import axios from '../Service/axios';
 
 function CreateContracts() {
@@ -24,7 +23,7 @@ function CreateContracts() {
         <p style="text-align: center;">на оценку объекта оценки</p>
         <div style="display:flex;  align-items: center;  justify-content: space-between;">
           <p>  г.Гулистан     </p>
-          <p>   	« ____» _____2021г.</p>
+          <p>   	« ____» _____г.</p>
         </div>
          <h3 style="text-align: center;">
             1.   ДОГОВАРИВАЮЩИЕСЯ  СТОРОНЫ 
@@ -37,7 +36,7 @@ function CreateContracts() {
         </h3>
         <p>
           2.1.По возмездному договору на оценку объекта оценки, Исполнитель обязуется по поручению Заказчика, осуществить консультирование Заказчика по определению стоимости (оценки) имущества (объекта оценки) указанных в п.2.2. настоящего договора, а Заказчик обязуется оплатить оценку или производственные работы (услуги).
-          2.2.Наименование объекта оценки: __________________________________________________________
+          2.2.Наименование объекта оценки: <spam></span>
           2.3.Расположенного по адресу: __________________________________________________________
           2.4.Цель оценки:      
           2.5.Вид определяемой стоимости: рыночная
@@ -174,7 +173,7 @@ function CreateContracts() {
         <p style="text-align: center;">   на оценку объекта оценки</p>
         <div style="display:flex;  align-items: center;  justify-content: space-between;">
           <p>  г.Гулистан     </p>
-          <p>   26 января 2024 г..</p>
+          <p> « ____» _____г.</p>
         </div>
          <h3 style="text-align: center;">
             1.   ДОГОВАРИВАЮЩИЕСЯ  СТОРОНЫ 
@@ -389,7 +388,13 @@ function CreateContracts() {
       },
     })
       .then((respons)=>{
-        console.log("Ura");
+        Toastify({
+          text: "Добавлено",
+          duration: 3000,
+          gravity: "top", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+      }).showToast();
         setAddress('')
         setBank('')
         setInn('')
@@ -399,10 +404,15 @@ function CreateContracts() {
         setTel('')
         setSana('')
         setPassport('')
-        console.log(isActive);
       })
       .catch((error)=>{
-        console.log("error", error);
+        Toastify({
+          text: "Ошибка!",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+      }).showToast();
       })
   }
   const handleFileChange = (event) => {
@@ -439,8 +449,13 @@ const createContract2 = (e) =>{
     },
   })
     .then((respons)=>{
-
-      console.log("Ura2");
+      Toastify({
+        text: "Qoshildi",
+        duration: 3000,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
       setAddress('')
       setBank('')
       setInn('')
@@ -450,10 +465,15 @@ const createContract2 = (e) =>{
       setTel('')
       setSana('')
       setPassport('')
-      console.log(isActive);
     })
     .catch((error)=>{
-      console.log("error", error);
+      Toastify({
+        text: "Hato!",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+    }).showToast();
     })
 }
 
@@ -489,8 +509,13 @@ const createContract3 = (e) =>{
     },
   })
     .then((respons)=>{
-
-      console.log("Ura2");
+      Toastify({
+        text: "Qoshildi",
+        duration: 3000,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
       setAddress('')
       setBank('')
       setInn('')
@@ -503,20 +528,15 @@ const createContract3 = (e) =>{
       console.log(isActive);
     })
     .catch((error)=>{
-      console.log("error", error);
+      Toastify({
+        text: "Hato!",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+    }).showToast();
     })
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -534,7 +554,6 @@ const createContract3 = (e) =>{
   const handleModelChange2 = (newContent2) => {
     setContent2(newContent2);
   };
-
   useEffect(()=>{
     getCategory()
   }, [])

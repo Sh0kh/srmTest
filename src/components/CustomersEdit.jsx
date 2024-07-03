@@ -3,6 +3,8 @@ import '../Style/CustomersEdit.css'
 import Header from './Header'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 function CustomersEdit() {
     // const [isActive, setActive] = useState(null)
     // const ClikcButton = ()=>{
@@ -61,10 +63,22 @@ function CustomersEdit() {
                     ...prevState,
                     image: selectedFile
                 }));
-                console.log("ura");
+                Toastify({
+                    text: "Изменено",
+                    duration: 3000,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                }).showToast();
             })
             .catch((error) => {
-                console.log(error);
+                Toastify({
+                    text: "Ошибка!",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }).showToast();
             })
     }
     const postFoto = (event) => {

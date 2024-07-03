@@ -5,6 +5,8 @@ import { NavLink } from 'react-router-dom'
 import axios from '../Service/axios'
 // import axios from '../Service/axios'
 // import CONFIG from '../Service/config'
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 function Contracts() {
   const [adminIdToDelete, setAdminIdToDelete] = useState(null);
   const [isActiveDelete, setActiveDelete] = useState(null)
@@ -54,10 +56,10 @@ function Contracts() {
     })
       .then((respons) => {
         setData(respons.data)
-        console.log(respons.data);
+       
       })
       .catch((error) => {
-        console.log(error);
+
       })
   }
 
@@ -69,11 +71,24 @@ function Contracts() {
       },
     })
     .then((respons)=>{
+      Toastify({
+        text: "Удалено",
+        duration: 3000,
+        gravity: "top", // `top` or `bottom`
+        position: "right", 
+        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
       getContract();
       deleteModal()
     })
     .catch((error)=>{
-      console.log(error);
+      Toastify({
+        text: "Ошибка!",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+    }).showToast();
     })
   }
 

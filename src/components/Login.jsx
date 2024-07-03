@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import '../Style/Login.css'
 import Logo from '../img/favicon.png'
 import axios from '../Service/axios'
-
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 function Login() {
 
     const [login, setLogin] = useState({
@@ -23,9 +24,22 @@ function Login() {
             localStorage.setItem("id",respons.data.user.id );
             localStorage.setItem('Role',respons.data.user.role)
             window.location.href = '/';
+            Toastify({
+                text: "Успешно",
+                duration: 3000,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
         })
         .catch((error)=>{
-            console.log(error);
+            Toastify({
+                text: "Ошибка!",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+            }).showToast();
         })
     }
   return (

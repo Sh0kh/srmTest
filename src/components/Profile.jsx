@@ -3,7 +3,8 @@ import '../Style/Profile.css';
 import Header from './Header';
 import axios from '../Service/axios';
 import CONFIG from '../Service/config';
-
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 function Profile() {
   const [isActiveProfile, setActiveProfile] = useState(null);
   const [userData, setUserData] = useState({ name: '', image: '', email: '' });
@@ -68,10 +69,22 @@ function Profile() {
           ...prevState,
           image: selectedFile ? URL.createObjectURL(selectedFile) : prevState.image,
         }));
-        console.log("Yes");
+        Toastify({
+          text: "Изменено",
+          duration: 3000,
+          gravity: "top", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+      }).showToast();
       })
       .catch((error) => {
-        console.log(error);
+        Toastify({
+          text: "Ошибка!",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+      }).showToast();
       });
 
   };
