@@ -67,7 +67,7 @@ function Home() {
         label: 'Продажа за год ',
         backgroundColor: 'rgba(37,99,235,235)',
         borderWidth: 1,
-        data: [65, 59, 80, 81, 56, 55],
+        data: [ConData.length],
       },
     ],
   };
