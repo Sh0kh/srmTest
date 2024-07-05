@@ -6,7 +6,7 @@ import axios from '../Service/axios';
 import Toastify from 'toastify-js';
 import "toastify-js/src/toastify.css";
 function AdminsEdit() {
-    const { id } = useParams(); // Извлекаем параметр `id` из URL
+    const { id } = useParams(); 
     const [selectedFile, setSelectedFile] = useState(null);
     const [editItem, setEditItem] = useState({
         id: '',
@@ -41,9 +41,9 @@ function AdminsEdit() {
         formData.append('description', editItem.description);
 
         if (selectedFile) {
-            formData.append('image', selectedFile);
+            formData.append( selectedFile);
         } else {
-            formData.append('image', editItem.image);
+            formData.append( editItem.image);
         }
         axios.put(`/user/${editItem.id}`, formData, {
             headers: {

@@ -436,10 +436,11 @@ const createContract2 = (e) =>{
     inn:inn,
     rs:rs,
     mfo:mfo,
-    category_contract_id:isActive
+    category_contract_id:isActive,
+    html:content2
   }
   const formData = new FormData()
-  formData.append('htmlContent2', content2);
+  formData.append( content2);
   for (let key of Object.keys(newData)) {
     formData.append(key, newData[key]);
   }
