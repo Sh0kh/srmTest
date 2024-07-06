@@ -376,7 +376,7 @@ function CreateContracts() {
       html:content
     }
     const formData = new FormData()
-    formData.append('htmlContent', content);
+    // formData.append('html', content);
     for (let key of Object.keys(newData)) {
       formData.append(key, newData[key]);
     }
@@ -440,12 +440,11 @@ const createContract2 = (e) =>{
     html:content2
   }
   const formData = new FormData()
-  formData.append( content2);
   for (let key of Object.keys(newData)) {
     formData.append(key, newData[key]);
   }
   if (selectedFile) {
-      formData.append('image', selectedFile);
+    formData.append('image', selectedFile);
   }
 
   axios.post('/contract', formData,{
@@ -570,8 +569,8 @@ const createContract3 = (e) =>{
     const [content, setContent] = useState(initialContent);
 
     useEffect(() => {
-      setContent(`
-        <h2 style="text-align: center;">
+      setContent(`<div>
+           <h2 style="text-align: center;">
             Д О Г О В О Р    № __ / ___ Ф
         </h2>
         <p style="text-align: center;">на оценку объекта оценки</p>
@@ -883,7 +882,8 @@ const createContract3 = (e) =>{
               </p>
           </div>
         </div>
-    `)
+        </div>
+     `)
     }, [name, address, tel, Passport, bank]);
   return (
     <div className='CreateContracts'>

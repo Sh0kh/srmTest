@@ -57,7 +57,7 @@ function Contracts() {
     })
       .then((respons) => {
         setData(respons.data)
-       
+        console.log(respons.data);
       })
       .catch((error) => {
 
@@ -81,6 +81,7 @@ function Contracts() {
     }).showToast();
       getContract();
       deleteModal()
+
     })
     .catch((error)=>{
       Toastify({
@@ -234,7 +235,7 @@ function Contracts() {
                     </td>
                     <td>
                       <h3>
-                        Юридическое
+                        {item.category_contract.name}
                       </h3>
                     </td>
                     <td>
