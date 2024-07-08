@@ -39,7 +39,7 @@ function ContractEdit() {
         console.log(error);
       })
   }
-  const [selectedFile, setSelectedFile] = useState(null);
+  // const [selectedFile, setSelectedFile] = useState(null);
   const [editItem, setEditItem] = useState({
     id: '',
     name: '',
@@ -62,18 +62,12 @@ function ContractEdit() {
     formData.append("passport_series", editItem.passport_series);
     formData.append("contract_date", editItem.contract_date);
     formData.append("info_address",editItem.info_address);
-    formData.append("info_bank",editItem.info_bank);
-    formData.append("phone_number", editItem.phone_number);
+    formData.append("info_bank", String(editItem.info_bank));
+    formData.append("phone_number", String(editItem.phone_number));
     formData.append("inn", editItem.inn);
-    formData.append("rs", editItem.rs);
-    formData.append("mfo", editItem.mfo);
-    formData.append("html", editItem.html)
-
-    if (selectedFile) {
-      formData.append("image", selectedFile);
-    } else {
-      formData.append("image", editItem.image);
-    }
+    formData.append("rs", String(editItem.rs));
+    formData.append("mfo", String(editItem.mfo));
+    formData.append("html", String(editItem.html))
 
 
     
@@ -84,10 +78,6 @@ function ContractEdit() {
       },
     })
       .then((respons) => {
-        setEditItem(prevState => ({
-          ...prevState,
-          image: selectedFile
-        }));
         Toastify({
           text: "Изменено",
           duration: 3000,
@@ -108,9 +98,9 @@ function ContractEdit() {
       })
   }
 
-  const postFoto = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  // const postFoto = (event) => {
+  //   setSelectedFile(event.target.files[0]);
+  // };
   const [content, setContent] = useState('');
   const [content2, setContent2] = useState('');
 
@@ -484,27 +474,6 @@ function ContractEdit() {
           </div>
           <form className={`${isActive === 1 ? "yozperson-active" : "dn"}`} onSubmit={edtiContract}>
             <h2>Создать Контракт для Физических лиц</h2>
-            <label htmlFor="name">
-              <h3>Наименование</h3>
-              <input
-              value={editItem.name}
-              onChange={(e)=> setEditItem({...editItem, name:e.target.value})}
-              id='name' type="text" />
-            </label>
-            <label htmlFor="pasport">
-              <h3>Серия паспорта</h3>
-              <input
-              value={editItem.passport_series}
-              onChange={(e)=> setEditItem({...editItem, passport_series:e.target.value})}
-               id='pasport' type="text" />
-            </label>
-            <label htmlFor="tel">
-              <h3>Телефон номера</h3>
-              <input
-              value={editItem.phone_number}
-              onChange={(e)=> setEditItem({...editItem, phone_number:e.target.value })}
-              id='tel' type="number" />
-            </label>
             <label htmlFor="data">
               <h3>Дата контракта</h3>
               <input
@@ -529,39 +498,16 @@ function ContractEdit() {
               onChange={(e)=> setEditItem({...editItem, info_address:e.target.value})}
               name="" id="adres"></textarea>
             </label>
-            <div className="modal-foto">
-              <h3>Фото</h3>
-              <label className="file-input-container" htmlFor="photo">
-                <span className='soz'>Фото</span>
-                <input
-                onChange={postFoto}
-                id="photo" accept="image/*" type="file" />
-              </label>
-            </div>
             <button type='submit'>Изменить</button>
           </form>
           <form className={`${isActive === 2 ? "yozperson-active" : "dn"}`} onSubmit={edtiContract}>
             <h2>Создать Контракт для Юридических лиц </h2>
-            <label htmlFor="name">
-              <h3>Наименование</h3>
-              <input
-              value={editItem.name}
-              onChange={(e)=> setEditItem({...editItem,name:e.target.value})}
-              id='name' type="text" />
-            </label>
             <label htmlFor="inn">
               <h3>ИНН</h3>
               <input
               value={editItem.inn}
               onChange={(e)=> setEditItem({...editItem,inn:e.target.value})}
               id='inn' type="number" />
-            </label>
-            <label htmlFor="tel">
-              <h3>Телефон номера</h3>
-              <input 
-              value={editItem.phone_number}
-              onChange={(e)=> setEditItem({...editItem, phone_number:e.target.value})}
-              id='tel' type="number" />
             </label>
             <label htmlFor="rs">
               <h3>Р/с</h3>
@@ -601,58 +547,33 @@ function ContractEdit() {
               onChange={(e)=>setEditItem({...editItem,info_address:e.target.value})}
               name="" id="bank"></textarea>
             </label>
-            <div className="modal-foto">
-              <h3>Фото</h3>
-              <label className="file-input-container" htmlFor="photo">
-                <span className='soz'>Фото</span>
-                <input
-                onChange={postFoto}
-                id="photo" accept="image/*" type="file" />
-              </label>
-            </div>
             <button type='submit'>Создать</button>
           </form>
           <form className={`${isActive === 3 ? "yozperson-active" : "dn"}`}>
             <h2>Аукцион тендер</h2>
-            <label htmlFor="name">
-              <h3>Наименование</h3>
-              <input id='name' type="text" />
-            </label>
-            <label htmlFor="nmkon">
-              <h3>Номер контракта</h3>
-              <input id='nmkon' type="number" />
-            </label>
             <label htmlFor="data">
               <h3>Дата контракта</h3>
               <input
+              value={editItem.contract_date}
+              onChange={(e)=> setEditItem({...editItem, contract_date:e.target.value})}
                 type="datetime-local"
                 id="meeting-time"
                 name="meeting-time"
               />
             </label>
-            <label htmlFor="inn">
-              <h3>ИНН</h3>
-              <input id='inn' type="number" />
-            </label>
-            <label htmlFor="tel">
-              <h3>Телефон номера</h3>
-              <input id='tel' type="number" />
+            <label htmlFor="info">
+              <h3>Информация (банк)</h3>
+              <textarea
+              value={editItem.info_bank}
+              onChange={(e)=> setEditItem({...editItem,info_bank:e.target.value})}
+              name="" id="info"></textarea>
             </label>
             <label htmlFor="bank">
-              <h3>Банк</h3>
-              <input id='bank' type="text" />
-            </label>
-            <label htmlFor="rs">
-              <h3>Р/с</h3>
-              <input id='rs' type="number" />
-            </label>
-            <label htmlFor="mfo">
-              <h3>МФО</h3>
-              <input id='mfo' type="number" />
-            </label>
-            <label htmlFor="info">
-              <h3>Адрес</h3>
-              <textarea name="" id="info"></textarea>
+              <h3>Информация (адрес)</h3>
+              <textarea
+              value={editItem.info_address}
+              onChange={(e)=>setEditItem({...editItem,info_address:e.target.value})}
+              name="" id="bank"></textarea>
             </label>
             <button type='submit'>Создать</button>
           </form>
