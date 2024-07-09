@@ -6,6 +6,7 @@ import { Bar } from "react-chartjs-2";
 import {CategoryScale} from 'chart.js'; 
 import Chart from 'chart.js/auto';
 function Home() {
+
   Chart.register(CategoryScale);
   const [data, setData] = useState([]);
   const getCustomers = () => {
@@ -14,29 +15,15 @@ function Home() {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     })
-      .then((respons) => {
-        setData(respons.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  const [ConData, setConData] = useState([]);
-  const getContract = () => {
-    axios.get('/contract', {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'multipart/form-data',
-      },
+    .then((respons) => {
+      setData(respons.data);
     })
-      .then((respons) => {
-        setConData(respons.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    .catch((error) => {
+      console.error(error);
+    });
   };
+  
+  
 
   const [UserData, setUserData] = useState([]);
   const getAdmin = () => {
@@ -60,17 +47,45 @@ function Home() {
     getAdmin();
     
   }, []);
+  const [monthlyContracts, setMonthlyContracts] = useState(Array(12).fill([]));
+  const [ConData, setConData] = useState([]);
+  
+  const getContract = () => {
+    axios.get('/contract', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((respons) => {
+        setConData(respons.data);
+        const newMonthlyContracts = Array(12).fill().map(() => []);
+        
+        respons.data.forEach(contract => {
+          const contractDate = new Date(contract.contract_date);
+          const month = contractDate.getMonth();
+          newMonthlyContracts[month].push(contract.contract_date);
+        });
+  
+        setMonthlyContracts(newMonthlyContracts);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  
   const chartData = {
     labels: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
     datasets: [
       {
-        label: 'Продажа за год ',
+        label:'Контракты',
         backgroundColor: 'rgba(37,99,235,235)',
         borderWidth: 1,
-        data: [ConData.length],
+        data: monthlyContracts.map(month => month.length),
       },
     ],
   };
+
 
   return (
     <div className='Home'>
@@ -117,7 +132,7 @@ function Home() {
           plugins: {
             title: {
               display: true,
-              text: "Users Gained between 2016-2020"
+              text: "Контракты за 2024 год"
             },
             legend: {
               display: false
