@@ -18,3 +18,9 @@ a{
 li{
     list-style: none;
 }
+.block{
+    display: block;
+}
+.dnn{
+    display: none;
+}

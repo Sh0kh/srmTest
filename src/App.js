@@ -5,7 +5,9 @@ import SaidBar from './components/SaidBar';
 function App() {
   return (
     <div className="App">
-      <SaidBar/>
+     <div className={localStorage.getItem('token') ? "block" : 'dnn'}>
+     <SaidBar/>
+     </div>
       <Outlet/>
     </div>
   );
