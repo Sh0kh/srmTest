@@ -27,31 +27,31 @@ const appRouter = createBrowserRouter([
     children:[
       {
         path:"/",
-        element:<Home/>
+        element:localStorage.getItem('token') ?  <Home/> : <Login/>
       },
       {
         path:"/Customers",
-        element:<Customers/>,
+        element: localStorage.getItem('token') ? <Customers/> : <Login/>,
       },
       {
         path:"/CreateCustomers",
-        element:<CreateCustomers/>,
+        element: localStorage.getItem('token') ? <CreateCustomers/> : <Login/>,
       },
       {
         path:"/Profile",
-        element:<Profile/>,
+        element:localStorage.getItem('token')?  <Profile/> : <Login/>,
       },
       {
         path:"/Contracts",
-        element:<Contracts/>,
+        element: localStorage.getItem('token') ? <Contracts/> : <Login/>,
       },
       {
         path:"/CreateContracts",
-        element:<CreateContracts/>
+        element: localStorage.getItem('token') ? <CreateContracts/> : <Login/>
       },
       {
         path:"/ContractEdit/:id",
-        element:<ContractEdit/>
+        element: localStorage.getItem('token') ? <ContractEdit/> : <Login/>
       },
       {
         path:"/Admins",
@@ -67,11 +67,11 @@ const appRouter = createBrowserRouter([
       },
       {
         path:"/CustomersEdit/:id",
-        element:<CustomersEdit/>
+        element: localStorage.getItem('token') ? <CustomersEdit/> : <Login/>
       },
       {
         path:"/CustomersProfile/:id",
-        element:<CustomersProfile/>
+        element:localStorage.getItem('token') ? <CustomersProfile/> : <Login/>
       },
       {
         path:"/Cmc",
