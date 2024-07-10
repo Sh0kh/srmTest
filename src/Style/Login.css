@@ -57,3 +57,16 @@
     background-color: transparent;
     color: #2563EB;
 }
+@media(max-width:1000px){
+    /* .Login img{
+        width: 100%;
+    } */
+    .Login-wrapper{
+        width: 90%;
+    }
+}
+@media(max-width:430px){
+    .Login img{
+        width: 100%;
+    }
+}
