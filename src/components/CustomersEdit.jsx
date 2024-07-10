@@ -45,7 +45,7 @@ function CustomersEdit() {
         const formData = new FormData()
         formData.append('name', editItem.name)
         formData.append('passport_series', editItem.passport_series)
-        formData.append('phone_number', editItem.phone_number)
+        formData.append('phone_number', '+'+ editItem.phone_number)
         if (selectedFile) {
             formData.append('image', selectedFile);
         } else {

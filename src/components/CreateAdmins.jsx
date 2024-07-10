@@ -36,7 +36,7 @@ function CreateAdmins() {
         })
         .then((respons)=>{
             Toastify({
-                text: "Qoshildi",
+                text: "Добавлено",
                 duration: 3000,
                 gravity: "top", // `top` or `bottom`
                 position: "right", // `left`, `center` or `right`
@@ -50,7 +50,7 @@ function CreateAdmins() {
         })
         .catch((error)=>{
             Toastify({
-                text: "Hato!",
+                text: "Ошибка!",
                 duration: 3000,
                 gravity: "top",
                 position: "right",

@@ -18,9 +18,9 @@ function Contracts() {
   const [isActive, setActive] = useState(null);
   const DownBtn = useRef(null);
   const modalRef = useRef(null);
-  const DocumentDown = () => {
-    setActive(!isActive);
-  };
+  // const DocumentDown = () => {
+  //   setActive(!isActive);
+  // };
 
   useEffect(() => {
     const ClickOut = (e) => {
@@ -154,20 +154,6 @@ function Contracts() {
             </h2>
 
             <div className='Contracts-content-search'>
-              <div className='Contracts-content-search-grid'>
-                <button className='Contracts-cotent-search-btn'
-                  ref={DownBtn}
-                  onClick={DocumentDown}
-                >
-                  Скачать
-                </button>
-                <div ref={modalRef} className={`Down-modal ${isActive ? 'Down-modal-active' : ''}`}>
-                  <a href="!#" download>Excel</a>
-                  <a href="!#" download>PDF</a>
-                  <a href="!#" download>Print</a>
-                  <a href="!#" download>CSV</a>
-                </div>
-              </div>
               <div className='Contracts-content-search-input'>
                 <label htmlFor="doc">
                   <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
@@ -264,7 +250,7 @@ function Contracts() {
             </table>
               ):(
                 <div className='no-customers-message'>
-                <h3>Нет клиентов, соответствующих поисковому запросу.</h3>
+                <h3>Нет клиентов</h3>
               </div>
               )}
           </div>

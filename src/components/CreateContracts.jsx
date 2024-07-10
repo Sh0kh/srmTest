@@ -365,7 +365,7 @@ function CreateContracts() {
     const newData ={
       name:name,
       passport_series:Passport,
-      phone_number:tel,
+      phone_number:'+'+tel,
       contract_date:Sana,
       info_bank:bank,
       info_address:address,
