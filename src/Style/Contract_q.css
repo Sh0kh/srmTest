@@ -1,0 +1,50 @@
+.Contract1{
+    width: 100%;
+    margin-left: 270px;
+}
+.contract1__main{
+    padding: 30px;
+}
+.contract1__content{
+    border-radius: 10px;
+    padding:20px;
+    margin-top: 20px;
+    background-color: white;
+    /* border: 1px solid #DCE1EF; */
+    /* text-align: center; */
+    width: 90%;
+    height: 100%;
+    margin: 0 auto;
+}
+.con__btn{
+    background-color: #2563EB;
+    border: 2px solid #2563EB;
+    border-radius: 10px;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: 0.5s;
+    margin-bottom: 20px;
+}
+.con__btn:hover{
+    background-color: transparent;
+    color: black;
+}
+@media(max-width:1150px){
+    .contract1__content{
+        width: 100%;
+    }
+}
+@media(max-width:1100px){
+    .Contract1{
+        margin-left: 0;
+    }
+}
+@media(max-width:700px){
+    .contract1__main{
+        padding: 5px;
+    }
+}

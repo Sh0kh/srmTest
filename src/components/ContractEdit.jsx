@@ -9,7 +9,12 @@ import axios from '../Service/axios';
 import { useParams } from 'react-router-dom';
 import Toastify from 'toastify-js';
 import "toastify-js/src/toastify.css";
+
+
+
 function ContractEdit() {
+
+ 
 
 
 
@@ -52,32 +57,42 @@ function ContractEdit() {
     inn: '',
     rs: '',
     mfo: '',
-    html:''
+    html:'',
+    title:'',
+    description:''
   })
 
-  const edtiContract = (e) => {
+  const editContract = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", editItem.name);
-    formData.append("passport_series", editItem.passport_series);
-    formData.append("contract_date", editItem.contract_date);
-    formData.append("info_address",editItem.info_address);
-    formData.append("info_bank", String(editItem.info_bank));
-    formData.append("phone_number", String(editItem.phone_number));
-    formData.append("inn", editItem.inn);
-    formData.append("rs", String(editItem.rs));
-    formData.append("mfo", String(editItem.mfo));
-    formData.append("html", String(editItem.html))
-
-
-    
-    axios.put(`/contract/${editItem.id}`,formData, {
+  
+    const data = {
+      name: editItem.name,
+      passport_series: editItem.passport_series,
+      contract_date: editItem.contract_date,
+      info_address: editItem.info_address,
+      info_bank: String(editItem.info_bank),
+      phone_number: String(editItem.phone_number),
+      inn: editItem.inn,
+      rs: String(editItem.rs),
+      mfo: String(editItem.mfo),
+      html: editItem.html,
+      title: editItem.title,
+      description: editItem.description,
+      price_info: editItem.price_info,
+      price: editItem.price,
+      price_text: editItem.price_text,
+      oked: editItem.oked,
+      id_one:editItem.id_one,
+      id_two:editItem.id_two
+    };
+  
+    axios.put(`/contract/${editItem.id}`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
       },
     })
-      .then((respons) => {
+      .then((response) => {
         Toastify({
           text: "Изменено",
           duration: 3000,
@@ -85,6 +100,7 @@ function ContractEdit() {
           position: "right",
           backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
         }).showToast();
+       
       })
       .catch((error) => {
         Toastify({
@@ -95,15 +111,14 @@ function ContractEdit() {
           backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
         }).showToast();
         console.log(error);
-      })
-  }
-
+      });
+  };
+  
   // const postFoto = (event) => {
   //   setSelectedFile(event.target.files[0]);
   // };
-  const [content, setContent] = useState('');
-  const [content2, setContent2] = useState('');
-
+  const [content, setContent] = useState(editItem.html);
+  const [content2, setContent2] = useState(editItem.html);
   useEffect(() => {
     getCategory()
     const getContract = () => {
@@ -115,9 +130,8 @@ function ContractEdit() {
       })
         .then((respons) => {
           setEditItem(respons.data)
+          console.log(respons.data);
           setActive(respons.data.category_contract_id);
-          setContent(respons.data.html)
-          setContent2(respons.data.html)
         })
         .catch((error) => {
 
@@ -140,12 +154,12 @@ function ContractEdit() {
   useEffect(() => {
     setContent(`
       <h2 style="text-align: center;">
-          Д О Г О В О Р    № __ / ___ Ф
+          Д О Г О В О Р    № ${editItem.id_one} / ${editItem.id_two} Ф
       </h2>
       <p style="text-align: center;">на оценку объекта оценки</p>
       <div style="display:flex;  align-items: center;  justify-content: space-between;">
         <p>  г.Гулистан     </p>
-        <p>   	« ____» _____г.</p>
+        <p>   	«${editItem.contract_date.split('T')[0]}» </p>
       </div>
        <h3 style="text-align: center;">
           1.   ДОГОВАРИВАЮЩИЕСЯ  СТОРОНЫ 
@@ -158,10 +172,10 @@ function ContractEdit() {
       </h3>
       <p>
         2.1.По возмездному договору на оценку объекта оценки, Исполнитель обязуется по поручению Заказчика, осуществить консультирование Заказчика по определению стоимости (оценки) имущества (объекта оценки) указанных в п.2.2. настоящего договора, а Заказчик обязуется оплатить оценку или производственные работы (услуги).
-        2.2.Наименование объекта оценки: <span>${editItem.name}</span>
-        2.3.Расположенного по адресу: <span>${editItem.address}</span>
-        2.4.Цель оценки:      
-        2.5.Вид определяемой стоимости: рыночная
+        2.2.Наименование объекта оценки: <span>«${editItem.title}»</span>
+        2.3.Расположенного по адресу: <span>«${editItem.address}»</span>
+        2.4.Цель оценки:   «${editItem.description}»   
+        2.5.Вид определяемой стоимости:«${editItem.price_info}»  
         2.6.В случае необходимости дополнительных проработок по комплексу оценочных работ - предмету Договора, внесения изменений и уточнения по инициативе Заказчика или иным объективным причинам, включая изменения и установления дополнительных регламентирующих условий, обуславливаемых нормативными актами, требованиями органов государственного надзора или иных компетентных юридических и физических лиц, составляется Дополнительное соглашение к данному Договору или новый Договор, учитывающие изменение трудоемкости.
       </p>
        <h3 style="text-align: center;">
@@ -169,7 +183,7 @@ function ContractEdit() {
       </h3>
       <p>
         3.1. Подписывая настоящий договор, Исполнитель и Заказчик удостоверяют, что в результате переговоров определен и согласован размер денежного вознаграждения за проведение оценки или производимые работы (услуги), указанные п.2.1. и реализуемые по заключаемому между Сторонами настоящему договору.
-        3.2. Заказчик обязуется оплатить за проведение оценки объекта оценки денежное вознаграждение в размере: (без учета НДС)  _______ (____________________________________) сум 00 тийин.
+        3.2. Заказчик обязуется оплатить за проведение оценки объекта оценки денежное вознаграждение в размере: (без учета НДС) «${editItem.price}» (${editItem.price_text}) сум 00 тийин.
                                 /сумма прописью/          
         3.3.Размер денежного вознаграждения за проведение оценки объекта оценки уточняется в случае изменения законодательной минимальной заработной платы по соглашению сторон. Индексации подлежит неоплаченная часть стоимости  работ при предоплате на момент введения новой минимальной заработной платы, а индекс удорожания исчисляется, как отношение новой минимальной заработной платы к  минимальной заработной плате в момент заключения договора. 
         3.4.Заказчик – физическое лицо производит 100% предоплаты в течении 3-х банковских дней со дня подписания договора.
@@ -264,23 +278,21 @@ function ContractEdit() {
         </div>
         <div style="display:flex;   flex-direction: column; border: 2px solid black; padding: 5px ;" >
             <h4 style="text-align: center;">
-                Заказчик
+                Заказчик «${editItem.name}»
             </h4>
             <p>
-              Адрес:${editItem.address}
+              Адрес:«${editItem.address}»
             </p>
             <p>
-             тел. (+998) ${editItem.phone_number}
+             тел.«${editItem.phone_number}»
 
             </p>
             <p>
-            Паспорт ${editItem.passport_series}
+            Паспорт: «${editItem.passport_series}»
 
             </p>
             <p>
-             в АКИБ «Ипотека банк», г.Гулистан
-            выдан  ${editItem.passport_series} <br/>
-            от ______________
+             в АКИБ «${editItem.info_bank}», г.Гулистан  <br/>
             </p>
             <p>
             М.П.                          ___________ 
@@ -290,12 +302,12 @@ function ContractEdit() {
   `);
   setContent2(`
       <h2 style="text-align: center;">
-          Д О Г О В О Р    №01/019  Ю
+          Д О Г О В О Р   ${editItem.id_one} / ${editItem.id_two}  Ю
       </h2>
       <p style="text-align: center;">   на оценку объекта оценки</p>
       <div style="display:flex;  align-items: center;  justify-content: space-between;">
         <p>  г.Гулистан     </p>
-        <p> « ____» _____г.</p>
+        <p>	«${editItem.contract_date.split('T')[0]}»</p>
       </div>
        <h3 style="text-align: center;">
           1.   ДОГОВАРИВАЮЩИЕСЯ  СТОРОНЫ 
@@ -309,10 +321,10 @@ function ContractEdit() {
       </h3>
       <p>
          2.1.По возмездному договору на оценку объекта оценки, Исполнитель обязуется по поручению Заказчика, осуществить консультирование Заказчика по определению стоимости (оценки) имущества (объекта оценки) указанных в п.2.2. настоящего договора, а Заказчик обязуется оплатить оценку или производственные работы (услуги).
-        2.2.Наименование объекта оценки: Оценка стоимости ущерба нанесённого оборудованию
-        2.3.Расположенного по адресу:  Сырдарьинская обл., г.Янгиер
-        2.4.Цель оценки: для консультирования о стоимости ущерба
-        2.5.Вид определяемой стоимости: рыночная стоимость
+        2.2.Наименование объекта оценки:  <span>«${editItem.title}»</span>
+        2.3.Расположенного по адресу:  <span>«${editItem.address}»</span>
+        2.4.Цель оценки: «${editItem.description}» 
+        2.5.Вид определяемой стоимости:«${editItem.price_info}»  
         2.6.В случае необходимости дополнительных проработок по комплексу оценочных работ - предмету Договора, внесения изменений и уточнения по инициативе Заказчика или иным объективным причинам, включая изменения и установления дополнительных регламентирующих условий, обуславливаемых нормативными актами, требованиями органов государственного надзора или иных компетентных юридических и физических лиц, составляется Дополнительное соглашение к данному Договору или новый Договор, учитывающие изменение трудоемкости.
 
       </p>
@@ -321,7 +333,7 @@ function ContractEdit() {
       </h3>
       <p>
         3.1. Подписывая настоящий договор, Исполнитель и Заказчик удостоверяют, что в результате переговоров определен и согласован размер денежного вознаграждения за проведение оценки или производимые работы (услуги), указанные п.2.1. и реализуемые по заключаемому между Сторонами настоящему договору.
-        3.2. Заказчик обязуется оплатить за проведение оценки объекта оценки денежное вознаграждение в размере: (без учета НДС) 1 150 000 (Один миллион сто пятьдесят тысяч) сум 00 тийин.
+        3.2. Заказчик обязуется оплатить за проведение оценки объекта оценки денежное вознаграждение в размере: (без учета НДС) ${editItem.price}» (${editItem.price_text}) сум 00 тийин.
         3.3.Размер денежного вознаграждения за проведение оценки объекта оценки уточняется в случае изменения законодательной минимальной заработной платы по соглашению сторон. Индексации подлежит неоплаченная часть стоимости работ при предоплате на момент введения новой минимальной заработной платы, а индекс удорожания исчисляется, как отношение новой минимальной заработной платы к минимальной заработной плате в момент заключения договора. 
         3.4.Заказчик – юридическое лицо производит 100% предоплаты в течении 3-х банковских дней со дня подписания договора.
         В случае не оплаты в течение указанного срока, договор считается не состоявшимся и Исполнитель вправе отказаться от исполнения обязательств по настоящему договору.
@@ -424,35 +436,35 @@ function ContractEdit() {
                Заказчик
             </h4>
             <h4 style="text-align: center;">
-                ООО «______________»
+                ООО «${editItem.name}»
             </h4>
             <p>
-             Адрес: Сырдарьинская область, г.Янгиер
+            Адрес:«${editItem.address}»
+            </p>
+            <p>
+            тел.«${editItem.phone_number}»
+            </p>
+            <p>
+             Паспорт: «${editItem.passport_series}»
 
             </p>
             <p>
-             тел. (____) _____________________
+            банк: «${editItem.info_bank}»
+            </p>
+            <p>
+            МФО: «${editItem.mfo}» <br>
+            
+            ИНН: «${editItem.inn}»  <br> 
+            ОКЭД:«${editItem.oked}»
 
             </p>
             <p>
-            Паспорт ____________________________________
-
-            </p>
-            <p>
-            банк ___________________________
-
-            </p>
-            <p>
-            МФО: _______  ИНН: _________ ОКЭД:_______
-
-            </p>
-            <p>
-           М.П.    ______________ Каримов Ш.З.
+           М.П.    ______________ 
             </p>
         </div>
       </div>
   `)
-  }, [editItem.name, editItem.address, editItem.phone_number, editItem.passport_series, editItem.info_bank]);
+  }, [editItem.title, editItem.address, editItem.phone_number, editItem.passport_series, editItem.info_bank, editItem.name,editItem.contract_date, editItem.description,editItem.price_info, editItem.price, editItem.price_text, editItem.inn, editItem.mfo, editItem.oked, editItem.id_one, editItem.id_two]);
   
   return (
     <div className='ContractEdit'>
@@ -472,8 +484,8 @@ function ContractEdit() {
             </button>
           ))}
           </div>
-          <form className={`${isActive === 1 ? "yozperson-active" : "dn"}`} onSubmit={edtiContract}>
-            <h2>Создать Контракт для Физических лиц</h2>
+          <form className={`${isActive === 1 ? "yozperson-active" : "dn"}`} onSubmit={editContract}>
+            <h2>Изменить Контракт для Физических лиц</h2>
             <label htmlFor="data">
               <h3>Дата контракта</h3>
               <input
@@ -491,6 +503,41 @@ function ContractEdit() {
               onChange={(e)=> setEditItem({...editItem, info_bank:e.target.value})}
               name="" id="info"></textarea>
             </label>
+            <label htmlFor="title">
+              <h3>Наименование обекта</h3>
+              <input 
+              value={editItem.title}
+              onChange={(e)=> setEditItem({...editItem, title:e.target.value})}
+              id='title' type="text" />
+            </label>
+            <label htmlFor="iinfo">
+              <h3>Цель оценки</h3>
+              <textarea
+              value={editItem.description}
+              onChange={(e)=> setEditItem({...editItem, description:e.target.value})}
+              name="" id="iinfo"></textarea>
+            </label>
+            <label htmlFor="ppinfo">
+              <h3>Вид определяемой стоимости</h3>
+              <textarea
+              value={editItem.price_info}
+              onChange={(e)=>setEditItem({...editItem, price_info:e.target.value})}
+              name="" id="ppinfo"></textarea>
+            </label>
+            <label htmlFor="price">
+              <h3>Денежное вознаграждение</h3>
+              <input
+              value={editItem.price}
+              onChange={(e)=>setEditItem({...editItem, price:e.target.value})}
+              id='price' type="number" />
+            </label>
+            <label htmlFor="ppinfo">
+              <h3>Денежное вознаграждение (словах)</h3>
+              <textarea
+              value={editItem.price_text}
+              onChange={(e)=>setEditItem({...editItem, price_text:e.target.value})}
+              name="" id="ppinfo"></textarea>
+            </label>
             <label htmlFor="adres">
               <h3>Информация (Адрес)</h3>
               <textarea
@@ -500,7 +547,7 @@ function ContractEdit() {
             </label>
             <button type='submit'>Изменить</button>
           </form>
-          <form className={`${isActive === 2 ? "yozperson-active" : "dn"}`} onSubmit={edtiContract}>
+          <form className={`${isActive === 2 ? "yozperson-active" : "dn"}`} onSubmit={editContract}>
             <h2>Создать Контракт для Юридических лиц </h2>
             <label htmlFor="inn">
               <h3>ИНН</h3>
@@ -508,6 +555,41 @@ function ContractEdit() {
               value={editItem.inn}
               onChange={(e)=> setEditItem({...editItem,inn:e.target.value})}
               id='inn' type="number" />
+            </label>
+            <label htmlFor="title">
+              <h3>Наименование обекта</h3>
+              <input 
+              value={editItem.title}
+              onChange={(e)=> setEditItem({...editItem, title:e.target.value})}
+              id='title' type="text" />
+            </label>
+            <label htmlFor="iinfo">
+              <h3>Цель оценки</h3>
+              <textarea
+              value={editItem.description}
+              onChange={(e)=> setEditItem({...editItem, description:e.target.value})}
+              name="" id="iinfo"></textarea>
+            </label>
+            <label htmlFor="ppinfo">
+              <h3>Вид определяемой стоимости</h3>
+              <textarea
+              value={editItem.price_info}
+              onChange={(e)=>setEditItem({...editItem, price_info:e.target.value})}
+              name="" id="ppinfo"></textarea>
+            </label>
+            <label htmlFor="price">
+              <h3>Денежное вознаграждение</h3>
+              <input
+              value={editItem.price}
+              onChange={(e)=>setEditItem({...editItem, price:e.target.value})}
+              id='price' type="number" />
+            </label>
+            <label htmlFor="ppinfo">
+              <h3>Денежное вознаграждение (словах)</h3>
+              <textarea
+              value={editItem.price_text}
+              onChange={(e)=>setEditItem({...editItem, price_text:e.target.value})}
+              name="" id="ppinfo"></textarea>
             </label>
             <label htmlFor="rs">
               <h3>Р/с</h3>
@@ -539,6 +621,13 @@ function ContractEdit() {
               value={editItem.info_bank}
               onChange={(e)=> setEditItem({...editItem,info_bank:e.target.value})}
               name="" id="info"></textarea>
+            </label>
+            <label htmlFor="oked">
+              <h3>ОКЭД</h3>
+              <input
+              value={editItem.oked}
+              onChange={(e)=> setEditItem({...editItem,oked:e.target.value})}
+              id='oked' type="number" />
             </label>
             <label htmlFor="bank">
               <h3>Информация (адрес)</h3>

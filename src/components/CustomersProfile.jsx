@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../Style/CustomorsProfile.css'
 import Header from './Header'
-import {  useParams } from 'react-router-dom'
+import {  useParams, NavLink } from 'react-router-dom'
 import axios from '../Service/axios'
 import CONFIG from '../Service/config'
 function CustomersProfile() {
@@ -9,14 +9,14 @@ function CustomersProfile() {
   const {id} = useParams()
   useEffect(()=>{
     const getCustomers = () =>{
-      axios.get(`/client/${id}`,{
+      axios.get(`/contract/${id}`,{
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
       }
       })
       .then((response)=>{
         setData(response.data)
-        console.log(response.data.image);
+        console.log(response.data);
       })
       .catch((error)=>{
         console.log(error);
@@ -34,7 +34,7 @@ function CustomersProfile() {
           <img className='customersfoto' src={CONFIG.API_URL + data.image} alt="Profile" onError={(e) => { e.target.onerror = null; e.target.src = 'https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg=' }} />
           </div>
           <div className='CustomersProfile-content13'>
-                {/* <div className='CustomersProfile-grid'>
+                <div className='CustomersProfile-grid'>
               <h2>
                   Контракты:
                 </h2>
@@ -49,7 +49,7 @@ function CustomersProfile() {
                   <NavLink to="/ContractEdit">
                       Юридическое лицо
                   </NavLink>
-              </div> */}
+              </div>
             </div>
           </div>
            

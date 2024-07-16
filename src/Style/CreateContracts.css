@@ -23,6 +23,11 @@
 .CreateContracts2{
     width: 50%;
 }
+.grid_inp{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 .CreateContracts-content form h2{
     margin-bottom: 20px;
     color: #4C5569;

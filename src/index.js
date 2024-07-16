@@ -18,6 +18,7 @@ import AdminsEdit from './components/AdminsEdit';
 import CustomersEdit from './components/CustomersEdit';
 import CustomersProfile from './components/CustomersProfile';
 import Cmc from './components/Cmc';
+import Contract1 from './components/Contract1';
 
 const appRouter = createBrowserRouter([
   {
@@ -55,15 +56,15 @@ const appRouter = createBrowserRouter([
       },
       {
         path:"/Admins",
-        element:localStorage.getItem('Role') === 'SUPER-ADMIN' ? <Admins/> : <Home/>
+        element:localStorage.getItem('Role') === 'SUPER-ADMIN' && localStorage.getItem('token') ? <Admins/> : <Login/>
       },
       {
         path:"/CreateAdmins",
-        element: localStorage.getItem('Role') === 'SUPER-ADMIN' ? <CreateAdmins/> : <Home/>
+        element: localStorage.getItem('Role') === 'SUPER-ADMIN'  && localStorage.getItem('token')  ? <CreateAdmins/> : <Login/>
       },
       {
         path:"/AdminsEdit/:id",
-        element: localStorage.getItem("Role") === 'SUPER-ADMIN' ? <AdminsEdit/> : <Home/>
+        element: localStorage.getItem("Role") === 'SUPER-ADMIN'  && localStorage.getItem('token')  ? <AdminsEdit/> : <Login/>
       },
       {
         path:"/CustomersEdit/:id",
@@ -75,8 +76,12 @@ const appRouter = createBrowserRouter([
       },
       {
         path:"/Cmc",
-        element: localStorage.getItem('Role') === 'SUPER-ADMIN' ? <Cmc/> : <Home/>
+        element: localStorage.getItem('Role') === 'SUPER-ADMIN'  && localStorage.getItem('token') ? <Cmc/> : <Login/>
       },
+      {
+        path:'/contractPr/:id',
+        element:localStorage.getItem('token') ? <Contract1/> : <Login/>
+      }
     
     ]
   },

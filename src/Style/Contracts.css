@@ -16,6 +16,7 @@
     margin-top: 30px;
 
 }
+
 .Contracts-content-header a{
     padding: 8px 15px;
     background-color: #2563EB;
@@ -177,6 +178,20 @@
     padding: 30px;
     border-radius: 10px;
 
+}
+.Table__grdi{
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+.contracts-eye{
+ fill: #32373f;   
+}
+.contracts-eye:hover{
+    fill: #878a94 !important;
+}
+.contracts-edit{
+    margin: 0 !important;
 }
 .DeleteModal-content-grid{
     display: flex;

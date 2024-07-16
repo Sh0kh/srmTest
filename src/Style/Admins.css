@@ -221,7 +221,9 @@
     color: black;
 }
 .Admins table img{
-    width: 80px;
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
     display: block;
     margin: 0 auto;
 }
