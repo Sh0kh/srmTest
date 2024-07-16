@@ -7,7 +7,7 @@
 }
 .contract1__content{
     border-radius: 10px;
-    padding:20px;
+    padding:35px;
     margin-top: 20px;
     background-color: white;
     /* border: 1px solid #DCE1EF; */
@@ -33,6 +33,30 @@
     background-color: transparent;
     color: black;
 }
+.contract1__content__grdi{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+.Tender__wrapper{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.Tender__img{
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+}
+.Tender__img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
 @media(max-width:1150px){
     .contract1__content{
         width: 100%;
@@ -46,5 +70,9 @@
 @media(max-width:700px){
     .contract1__main{
         padding: 5px;
+    }
+    .Tender__wrapper{
+        flex-direction: column;
+        gap: 20px;
     }
 }

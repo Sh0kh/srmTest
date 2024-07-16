@@ -5,6 +5,7 @@ import axios from '../Service/axios';
 import { Bar } from "react-chartjs-2";
 import {CategoryScale} from 'chart.js'; 
 import Chart from 'chart.js/auto';
+import logo from '../img/DEVOSOFT 2-01-01.png'
 function Home() {
 
   Chart.register(CategoryScale);
@@ -142,6 +143,12 @@ function Home() {
       />
           </div>
         </div>
+      </div>
+      <div className='home__footer'>
+          <a href="https://www.instagram.com/devosoft.uz/" target="_blank" rel="noopener noreferrer">
+          <span>Made in: </span>
+          <img src={logo} alt="" />
+          </a>
       </div>
     </div>
   );

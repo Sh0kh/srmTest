@@ -9,7 +9,7 @@ function CustomersProfile() {
   const {id} = useParams()
   useEffect(()=>{
     const getCustomers = () =>{
-      axios.get(`/contract/${id}`,{
+      axios.get(`/client/${id}`,{
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
       }
