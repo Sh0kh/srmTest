@@ -902,9 +902,6 @@ const createContract3 = (e) =>{
                 тел:${tel ?`«${tel}»` : "«_______»"}
               </p>
               <p>
-               Паспорт: ${Passport ?`«${Passport}»` : "«_______»"}
-              </p>
-              <p>
               Банк:${bank ?`«${bank}»` : "«_______»"}
               </p>
               <p>

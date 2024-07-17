@@ -105,7 +105,7 @@ const getContract = () => {
       // Sort data by creation date in ascending order
       const sortedData = response.data.sort((a, b) => new Date(a.contract_date) - new Date(b.contract_date));
       setData(sortedData);
-      console.log(sortedData);
+      // console.log(sortedData);
     })
     .catch((error) => {
       console.error(error);
