@@ -344,6 +344,10 @@ function CreateContracts() {
       setCategory(response.data)
     })
     .catch((error)=>{
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem('token');
+        window.location.href = '/login'; 
+    }
     })
   }
   
@@ -372,7 +376,7 @@ function CreateContracts() {
     const newData ={
       name:name,
       passport_series:Passport,
-      phone_number:'+'+tel,
+      phone_number:'+998'+tel,
       contract_date:Sana,
       info_bank:bank,
       info_address:address,
@@ -439,7 +443,10 @@ function CreateContracts() {
           position: "right",
           backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
       }).showToast();
-      console.log(error);
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem('token');
+        window.location.href = '/login'; 
+    }
       })
   }
   const handleFileChange = (event) => {
@@ -452,7 +459,7 @@ const createContract2 = (e) =>{
   const newData ={
     name:name,
     passport_series:Passport,
-    phone_number:tel,
+    phone_number:'+998'+tel,
     contract_date:Sana,
     info_bank:bank,
     info_address:address,
@@ -518,6 +525,11 @@ const createContract2 = (e) =>{
         position: "right",
         backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
     }).showToast();
+
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/login'; 
+  }
     })
 }
 
@@ -529,7 +541,7 @@ const createContract3 = (e) =>{
   const newData ={
     name:name,
     passport_series:Passport,
-    phone_number:tel,
+    phone_number:'+998'+tel,
     contract_date:Sana,
     info_bank:bank,
     info_address:address,
@@ -582,6 +594,10 @@ const createContract3 = (e) =>{
         position: "right",
         backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
     }).showToast();
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/login'; 
+  }
     })
 }
 
@@ -1008,6 +1024,7 @@ const createContract3 = (e) =>{
             <label htmlFor="tel">
               <h3>Телефон номера</h3>
               <input
+             placeholder="+998"
               value={tel}
               onChange={(e)=> setTel(e.target.value)}
               id='tel' type="number" />
@@ -1128,6 +1145,7 @@ const createContract3 = (e) =>{
             <label htmlFor="tel">
               <h3>Телефон номера</h3>
               <input
+                   placeholder="+998"
               value={tel}
               onChange={(e)=>setTel(e.target.value)}
               id='tel' type="number" />
@@ -1200,6 +1218,7 @@ const createContract3 = (e) =>{
             <label htmlFor="tel">
               <h3>Телефон номера</h3>
               <input
+                   placeholder="+998"
               value={tel}
               onChange={(e)=> setTel(e.target.value)}
               id='tel' type="number" />

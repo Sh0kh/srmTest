@@ -41,7 +41,10 @@ function Profile() {
         });
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login'; 
+      }
       });
   };
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -85,6 +88,10 @@ function Profile() {
           position: "right",
           backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
       }).showToast();
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem('token');
+        window.location.href = '/login'; 
+    }
       });
 
   };
@@ -108,7 +115,10 @@ function Profile() {
         console.log(editItem.password);
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login'; 
+      }
       });
   }
   const postFoto = (event) => {

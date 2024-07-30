@@ -56,6 +56,10 @@ function CreateAdmins() {
                 position: "right",
                 backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
             }).showToast();
+            if (error.response && error.response.status === 401) {
+                localStorage.removeItem('token');
+                window.location.href = '/login'; 
+            }
         })
     }
     const postFoto = (event) =>{

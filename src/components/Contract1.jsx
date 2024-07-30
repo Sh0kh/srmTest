@@ -23,7 +23,6 @@ function Contract1() {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-                console.log(response.data)
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(response.data.html, 'text/html');
                 const bodyContent = doc.body.innerHTML;
@@ -31,7 +30,10 @@ function Contract1() {
                 setData(response.data)
                 setHtml(bodyContent);
             } catch (error) {
-                console.error('Ошибка при загрузке контракта:', error);
+                if (error.response && error.response.status === 401) {
+                    localStorage.removeItem('token');
+                    window.location.href = '/login'; 
+                }
             }
         };
 

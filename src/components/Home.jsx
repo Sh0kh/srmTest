@@ -18,9 +18,13 @@ function Home() {
     })
     .then((respons) => {
       setData(respons.data);
+
     })
     .catch((error) => {
-      console.error(error);
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem('token');
+        window.location.href = '/login'; 
+    }
     });
   };
   
@@ -38,16 +42,15 @@ function Home() {
         setUserData(respons.data);
       })
       .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login'; 
+      }
         console.error(error);
       });
   };
 
-  useEffect(() => {
-    getCustomers();
-    getContract();
-    getAdmin();
-    
-  }, []);
+
   const [monthlyContracts, setMonthlyContracts] = useState(Array(12).fill([]));
   const [ConData, setConData] = useState([]);
   
@@ -58,23 +61,40 @@ function Home() {
         'Content-Type': 'multipart/form-data',
       },
     })
-      .then((respons) => {
-        setConData(respons.data);
+      .then((response) => {
+
+        setConData(response.data);
+  
+        // Инициализация массива для каждого месяца
         const newMonthlyContracts = Array(12).fill().map(() => []);
+  
+        response.data.forEach(contract => {
+          try {
+            const contractDate = new Date(contract.contract_date);
+            const month = contractDate.getMonth();
+  
+            // Проверка на корректность индекса месяца
+            if (month >= 0 && month < 12) {
+              newMonthlyContracts[month].push(contract.contract_date);
+            } else {
+              // console.warn(`Некорректный месяц: ${month} для даты ${contract.contract_date}`);
+            }
+          } catch (error) {
         
-        respons.data.forEach(contract => {
-          const contractDate = new Date(contract.contract_date);
-          const month = contractDate.getMonth();
-          newMonthlyContracts[month].push(contract.contract_date);
+          }
         });
   
+
         setMonthlyContracts(newMonthlyContracts);
       })
       .catch((error) => {
-        console.error(error);
+        console.error('Ошибка при запросе контрактов:', error); // Вывод ошибки
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login'; 
+        }
       });
   };
-  
   const chartData = {
     labels: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
     datasets: [
@@ -87,6 +107,12 @@ function Home() {
     ],
   };
 
+  useEffect(() => {
+    getCustomers();
+    getContract();
+    getAdmin();
+    
+  }, []);
 
   return (
     <div className='Home'>

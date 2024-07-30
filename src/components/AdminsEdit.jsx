@@ -28,7 +28,10 @@ function AdminsEdit() {
             setEditItem({ id, name, email, description, password, image });
         })
         .catch(error => {
-            console.error('Error fetching admin data:', error);
+            if (error.response && error.response.status === 401) {
+                localStorage.removeItem('token');
+                window.location.href = '/login'; 
+            }
         });
     }, [id]); 
 
@@ -41,9 +44,9 @@ function AdminsEdit() {
         formData.append('description', editItem.description);
 
         if (selectedFile) {
-            formData.append( selectedFile);
+            formData.append('image', selectedFile);
         } else {
-            formData.append( editItem.image);
+            formData.append('image', editItem.image);
         }
         axios.put(`/user/${editItem.id}`, formData, {
             headers: {
@@ -73,6 +76,10 @@ function AdminsEdit() {
                 position: "right", 
                 backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
             }).showToast();
+            if (error.response && error.response.status === 401) {
+                localStorage.removeItem('token');
+                window.location.href = '/login'; 
+            }
         });
     };
 

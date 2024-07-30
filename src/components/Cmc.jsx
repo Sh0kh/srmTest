@@ -21,7 +21,10 @@ function Cmc() {
                 setData(respons.data)
             })
             .catch((error) => {
-                console.log(error);
+                if (error.response && error.response.status === 401) {
+                    localStorage.removeItem('token');
+                    window.location.href = '/login'; 
+                }
             })
     }
 
@@ -79,6 +82,10 @@ function Cmc() {
                     position: "right",
                     backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
                 }).showToast();
+                if (error.response && error.response.status === 401) {
+                    localStorage.removeItem('token');
+                    window.location.href = '/login'; 
+                }
             });
     };
     return (

@@ -24,7 +24,10 @@ function CustomersProfile() {
         fetchContractNames(contractIds);
       })
       .catch((error)=>{
-        console.log(error);
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login'; 
+      }
       })
     }
 
@@ -41,7 +44,10 @@ function CustomersProfile() {
         setContractNames(names);
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login'; 
+      }
       });
     };
     getCustomers()

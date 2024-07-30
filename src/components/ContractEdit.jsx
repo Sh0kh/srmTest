@@ -41,7 +41,10 @@ function ContractEdit() {
         setCategory(response.data)
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login'; 
+      }
       })
   }
   // const [selectedFile, setSelectedFile] = useState(null);
@@ -110,7 +113,10 @@ function ContractEdit() {
           position: "right",
           backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
         }).showToast();
-        console.log(error);
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login'; 
+      }
       });
   };
   
@@ -130,11 +136,13 @@ function ContractEdit() {
       })
         .then((respons) => {
           setEditItem(respons.data)
-          console.log(respons.data);
           setActive(respons.data.category_contract_id);
         })
         .catch((error) => {
-
+          if (error.response && error.response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login'; 
+        }
         })
     }
     getContract()
