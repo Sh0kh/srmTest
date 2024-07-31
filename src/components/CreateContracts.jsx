@@ -763,9 +763,7 @@ const createContract3 = (e) =>{
               <p>
               Паспорт: ${Passport ?`«${Passport}»` : "«_______»"}
               </p>
-              <p>
-               в АКИБ ${bank ?`«${bank}»` : "«_______»"}, г.Гулистан  <br/>
-              </p>
+       
               <p>
               М.П.                          ___________ 
               </p>
@@ -1041,13 +1039,7 @@ const createContract3 = (e) =>{
                 name="begin"
               />
             </label>
-            <label htmlFor="info">
-              <h3>Информация (банк)</h3>
-              <textarea
-              value={bank}
-              onChange={(e)=> setBank(e.target.value)}
-              name="" id="info"></textarea>
-            </label>
+        
            
             <div className="modal-foto">
               <h3>Фото</h3>

@@ -299,9 +299,7 @@ function ContractEdit() {
             Паспорт: «${editItem.passport_series}»
 
             </p>
-            <p>
-             в АКИБ «${editItem.info_bank}», г.Гулистан  <br/>
-            </p>
+           
             <p>
             М.П.                          ___________ 
             </p>
@@ -503,13 +501,6 @@ function ContractEdit() {
                 id="meeting-time"
                 name="meeting-time"
               />
-            </label>
-            <label htmlFor="info">
-              <h3>Информация (банк)</h3>
-              <textarea
-              value={editItem.info_bank}
-              onChange={(e)=> setEditItem({...editItem, info_bank:e.target.value})}
-              name="" id="info"></textarea>
             </label>
             <label htmlFor="title">
               <h3>Наименование обекта</h3>
