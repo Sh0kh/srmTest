@@ -59,4 +59,6 @@ input[type="date"] {
   input[type="datetime-local"]::-moz-datetime-edit-ampm-field {
     display: none;
   }
-  
+  .dnn{
+    display:none;
+  }

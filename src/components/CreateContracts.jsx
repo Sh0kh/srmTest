@@ -964,7 +964,7 @@ const createContract3 = (e) =>{
               id='id2' type="number" />
             </label>
             </div>
-              <h3>Ф.И.О</h3>
+              <h3>Ф.И.О (Заказчик)</h3>
               <input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -1071,7 +1071,7 @@ const createContract3 = (e) =>{
             </label>
             </div>
             <label htmlFor="name">
-              <h3>Наименование</h3>
+              <h3>Заказчик</h3>
               <input 
               value={name}
               onChange={(e)=> setName(e.target.value)}
