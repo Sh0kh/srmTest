@@ -62,6 +62,7 @@ function CreateAdmins() {
             }
         })
     }
+  
     const postFoto = (event) =>{
         setSelectedFile(event.target.files[0]);
     }

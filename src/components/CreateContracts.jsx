@@ -181,7 +181,7 @@ function CreateContracts() {
           </div>
         </div>
     `;
-    const initialContent =`
+  const initialContent = `
         <h2 style="text-align: center;">
             Д О Г О В О Р    № __ / ___ Ф
         </h2>
@@ -332,91 +332,110 @@ function CreateContracts() {
         </div>
     `;
 
-    const [category, setCategory] = useState([])
-    const getCategory = () =>{
-    axios.get('/category-contract',{
+  const [category, setCategory] = useState([])
+  const getCategory = () => {
+    axios.get('/category-contract', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'multipart/form-data',
       },
     })
-    .then((response)=>{
-      setCategory(response.data)
-    })
-    .catch((error)=>{
-      if (error.response && error.response.status === 401) {
-        localStorage.removeItem('token');
-        window.location.href = '/login'; 
-    }
-    })
+      .then((response) => {
+        setCategory(response.data)
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        }
+      })
   }
-  
+
   // Физическое лицо
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [name, setName] = useState('')
-    const [Passport, setPassport] = useState('')
-    const [tel, setTel]  = useState('')
-    const [Sana, setSana] = useState('')
-    const [bank, setBank] = useState('')
-    const [ address, setAddress] = useState('')
-    const [ inn, setInn] = useState('')
-    const [rs, setRs] = useState('')
-    const [mfo, setMfo] = useState('')
-    const [title, setTitle] = useState('')
-    const [target, setTarget] = useState('')
-    const [prf, setPrf] = useState('')
-    const [price, setPrice] = useState('')
-    const [priceText, setPriceText] = useState('')
-    const [oked, setOked] = useState('')
-    const [content2, setContent2] = useState(initialContent2);
-    const [id1, setid1] = useState('')
-    const [id2, setid2] = useState('')
-  const createContract = (e) =>{
+  const [selectedFile, setSelectedFile] = useState([]);
+  const [name, setName] = useState('')
+  const [Passport, setPassport] = useState('')
+  const [tel, setTel] = useState('')
+  const [Sana, setSana] = useState('')
+  const [bank, setBank] = useState('')
+  const [address, setAddress] = useState('')
+  const [inn, setInn] = useState('')
+  const [rs, setRs] = useState('')
+  const [mfo, setMfo] = useState('')
+  const [title, setTitle] = useState('')
+  const [target, setTarget] = useState('')
+  const [prf, setPrf] = useState('')
+  const [price, setPrice] = useState('')
+  const [priceText, setPriceText] = useState('')
+  const [oked, setOked] = useState('')
+  const [content2, setContent2] = useState(initialContent2);
+  const idValue = localStorage.getItem('id')
+  const [selectedFile1, setSelectedFile1] = useState(null);
+  const [selectedFile2, setSelectedFile2] = useState(null);
+  const [address2, setAddress2] = useState('')
+  const [date2, setDate2] = useState('')
+  const handleChange = (event) => {
+    setTarget(event.target.value);
+  };
+  const handleChange2 = (event) => {
+    setPrf(event.target.value);
+  };
+  const handleFileChange1 = (event) => {
+    setSelectedFile1(event.target.files[0]);
+  };
+
+  const handleFileChange2 = (event) => {
+    setSelectedFile2(event.target.files[0]);
+  };
+  const createContract = (e) => {
     e.preventDefault();
-    const newData ={
-      name:name,
-      passport_series:Passport,
-      phone_number:'+998'+tel,
-      contract_date:Sana,
-      info_bank:bank,
-      info_address:address,
-      inn:inn,
-      rs:rs,
-      mfo:mfo,
-      category_contract_id:isActive,
-      html:content,
-      title:title,
-      description:target,
-      price_info:prf,
-      price:price,
-      price_text:priceText,
-      oked:oked,
-      id_one:id1,
-      id_two:id2,
+    const newData = {
+      name: name,
+      passport_series: Passport,
+      phone_number: '+998' + tel,
+      contract_date: Sana,
+      info_bank: bank,
+      info_address: address,
+      inn: inn,
+      rs: rs,
+      mfo: mfo,
+      category_contract_id: isActive,
+      html: content,
+      title: title,
+      description: target,
+      price_info: prf,
+      price: price,
+      price_text: priceText,
+      oked: oked,
+      create_user_id: idValue,
+      address: address2
     }
     const formData = new FormData()
-    // formData.append('html', content);
     for (let key of Object.keys(newData)) {
       formData.append(key, newData[key]);
     }
-    if (selectedFile) {
-        formData.append('image', selectedFile);
-    }
+    const files = [];
+    if (selectedFile1) files.push(selectedFile1);
+    if (selectedFile2) files.push(selectedFile2);
 
-    axios.post('/contract', formData,{
+
+    formData.append(`files`, files);
+
+
+    axios.post('/contract', formData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'multipart/form-data',
       },
     })
-      .then((respons)=>{
+      .then((respons) => {
         Toastify({
           text: "Добавлено!",
           duration: 3000,
           gravity: "top", // `top` or `bottom`
           position: "right", // `left`, `center` or `right`
           backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-      }).showToast();
+        }).showToast();
         setAddress('')
         setBank('')
         setInn('')
@@ -432,174 +451,186 @@ function CreateContracts() {
         setPrf('')
         setPrice('')
         setOked('')
-        setid1('')
-        setid2('')
+        setAddress2('')
       })
-      .catch((error)=>{
+      .catch((error) => {
         Toastify({
           text: "Ошибка!",
           duration: 3000,
           gravity: "top",
           position: "right",
           backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-      }).showToast();
-      if (error.response && error.response.status === 401) {
-        localStorage.removeItem('token');
-        window.location.href = '/login'; 
-    }
+        }).showToast();
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        }
+        console.log(error);
       })
   }
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-};
-// Физическое лицо
 
-const createContract2 = (e) =>{
-  e.preventDefault();
-  const newData ={
-    name:name,
-    passport_series:Passport,
-    phone_number:'+998'+tel,
-    contract_date:Sana,
-    info_bank:bank,
-    info_address:address,
-    inn:inn,
-    rs:rs,
-    mfo:mfo,
-    category_contract_id:isActive,
-    html:content2,
-    title:title,
-    description:target,
-    price_info:prf,
-    price:price,
-    price_text:priceText,
-    oked:oked,
-    id_one:id1,
-    id_two:id2,
-  }
-  const formData = new FormData()
-  for (let key of Object.keys(newData)) {
-    formData.append(key, newData[key]);
-  }
-  if (selectedFile) {
-    formData.append('image', selectedFile);
-  }
+  // Физическое лицо
 
-  axios.post('/contract', formData,{
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-      'Content-Type': 'multipart/form-data',
-    },
-  })
-    .then((respons)=>{
-      Toastify({
-        text: "Добавлено!",
-        duration: 3000,
-        gravity: "top", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-    }).showToast();
-      setAddress('')
-      setBank('')
-      setInn('')
-      setMfo('')
-      setName('')
-      setRs('')
-      setTel('')
-      setSana('')
-      setPassport('')
-      setContent2(initialContent2)
-      setTitle('')
-      setTarget('')
-      setPrf('')
-      setPrice('')
-      setOked('')
-      setid1('')
-      setid2('')
+  const createContract2 = (e) => {
+    e.preventDefault();
+    const newData = {
+      name: name,
+      passport_series: Passport,
+      phone_number: '+998' + tel,
+      contract_date: Sana,
+      info_bank: bank,
+      info_address: address,
+      inn: inn,
+      rs: rs,
+      mfo: mfo,
+      category_contract_id: isActive,
+      html: content2,
+      title: title,
+      description: target,
+      price_info: prf,
+      price: price,
+      price_text: priceText,
+      oked: oked,
+      create_user_id: idValue,
+    }
+    const formData = new FormData()
+    for (let key of Object.keys(newData)) {
+      formData.append(key, newData[key]);
+    }
+    const files = [];
+    if (selectedFile1) files.push(selectedFile1);
+    if (selectedFile2) files.push(selectedFile2);
+
+
+    formData.append(`files`, files);
+
+    axios.post('/contract', formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data',
+      },
     })
-    .catch((error)=>{
-      Toastify({
-        text: "Ошибка!",
-        duration: 3000,
-        gravity: "top",
-        position: "right",
-        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-    }).showToast();
+      .then((respons) => {
+        Toastify({
+          text: "Добавлено!",
+          duration: 3000,
+          gravity: "top", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+        }).showToast();
+        setAddress('')
+        setBank('')
+        setInn('')
+        setMfo('')
+        setName('')
+        setRs('')
+        setTel('')
+        setSana('')
+        setPassport('')
+        setContent2(initialContent2)
+        setTitle('')
+        setTarget('')
+        setPrf('')
+        setPrice('')
+        setOked('')
+      })
+      .catch((error) => {
+        Toastify({
+          text: "Ошибка!",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        }).showToast();
 
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login'; 
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        }
+      })
   }
+
+
+
+
+  const createContract3 = (e) => {
+    e.preventDefault();
+    const newData = {
+      name: name,
+      passport_series: Passport,
+      phone_number: '+998' + tel,
+      contract_date: Sana,
+      info_bank: bank,
+      info_address: address,
+      inn: inn,
+      rs: rs,
+      mfo: mfo,
+      category_contract_id: isActive,
+      html: content2,
+      title: title,
+      description: target,
+      price_info: prf,
+      price: price,
+      price_text: priceText,
+      oked: oked,
+      create_user_id: idValue,
+      date: date2
+    }
+    const formData = new FormData()
+    for (let key of Object.keys(newData)) {
+      formData.append(key, newData[key]);
+    }
+    const files = [];
+    if (selectedFile1) files.push(selectedFile1);
+    if (selectedFile2) files.push(selectedFile2);
+
+
+    formData.append(`files`, files);
+    axios.post('/contract', formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data',
+      },
     })
-}
-
-
-
-
-const createContract3 = (e) =>{
-  e.preventDefault();
-  const newData ={
-    name:name,
-    passport_series:Passport,
-    phone_number:'+998'+tel,
-    contract_date:Sana,
-    info_bank:bank,
-    info_address:address,
-    inn:inn,
-    rs:rs,
-    mfo:mfo,
-    category_contract_id:isActive,
-    id_one:id1,
-    id_two:id2,
+      .then((respons) => {
+        Toastify({
+          text: "Добавлено!",
+          duration: 3000,
+          gravity: "top", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+        }).showToast();
+        setAddress('')
+        setBank('')
+        setInn('')
+        setMfo('')
+        setName('')
+        setRs('')
+        setTel('')
+        setSana('')
+        setPassport('')
+        setTitle('')
+        setTarget('')
+        setPrf('')
+        setPrice('')
+        setOked('')
+        setDate2('')
+      })
+      .catch((error) => {
+        Toastify({
+          text: "Ошибка!",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        }).showToast();
+        console.log(error);
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        }
+      })
   }
-  const formData = new FormData()
-  for (let key of Object.keys(newData)) {
-    formData.append(key, newData[key]);
-  }
-  if (selectedFile) {
-      formData.append('image', selectedFile);
-  }
-
-  axios.post('/contract', formData,{
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-      'Content-Type': 'multipart/form-data',
-    },
-  })
-    .then((respons)=>{
-      Toastify({
-        text: "Добавлено!",
-        duration: 3000,
-        gravity: "top", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-    }).showToast();
-      setAddress('')
-      setBank('')
-      setInn('')
-      setMfo('')
-      setName('')
-      setRs('')
-      setTel('')
-      setSana('')
-      setPassport('')
-      setid1('')
-      setid2('')
-    })
-    .catch((error)=>{
-      Toastify({
-        text: "Ошибка!",
-        duration: 3000,
-        gravity: "top",
-        position: "right",
-        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-    }).showToast();
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login'; 
-  }
-    })
-}
 
 
 
@@ -616,40 +647,40 @@ const createContract3 = (e) =>{
   const handleModelChange2 = (newContent2) => {
     setContent2(newContent2);
   };
-  useEffect(()=>{
+  useEffect(() => {
     getCategory()
   }, [])
 
 
 
 
-    const [content, setContent] = useState(initialContent);
+  const [content, setContent] = useState(initialContent);
 
-    useEffect(() => {
-      setContent(`<div>
+  useEffect(() => {
+    setContent(`<div>
            <h2 style="text-align: center;">
-            Д О Г О В О Р    №${ id1 ? `${id1.split('T')[0]} ` : "«_____» "}/${ id2 ? `${id2.split('T')[0]} ` : "«_____» "}
+            Д О Г О В О Р    №/"«_____» "}
         </h2>
         <p  style="text-align: center; padding-bottom:30px;" >на оценку объекта оценки</p>
         <div style="display:flex;  align-items: center;  justify-content: space-between;">
           <p>  г.Гулистан     </p>
-          <p>«${ Sana ? `${Sana.split('T')[0]}» ` : "«_____» "}</p>
+          <p>«${Sana ? `${Sana.split('T')[0]}» ` : "«_____» "}</p>
         </div>
          <h3 style="text-align: center;">
             1.   ДОГОВАРИВАЮЩИЕСЯ  СТОРОНЫ 
         </h3>
         <p style="margin-bottom:50px">
-        ООО «SMART CONSULT» именуемый в дальнейшем Исполнитель, в лице директора Назарова А.А. действующего на основании Устава и Лицензии (серии BL 001 реестровый RR-0065, выданной Госкомконкуренцией РУз от 28.11.2016г. страховой полис №Р7/3-7/0008 от 26.01.2024 года выданный АО «ALSKOM» СК) с одной стороны и <span>${name ?`«${name}»` : "«_______»"}</span> именуемый в дальнейшем Заказчик, заключили настоящий договор о нижеследующем:
+        ООО «SMART CONSULT» именуемый в дальнейшем Исполнитель, в лице директора Назарова А.А. действующего на основании Устава и Лицензии (серии BL 001 реестровый RR-0065, выданной Госкомконкуренцией РУз от 28.11.2016г. страховой полис №Р7/3-7/0008 от 26.01.2024 года выданный АО «ALSKOM» СК) с одной стороны и <span>${name ? `«${name}»` : "«_______»"}</span> именуемый в дальнейшем Заказчик, заключили настоящий договор о нижеследующем:
         </p>
         <h3 style="text-align: center;">
             2.    ПРЕДМЕТ ДОГОВОРА
         </h3>
         <p style="margin-bottom:50px">
           2.1.По возмездному договору на оценку объекта оценки, Исполнитель обязуется по поручению Заказчика, осуществить консультирование Заказчика по определению стоимости (оценки) имущества (объекта оценки) указанных в п.2.2. настоящего договора, а Заказчик обязуется оплатить оценку или производственные работы (услуги).
-          2.2.Наименование объекта оценки: <span>${title ?`«${title}»` : "«_______»"}</span>
-          2.3.Расположенного по адресу: <span>${address ?`«${address}»` : "«_______»"}</span>
-          2.4.Цель оценки:<span>${target ?`«${target}»` : "«_______»"}</span>    
-          2.5.Вид определяемой стоимости: <span>${prf ?`«${prf}»` : "«_______»"}</span> 
+          2.2.Наименование объекта оценки: <span>${title ? `«${title}»` : "«_______»"}</span>
+          2.3.Расположенного по адресу: <span>${address ? `«${address}»` : "«_______»"}</span>
+          2.4.Цель оценки:<span>${target ? `«${target}»` : "«_______»"}</span>    
+          2.5.Вид определяемой стоимости: <span>${prf ? `«${prf}»` : "«_______»"}</span> 
           2.6.В случае необходимости дополнительных проработок по комплексу оценочных работ - предмету Договора, внесения изменений и уточнения по инициативе Заказчика или иным объективным причинам, включая изменения и установления дополнительных регламентирующих условий, обуславливаемых нормативными актами, требованиями органов государственного надзора или иных компетентных юридических и физических лиц, составляется Дополнительное соглашение к данному Договору или новый Договор, учитывающие изменение трудоемкости.
         </p>
          <h3 style="text-align: center;">
@@ -657,7 +688,7 @@ const createContract3 = (e) =>{
         </h3>
         <p style="margin-bottom:50px">
           3.1. Подписывая настоящий договор, Исполнитель и Заказчик удостоверяют, что в результате переговоров определен и согласован размер денежного вознаграждения за проведение оценки или производимые работы (услуги), указанные п.2.1. и реализуемые по заключаемому между Сторонами настоящему договору.
-          3.2. Заказчик обязуется оплатить за проведение оценки объекта оценки денежное вознаграждение в размере: (без учета НДС)${price ?`«${price}» сум` : "«_______»"} ${priceText ?`(${priceText}) сум` : "()"}
+          3.2. Заказчик обязуется оплатить за проведение оценки объекта оценки денежное вознаграждение в размере: (без учета НДС)${price ? `«${price}» сум` : "«_______»"} ${priceText ? `(${priceText}) сум` : "()"}
                                   /сумма прописью/          
           3.3.Размер денежного вознаграждения за проведение оценки объекта оценки уточняется в случае изменения законодательной минимальной заработной платы по соглашению сторон. Индексации подлежит неоплаченная часть стоимости  работ при предоплате на момент введения новой минимальной заработной платы, а индекс удорожания исчисляется, как отношение новой минимальной заработной платы к  минимальной заработной плате в момент заключения договора. 
           3.4.Заказчик – физическое лицо производит 100% предоплаты в течении 3-х банковских дней со дня подписания договора.
@@ -752,16 +783,16 @@ const createContract3 = (e) =>{
           </div>
           <div style="display:flex;   flex-direction: column; border: 2px solid black; padding: 5px ;" >
               <h4 style="text-align: center;">
-                  Заказчик:${name ?`«${name}»` : "«_______»"}
+                  Заказчик:${name ? `«${name}»` : "«_______»"}
               </h4>
               <p>
-                Адрес:${address ?`«${address}»` : "«_______»"}
+                Адрес:${address ? `«${address}»` : "«_______»"}
               </p>
               <p>
-               тел:${tel ?`«${tel}»` : "«_______»"}
+               тел:${tel ? `«${tel}»` : "«_______»"}
               </p>
               <p>
-              Паспорт: ${Passport ?`«${Passport}»` : "«_______»"}
+              Паспорт: ${Passport ? `«${Passport}»` : "«_______»"}
               </p>
        
               <p>
@@ -773,18 +804,18 @@ const createContract3 = (e) =>{
     setContent2(`
         <div>
         <h2 style="text-align: center;">
-            Д О Г О В О Р    №${ id1 ? `${id1.split('T')[0]} ` : "«_____» "}/${ id2 ? `${id2.split('T')[0]} ` : "«_____» "} 
+            Д О Г О В О Р    №/"«_____»
         </h2>
         <p style="text-align: center; padding-bottom:30px;">   на оценку объекта оценки</p>
         <div style="display:flex;  align-items: center;  justify-content: space-between;">
           <p>  г.Гулистан     </p>
-        <p>«${ Sana ? `${Sana.split('T')[0]}» ` : "«_____» "}</p>
+        <p>«${Sana ? `${Sana.split('T')[0]}» ` : "«_____» "}</p>
         </div>
          <h3 style="text-align: center;">
             1.   ДОГОВАРИВАЮЩИЕСЯ  СТОРОНЫ 
         </h3>
         <p style="margin-bottom:50px">
-      ООО «SMART CONSULT» именуемый в дальнейшем Исполнитель, в лице директора Назарова А.А. действующего на основании Устава и Лицензии (серии BL 001 реестровый RR-0065, выданной Госкомконкуренцией РУз от 28.11.2016г. страховой полис №Р7/3-7/0008 от 26.01.2024 года выданный АО «ALSKOM» СК) с одной стороны и ООО <span>${name ?`«${name}»` : "«_______»"}</span> именуемый в дальнейшем Заказчик, в лице Каримов Ш.З. действующего на основании Устава с другой стороны заключили настоящий договор о нижеследующем:
+      ООО «SMART CONSULT» именуемый в дальнейшем Исполнитель, в лице директора Назарова А.А. действующего на основании Устава и Лицензии (серии BL 001 реестровый RR-0065, выданной Госкомконкуренцией РУз от 28.11.2016г. страховой полис №Р7/3-7/0008 от 26.01.2024 года выданный АО «ALSKOM» СК) с одной стороны и ООО <span>${name ? `«${name}»` : "«_______»"}</span> именуемый в дальнейшем Заказчик, в лице Каримов Ш.З. действующего на основании Устава с другой стороны заключили настоящий договор о нижеследующем:
 
         </p>
         <h3 style="text-align: center;">
@@ -792,10 +823,10 @@ const createContract3 = (e) =>{
         </h3>
         <p style="margin-bottom:50px">
            2.1.По возмездному договору на оценку объекта оценки, Исполнитель обязуется по поручению Заказчика, осуществить консультирование Заказчика по определению стоимости (оценки) имущества (объекта оценки) указанных в п.2.2. настоящего договора, а Заказчик обязуется оплатить оценку или производственные работы (услуги).
-          2.2.Наименование объекта оценки: <span>${title ?`«${title}»` : "«_______»"}</span>
-          2.3.Расположенного по адресу:  <span>${address ?`«${address}»` : "«_______»"}</span>
-          2.4.Цель оценки:${target ?`«${target}»` : "«_______»"}
-          2.5.Вид определяемой стоимости: ${prf ?`«${prf}»` : "«_______»"}
+          2.2.Наименование объекта оценки: <span>${title ? `«${title}»` : "«_______»"}</span>
+          2.3.Расположенного по адресу:  <span>${address ? `«${address}»` : "«_______»"}</span>
+          2.4.Цель оценки:${target ? `«${target}»` : "«_______»"}
+          2.5.Вид определяемой стоимости: ${prf ? `«${prf}»` : "«_______»"}
           2.6.В случае необходимости дополнительных проработок по комплексу оценочных работ - предмету Договора, внесения изменений и уточнения по инициативе Заказчика или иным объективным причинам, включая изменения и установления дополнительных регламентирующих условий, обуславливаемых нормативными актами, требованиями органов государственного надзора или иных компетентных юридических и физических лиц, составляется Дополнительное соглашение к данному Договору или новый Договор, учитывающие изменение трудоемкости.
 
         </p>
@@ -804,7 +835,7 @@ const createContract3 = (e) =>{
         </h3>
         <p style="margin-bottom:50px">
           3.1. Подписывая настоящий договор, Исполнитель и Заказчик удостоверяют, что в результате переговоров определен и согласован размер денежного вознаграждения за проведение оценки или производимые работы (услуги), указанные п.2.1. и реализуемые по заключаемому между Сторонами настоящему договору.
-          3.2. Заказчик обязуется оплатить за проведение оценки объекта оценки денежное вознаграждение в размере: ${price ?`«${price}» сум` : "«_______»"} ${priceText ?`(${priceText}) сум` : "()"} сум 
+          3.2. Заказчик обязуется оплатить за проведение оценки объекта оценки денежное вознаграждение в размере: ${price ? `«${price}» сум` : "«_______»"} ${priceText ? `(${priceText}) сум` : "()"} сум 
           3.3.Размер денежного вознаграждения за проведение оценки объекта оценки уточняется в случае изменения законодательной минимальной заработной платы по соглашению сторон. Индексации подлежит неоплаченная часть стоимости работ при предоплате на момент введения новой минимальной заработной платы, а индекс удорожания исчисляется, как отношение новой минимальной заработной платы к минимальной заработной плате в момент заключения договора. 
           3.4.Заказчик – юридическое лицо производит 100% предоплаты в течении 3-х банковских дней со дня подписания договора.
           В случае не оплаты в течение указанного срока, договор считается не состоявшимся и Исполнитель вправе отказаться от исполнения обязательств по настоящему договору.
@@ -907,19 +938,19 @@ const createContract3 = (e) =>{
                  Заказчик
               </h4>
               <h4 style="text-align: center;">
-                  ООО ${name ?`«${name}»` : "«_______»"}
+                  ООО ${name ? `«${name}»` : "«_______»"}
               </h4>
               <p>
-             Адрес:${address ?`«${address}»` : "«_______»"}
+             Адрес:${address ? `«${address}»` : "«_______»"}
               </p>
               <p>
-                тел:${tel ?`«${tel}»` : "«_______»"}
+                тел:${tel ? `«${tel}»` : "«_______»"}
               </p>
               <p>
-              Банк:${bank ?`«${bank}»` : "«_______»"}
+              Банк:${bank ? `«${bank}»` : "«_______»"}
               </p>
               <p>
-              МФО:  ${mfo ?`«${mfo}»` : "«_______»"} <br> ИНН:${mfo ?`«${mfo}»` : "«_______»"} <br> ОКЭД:${oked ?`«${oked}»` : "«_______»"}
+              МФО:  ${mfo ? `«${mfo}»` : "«_______»"} <br> ИНН:${mfo ? `«${mfo}»` : "«_______»"} <br> ОКЭД:${oked ? `«${oked}»` : "«_______»"}
 
               </p>
               <p>
@@ -930,237 +961,280 @@ const createContract3 = (e) =>{
         </div>
         </div>
      `)
-    }, [name, address, tel, Passport, bank, Sana,mfo,title, target, prf, price, oked, priceText, id1, id2]);
+  }, [name, address, tel, Passport, bank, Sana, mfo, title, target, prf, price, oked, priceText,]);
   return (
     <div className='CreateContracts'>
       <Header />
       <div className='CreateContracts-content'>
         <div className='CreateContracts2'>
           <div className='CreateContract-saidbar'>
-            {category.map((item,)=>(
-            <button key={item} className={isActive === item.id ? 'ConActive' : ''}
-              onClick={() => activeCon(item.id)}
-            >
-              {item.name}
-            </button>
+            {category.map((item,) => (
+              <button key={item} className={isActive === item.id ? 'ConActive' : ''}
+                onClick={() => activeCon(item.id)}
+              >
+                {item.name}
+              </button>
             ))}
           </div>
           <form className={`${isActive === 1 ? "yozperson-active" : "dn"}`} onSubmit={createContract}>
             <h2>Создать Контракт для Физических лиц</h2>
             <label htmlFor="name">
-            <div className='grid_inp'>
-            <label htmlFor="id1">
-              <h3>ID Документа</h3>
-              <input
-              value={id1}
-              onChange={(e)=> setid1(e.target.value)}
-              id='id1' type="number" />
-            </label>
-            <label htmlFor="id2">
-              <h3>ID 2 Документа</h3>
-              <input
-              value={id2}
-              onChange={(e)=> setid2(e.target.value)}
-              id='id2' type="number" />
-            </label>
-            </div>
               <h3>Ф.И.О (Заказчик)</h3>
               <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              id='name' type="text" />
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                id='name' type="text" />
             </label>
             <label htmlFor="title">
               <h3>Наименование обекта</h3>
-              <input 
-              value={title}
-              onChange={(e)=> setTitle(e.target.value)}
-              id='title' type="text" />
+              <input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                id='title' type="text" />
             </label>
             <label htmlFor="adres">
               <h3>Информация (Адрес)</h3>
               <textarea
-              value={address}
-              onChange={(e)=> setAddress(e.target.value)}
-              name="" id="adres"></textarea>
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                name="" id="adres"></textarea>
+            </label>
+            <label htmlFor="adres2">
+              <h3>Адрес заказчика</h3>
+              <textarea
+                value={address2}
+                onChange={(e) => setAddress2(e.target.value)}
+                name="" id="adres2"></textarea>
             </label>
             <label htmlFor="pinfo">
               <h3>Цель оценки</h3>
-              <textarea
-              value={target}
-              onChange={(e)=>setTarget(e.target.value)}
-              name="" id="pinfo"></textarea>
+              <select value={target} onChange={handleChange} name="" id="">
+                <option value="1" defaultValue></option>
+
+                <option value=" Для передачи объекта в качестве залога ">
+                  Для передачи объекта в качестве залога
+                </option>
+                <option value=" Для передачи объекта в уставный фонд ">
+                  Для передачи объекта в уставный фонд
+                </option>
+                <option value="Для реализаций объекта">
+                  Для реализаций объекта
+                </option>
+                <option value="Для передачи объекта в баланс предприятие">
+                  Для передачи объекта в баланс предприятие
+                </option>
+                <option value="Для консультирование">
+                  Для консультирование
+                </option>
+              </select>
             </label>
             <label htmlFor="ppinfo">
               <h3>Вид определяемой стоимости</h3>
-              <textarea
-              value={prf}
-              onChange={(e)=>setPrf(e.target.value)}
-              name="" id="ppinfo"></textarea>
+              <select value={prf} onChange={handleChange2} name="" id="">
+                <option value="1" defaultValue></option>
+                <option value="Рыночная стоимость" >Рыночная стоимость</option>
+                <option value="Инвестиционная стоимость" >Инвестиционная стоимость</option>
+                <option value="Стоимость действующего предприятие" >Стоимость действующего предприятие</option>
+                <option value="Страховая стоимость" >Страховая стоимость</option>
+                <option value="Стоимость для целей налогооблажения" >Стоимость для целей налогооблажения</option>
+                <option value="Стоимость для целей налогооблажения" >Остаточная стоимость замецения</option>
+                <option value="Утилизационная стоимость" >Утилизационная стоимость</option>
+                <option value="Ликвидационная стоимость" >Ликвидационная стоимость</option>
+                <option value="стоимость объединения" >стоимость объединения</option>
+                <option value="Специальный покупатель" >Специальный покупатель</option>
+                <option value="Специальная стоимость" >Специальная стоимость</option>
+                <option value="Справедливая стоимость" >Справедливая стоимость</option>
+              </select>
             </label>
             <label htmlFor="price">
               <h3>Денежное вознаграждение</h3>
               <input
-              value={price}
-              onChange={(e)=> setPrice(e.target.value)}
-              id='price' type="number" />
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                id='price' type="number" />
             </label>
             <label htmlFor="ppinfo">
               <h3>Денежное вознаграждение (словах)</h3>
               <textarea
-              value={priceText}
-              onChange={(e)=>setPriceText(e.target.value)}
-              name="" id="ppinfo"></textarea>
+                value={priceText}
+                onChange={(e) => setPriceText(e.target.value)}
+                name="" id="ppinfo"></textarea>
             </label>
             <label htmlFor="pasport">
               <h3>Серия паспорта</h3>
               <input
-              value={Passport}
-              onChange={(e)=> setPassport(e.target.value)}
-              id='pasport' type="text" />
+                value={Passport}
+                onChange={(e) => setPassport(e.target.value)}
+                id='pasport' type="text" />
             </label>
             <label htmlFor="tel">
               <h3>Телефон номера</h3>
               <input
-             placeholder="+998"
-              value={tel}
-              onChange={(e)=> setTel(e.target.value)}
-              id='tel' type="number" />
+                placeholder="+998"
+                value={tel}
+                onChange={(e) => setTel(e.target.value)}
+                id='tel' type="number" />
             </label>
             <label htmlFor="data">
               <h3>Дата контракта</h3>
               <input
-              
-              placeholder="dd-mm-yyyy"
-              value={Sana}
-              onChange={(e)=> setSana(e.target.value)}
+
+                placeholder="dd-mm-yyyy"
+                value={Sana}
+                onChange={(e) => setSana(e.target.value)}
                 type="datetime-local"
                 id="meeting-time"
                 name="begin"
               />
             </label>
-        
-           
+
+
             <div className="modal-foto">
               <h3>Фото</h3>
               <label className="file-input-container" htmlFor="photo">
                 <span className='soz'>Фото</span>
                 <input
-                  onChange={handleFileChange}
-                id="photo" accept="image/*" type="file" />
+                  onChange={handleFileChange1}
+                  id="photo" accept="image/*" type="file" />
+              </label>
+            </div>
+            <div className="modal-foto">
+              <h3>Файл</h3>
+              <label className="file-input-container" htmlFor="photo">
+                <span className='soz'>Файл</span>
+                <input
+                  onChange={handleFileChange2}
+                  id="photo" accept="image/*" type="file" />
               </label>
             </div>
             <button type='submit'>Создать</button>
           </form>
           <form className={`${isActive === 2 ? "yozperson-active" : "dn"}`} onSubmit={createContract2}>
             <h2>Создать Контракт для Юридических лиц </h2>
-            <div className='grid_inp'>
-            <label htmlFor="id1">
-              <h3>ID Документа</h3>
-              <input
-              value={id1}
-              onChange={(e)=> setid1(e.target.value)}
-              id='id1' type="number" />
-            </label>
-            <label htmlFor="id2">
-              <h3>ID 2 Документа</h3>
-              <input
-              value={id2}
-              onChange={(e)=> setid2(e.target.value)}
-              id='id2' type="number" />
-            </label>
-            </div>
+
             <label htmlFor="name">
               <h3>Заказчик</h3>
-              <input 
-              value={name}
-              onChange={(e)=> setName(e.target.value)}
-              id='name' type="text" />
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                id='name' type="text" />
             </label>
             <label htmlFor="title">
               <h3>Наименование обекта</h3>
-              <input 
-              value={title}
-              onChange={(e)=> setTitle(e.target.value)}
-              id='title' type="text" />
+              <input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                id='title' type="text" />
             </label>
             <label htmlFor="bank">
               <h3>Информация (адрес)</h3>
               <textarea
-              value={address}
-              onChange={(e)=> setAddress(e.target.value)}
-              name="" id="bank"></textarea>
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                name="" id="bank"></textarea>
             </label>
-         
+            <label htmlFor="adres2">
+              <h3>Адрес заказчика</h3>
+              <textarea
+                value={address2}
+                onChange={(e) => setAddress2(e.target.value)}
+                name="" id="adres2"></textarea>
+            </label>
             <label htmlFor="pinfo">
               <h3>Цель оценки</h3>
-              <textarea
-              value={target}
-              onChange={(e)=>setTarget(e.target.value)}
-              name="" id="pinfo"></textarea>
+              <select value={target} onChange={handleChange} name="" id="">
+                <option value="1" defaultValue></option>
+
+                <option value=" Для передачи объекта в качестве залога ">
+                  Для передачи объекта в качестве залога
+                </option>
+                <option value=" Для передачи объекта в уставный фонд ">
+                  Для передачи объекта в уставный фонд
+                </option>
+                <option value="Для реализаций объекта">
+                  Для реализаций объекта
+                </option>
+                <option value="Для передачи объекта в баланс предприятие">
+                  Для передачи объекта в баланс предприятие
+                </option>
+                <option value="Для консультирование">
+                  Для консультирование
+                </option>
+              </select>
             </label>
             <label htmlFor="ppinfo">
               <h3>Вид определяемой стоимости</h3>
-              <textarea
-              value={prf}
-              onChange={(e)=>setPrf(e.target.value)}
-              name="" id="ppinfo"></textarea>
+              <select value={prf} onChange={handleChange2} name="" id="">
+                <option value="1" defaultValue></option>
+                <option value="Рыночная стоимость" >Рыночная стоимость</option>
+                <option value="Инвестиционная стоимость" >Инвестиционная стоимость</option>
+                <option value="Стоимость действующего предприятие" >Стоимость действующего предприятие</option>
+                <option value="Страховая стоимость" >Страховая стоимость</option>
+                <option value="Стоимость для целей налогооблажения" >Стоимость для целей налогооблажения</option>
+                <option value="Стоимость для целей налогооблажения" >Остаточная стоимость замецения</option>
+                <option value="Утилизационная стоимость" >Утилизационная стоимость</option>
+                <option value="Ликвидационная стоимость" >Ликвидационная стоимость</option>
+                <option value="стоимость объединения" >стоимость объединения</option>
+                <option value="Специальный покупатель" >Специальный покупатель</option>
+                <option value="Специальная стоимость" >Специальная стоимость</option>
+                <option value="Справедливая стоимость" >Справедливая стоимость</option>
+              </select>
             </label>
             <label htmlFor="price">
               <h3>Денежное вознаграждение</h3>
               <input
-              value={price}
-              onChange={(e)=> setPrice(e.target.value)}
-              id='price' type="number" />
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                id='price' type="number" />
             </label>
             <label htmlFor="ppinfo">
               <h3>Денежное вознаграждение (словах)</h3>
               <textarea
-              value={priceText}
-              onChange={(e)=>setPriceText(e.target.value)}
-              name="" id="ppinfo"></textarea>
+                value={priceText}
+                onChange={(e) => setPriceText(e.target.value)}
+                name="" id="ppinfo"></textarea>
             </label>
             <label htmlFor="pasport">
               <h3>Серия паспорта</h3>
               <input
-              value={Passport}
-              onChange={(e)=> setPassport(e.target.value)}
-              id='pasport' type="text" />
+                value={Passport}
+                onChange={(e) => setPassport(e.target.value)}
+                id='pasport' type="text" />
             </label>
             <label htmlFor="inn">
               <h3>ИНН</h3>
               <input
-              value={inn}
-              onChange={(e)=> setInn(e.target.value)}
-              id='inn' type="number" />
+                value={inn}
+                onChange={(e) => setInn(e.target.value)}
+                id='inn' type="number" />
             </label>
             <label htmlFor="tel">
               <h3>Телефон номера</h3>
               <input
-                   placeholder="+998"
-              value={tel}
-              onChange={(e)=>setTel(e.target.value)}
-              id='tel' type="number" />
+                placeholder="+998"
+                value={tel}
+                onChange={(e) => setTel(e.target.value)}
+                id='tel' type="number" />
             </label>
             <label htmlFor="rs">
               <h3>Р/с</h3>
-              <input 
-              value={rs}
-              onChange={(e)=> setRs(e.target.value)}
-              id='rs' type="number" />
+              <input
+                value={rs}
+                onChange={(e) => setRs(e.target.value)}
+                id='rs' type="number" />
             </label>
             <label htmlFor="mfo">
               <h3>МФО</h3>
               <input
-              value={mfo}
-              onChange={(e)=>setMfo(e.target.value)}
-              id='mfo' type="number" />
+                value={mfo}
+                onChange={(e) => setMfo(e.target.value)}
+                id='mfo' type="number" />
             </label>
             <label htmlFor="data">
               <h3>Дата контракта</h3>
               <input
-              value={Sana}
-              onChange={(e)=>setSana(e.target.value)}
+                value={Sana}
+                onChange={(e) => setSana(e.target.value)}
                 type="datetime-local"
                 id="meeting-time"
                 name="meeting-time"
@@ -1169,92 +1243,217 @@ const createContract3 = (e) =>{
             <label htmlFor="oked">
               <h3>ОКЭД</h3>
               <input
-              value={oked}
-              onChange={(e)=> setOked(e.target.value)}
-              id='oked' type="number" />
+                value={oked}
+                onChange={(e) => setOked(e.target.value)}
+                id='oked' type="number" />
             </label>
             <label htmlFor="info">
               <h3>Информация (банк)</h3>
               <textarea
-              value={bank}
-              onChange={(e)=>setBank(e.target.value)}
-              name="" id="info"></textarea>
-            </label>
-            <div className="modal-foto">
-              <h3>Фото</h3>
-              <label className="file-input-container" htmlFor="photo">
-                <span className='soz'>Фото</span>
-                <input 
-                onChange={handleFileChange}
-                id="photo" accept="image/*" type="file" />
-              </label>
-            </div>
-            <button type='submit'>Создать</button>
-          </form>
-          <form className={`${isActive === 3 ? "yozperson-active" : "dn"}`} onSubmit={createContract3}>
-            <h2>Аукцион тендер</h2>
-            <label htmlFor="name">
-            <h3>Наименование</h3>
-              <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              id='name' type="text" />
-            </label>
-            <label htmlFor="pasport">
-              <h3>Серия паспорта</h3>
-              <input
-              value={Passport}
-              onChange={(e)=> setPassport(e.target.value)}
-              id='pasport' type="text" />
-            </label>
-            <label htmlFor="tel">
-              <h3>Телефон номера</h3>
-              <input
-                   placeholder="+998"
-              value={tel}
-              onChange={(e)=> setTel(e.target.value)}
-              id='tel' type="number" />
-            </label>
-            <label htmlFor="data">
-              <h3>Дата контракта</h3>
-              <input
-              value={Sana}
-              onChange={(e)=> setSana(e.target.value)}
-                type="datetime-local"
-                id="meeting-time"
-                name="meeting-time"
-              />
-            </label>
-            <label htmlFor="info">
-              <h3>Информация (банк)</h3>
-              <textarea
-              value={bank}
-              onChange={(e)=> setBank(e.target.value)}
-              name="" id="info"></textarea>
-            </label>
-            <label htmlFor="adres">
-              <h3>Информация (Адрес)</h3>
-              <textarea
-              value={address}
-              onChange={(e)=> setAddress(e.target.value)}
-              name="" id="adres"></textarea>
+                value={bank}
+                onChange={(e) => setBank(e.target.value)}
+                name="" id="info"></textarea>
             </label>
             <div className="modal-foto">
               <h3>Фото</h3>
               <label className="file-input-container" htmlFor="photo">
                 <span className='soz'>Фото</span>
                 <input
-                  onChange={handleFileChange}
-                id="photo" accept="image/*" type="file" />
+                  onChange={handleFileChange1}
+                  id="photo" accept="image/*" type="file" />
               </label>
               </div>
+              <div className="modal-foto">
+                <h3>Файл</h3>
+                <label className="file-input-container" htmlFor="photo">
+                  <span className='soz'>Файл</span>
+                  <input
+                    onChange={handleFileChange2}
+                    id="photo" accept="image/*" type="file" />
+                </label>
+              </div>
+              <button type='submit'>Создать</button>
+          </form>
+          <form className={`${isActive === 3 ? "yozperson-active" : "dn"}`} onSubmit={createContract3}>
+            <h2>Аукцион тендер</h2>
+
+            <label htmlFor="name">
+              <h3>Заказчик</h3>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                id='name' type="text" />
+            </label>
+            <label htmlFor="title">
+              <h3>Наименование обекта</h3>
+              <input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                id='title' type="text" />
+            </label>
+            <label htmlFor="bank">
+              <h3>Информация (адрес)</h3>
+              <textarea
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                name="" id="bank"></textarea>
+            </label>
+            <label htmlFor="adres2">
+              <h3>Адрес заказчика</h3>
+              <textarea
+                value={address2}
+                onChange={(e) => setAddress2(e.target.value)}
+                name="" id="adres2"></textarea>
+            </label>
+            <label htmlFor="pinfo">
+              <h3>Цель оценки</h3>
+              <select value={target} onChange={handleChange} name="" id="">
+                <option value="1" defaultValue></option>
+
+                <option value=" Для передачи объекта в качестве залога ">
+                  Для передачи объекта в качестве залога
+                </option>
+                <option value=" Для передачи объекта в уставный фонд ">
+                  Для передачи объекта в уставный фонд
+                </option>
+                <option value="Для реализаций объекта">
+                  Для реализаций объекта
+                </option>
+                <option value="Для передачи объекта в баланс предприятие">
+                  Для передачи объекта в баланс предприятие
+                </option>
+                <option value="Для консультирование">
+                  Для консультирование
+                </option>
+              </select>
+            </label>
+            <label htmlFor="ppinfo">
+              <h3>Вид определяемой стоимости</h3>
+              <select value={prf} onChange={handleChange2} name="" id="">
+                <option value="1" defaultValue></option>
+                <option value="Рыночная стоимость" >Рыночная стоимость</option>
+                <option value="Инвестиционная стоимость" >Инвестиционная стоимость</option>
+                <option value="Стоимость действующего предприятие" >Стоимость действующего предприятие</option>
+                <option value="Страховая стоимость" >Страховая стоимость</option>
+                <option value="Стоимость для целей налогооблажения" >Стоимость для целей налогооблажения</option>
+                <option value="Стоимость для целей налогооблажения" >Остаточная стоимость замецения</option>
+                <option value="Утилизационная стоимость" >Утилизационная стоимость</option>
+                <option value="Ликвидационная стоимость" >Ликвидационная стоимость</option>
+                <option value="стоимость объединения" >стоимость объединения</option>
+                <option value="Специальный покупатель" >Специальный покупатель</option>
+                <option value="Специальная стоимость" >Специальная стоимость</option>
+                <option value="Справедливая стоимость" >Справедливая стоимость</option>
+              </select>
+            </label>
+            <label htmlFor="price">
+              <h3>Денежное вознаграждение</h3>
+              <input
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                id='price' type="number" />
+            </label>
+            <label htmlFor="ppinfo">
+              <h3>Денежное вознаграждение (словах)</h3>
+              <textarea
+                value={priceText}
+                onChange={(e) => setPriceText(e.target.value)}
+                name="" id="ppinfo"></textarea>
+            </label>
+            <label htmlFor="pasport">
+              <h3>Серия паспорта</h3>
+              <input
+                value={Passport}
+                onChange={(e) => setPassport(e.target.value)}
+                id='pasport' type="text" />
+            </label>
+            <label htmlFor="inn">
+              <h3>ИНН</h3>
+              <input
+                value={inn}
+                onChange={(e) => setInn(e.target.value)}
+                id='inn' type="number" />
+            </label>
+            <label htmlFor="tel">
+              <h3>Телефон номера</h3>
+              <input
+                placeholder="+998"
+                value={tel}
+                onChange={(e) => setTel(e.target.value)}
+                id='tel' type="number" />
+            </label>
+            <label htmlFor="rs">
+              <h3>Р/с</h3>
+              <input
+                value={rs}
+                onChange={(e) => setRs(e.target.value)}
+                id='rs' type="number" />
+            </label>
+            <label htmlFor="mfo">
+              <h3>МФО</h3>
+              <input
+                value={mfo}
+                onChange={(e) => setMfo(e.target.value)}
+                id='mfo' type="number" />
+            </label>
+            <label htmlFor="data">
+              <h3>Дата контракта</h3>
+              <input
+                value={Sana}
+                onChange={(e) => setSana(e.target.value)}
+                type="datetime-local"
+                id="meeting-time"
+                name="meeting-time"
+              />
+            </label>
+            <label htmlFor="data2">
+              <h3>Дата обретения</h3>
+              <input
+                value={date2}
+                onChange={(e) => setDate2(e.target.value)}
+                type="datetime-local"
+                id="meeting-time2"
+                name="meeting-time"
+              />
+            </label>
+            <label htmlFor="oked">
+              <h3>ОКЭД</h3>
+              <input
+                value={oked}
+                onChange={(e) => setOked(e.target.value)}
+                id='oked' type="number" />
+            </label>
+            <label htmlFor="info">
+              <h3>Информация (банк)</h3>
+              <textarea
+                value={bank}
+                onChange={(e) => setBank(e.target.value)}
+                name="" id="info"></textarea>
+            </label>
+            <div className="modal-foto">
+              <h3>Фото</h3>
+              <label className="file-input-container" htmlFor="photo">
+                <span className='soz'>Фото</span>
+                <input
+                  onChange={handleFileChange1}
+                  id="photo" accept="image/*" type="file" />
+              </label>
+            </div>
+            <div className="modal-foto">
+              <h3>Файл</h3>
+              <label className="file-input-container" htmlFor="photo">
+                <span className='soz'>Файл</span>
+                <input
+                  onChange={handleFileChange2}
+                  id="photo" accept="image/*" type="file" />
+              </label>
+            </div>
             <button type='submit'>Создать</button>
           </form>
         </div>
         <div className='CreateContracts-text'>
           <div className={`fizperson ${isActive === 2 ? "fizperson-active" : "dn"}`}>
             <FroalaEditorComponent
-            onSubmit={createContract2}
+              onSubmit={createContract2}
               tag='textarea'
               model={content2}
               onModelChange={handleModelChange2}

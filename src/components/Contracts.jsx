@@ -95,9 +95,11 @@ function Contracts() {
   //   })
   // }
   const [data, setData] = useState([]);
+  const [admin, setAdmin ]= useState([])
   const [contractPage, setContractPage] = useState(1);
   const contractItem = 3;
 
+// const storedId = localStorage.getItem('id');
   const getContract = () => {
     axios.get('/contract', {
       headers: {
@@ -106,11 +108,8 @@ function Contracts() {
       },
     })
       .then((response) => {
-        // Sort data by creation date in ascending order
         const sortedData = response.data.sort((a, b) => new Date(a.contract_date) - new Date(b.contract_date));
         setData(sortedData);
-        // console.log(sortedData);
-        // console.log(response.data);
       })
       .catch((error) => {
         if (error.response && error.response.status === 401) {
@@ -119,6 +118,22 @@ function Contracts() {
         }
       });
   };
+  const getAllAdmin = () =>{
+        axios.get('/user',{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((respons)=>{
+          setAdmin(respons.data)
+        })
+        .catch((error)=>{
+          if (error.response && error.response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+          }
+        })
+  }
 
   const indexOfLastItem = contractPage * contractItem;
   const indexOfFirstItem = indexOfLastItem - contractItem;
@@ -144,6 +159,7 @@ function Contracts() {
 
   useEffect(() => {
     getContract()
+    getAllAdmin()
     // getContractCategory()
   }, [])
   return (
@@ -203,7 +219,7 @@ function Contracts() {
                   {currentItems.map((item, index) => (
                     <tr key={item.id}>
                       <td>
-                        <h3>{indexOfFirstItem + index + 1}</h3>
+                        <h3>{item.id_one}/{item.id_two}</h3>
                       </td>
                       <td>
                         <h3>{item.name}</h3>
@@ -218,7 +234,7 @@ function Contracts() {
                         <p>{item.info_address}</p>
                       </td>
                       <td>
-                        <p>Адресс заказчика Город гулистан</p>
+                        <p>{item.address}</p>
                       </td>
                       <td>
                         <h3>{item.price}</h3>
@@ -230,7 +246,7 @@ function Contracts() {
                         <h3>{item.contract_date.split('T')[0]}</h3>
                       </td>
                       <td>
-                        <h3>Шох</h3>
+                        <h3>{localStorage.getItem('name')}</h3>
                       </td>
                       <td className='contracts-nas'>
                         <div className='Table__grdi'>
@@ -238,7 +254,7 @@ function Contracts() {
                             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"></path></svg>
                           </NavLink>
                           {localStorage.getItem('Role') === 'SUPER-ADMIN' && (
-                           <div>
+                           <div className='tabless__grdi'>
                              <NavLink className="contracts-edit" to={`/ContractEdit/${item.id}`}>
                               <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1c-.1.1-.15.22-.15.36M20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75z" />

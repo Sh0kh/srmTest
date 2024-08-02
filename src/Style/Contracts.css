@@ -40,6 +40,7 @@
     font-size: 15px;
     cursor: pointer;
 }
+
 .Contracts-content-header button:hover{
     background-color: transparent;
     color: #2563EB;
@@ -72,10 +73,17 @@
 .Contracts-content-table thead tr th {
     background-color: #f8f8f8;
     /* padding:10px 16px; */
-    padding: 10px;
+    padding: 5px;
     width: 511px;
     border: 1px solid #ddd;
     text-align: left;
+}
+.Contracts-content-table h3{
+    font-size: 15px;
+}
+.Contracts-content-table p{
+    font-size: 12px;
+    text-align: center;
 }
 .contracts-table-num{
     width: 50px !important;
@@ -83,6 +91,11 @@
 .contracts-edit{
     display: inline;
     margin-right: 10px;
+}
+.tabless__grdi{
+    display: flex;
+    align-items: center;
+    gap: 3px;
 }
 .contracts-nas{
     display: flex;
@@ -250,6 +263,14 @@
 .Contracts-footer button:hover{
     background-color: transparent;
     color: black;
+}
+@media(max-width:1800px){
+    .Contracts-content-table{
+        overflow-x: scroll;
+       }
+       .Contracts-content-table table{
+        width: 1800px;
+       }
 }
 @media(max-width:1100px){
     .Contracts{

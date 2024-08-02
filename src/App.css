@@ -62,3 +62,19 @@ input[type="date"] {
   .dnn{
     display:none;
   }
+
+  form select{
+    width: 100%;
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .Sassss{
+    color: white;
+  }
+  .end1{
+    width: 100% ;
+    text-align: center;
+  }
+  .end1 form{
+    width: 100%;
+  }
