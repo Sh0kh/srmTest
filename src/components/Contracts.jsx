@@ -7,6 +7,8 @@ import axios from '../Service/axios'
 // import CONFIG from '../Service/config'
 import Toastify from 'toastify-js';
 import "toastify-js/src/toastify.css";
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 function Contracts() {
   const [searchQuery, setSearchQuery] = useState('');
   const [adminIdToDelete, setAdminIdToDelete] = useState(null);
@@ -21,7 +23,7 @@ function Contracts() {
   // const DocumentDown = () => {
   //   setActive(!isActive);
   // };
-
+  const [tableData, setTableData] = useState([]);
   useEffect(() => {
     const ClickOut = (e) => {
       if (
@@ -78,22 +80,6 @@ function Contracts() {
         }
       })
   }
-
-  //   const [data2, setData2] = useState([])
-  // const getContractCategory = () =>{
-  //   axios.get('/category-contract',{
-  //     headers:{
-  //       Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //       'Content-Type': 'multipart/form-data',
-  //     }
-  //   })
-  //   .then((respons)=>{
-  //     setData2(respons.data)
-  //   })
-  //   .catch((error)=>{
-  //     console.log(error);
-  //   })
-  // }
   const [data, setData] = useState([]);
   const [admin, setAdmin ]= useState([])
   const [contractPage, setContractPage] = useState(1);
@@ -110,6 +96,7 @@ function Contracts() {
       .then((response) => {
         const sortedData = response.data.sort((a, b) => new Date(a.contract_date) - new Date(b.contract_date));
         setData(sortedData);
+        setTableData(response.data);
       })
       .catch((error) => {
         if (error.response && error.response.status === 401) {
@@ -118,22 +105,6 @@ function Contracts() {
         }
       });
   };
-  const getAllAdmin = () =>{
-        axios.get('/user',{
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        })
-        .then((respons)=>{
-          setAdmin(respons.data)
-        })
-        .catch((error)=>{
-          if (error.response && error.response.status === 401) {
-            localStorage.removeItem('token');
-            window.location.href = '/login';
-          }
-        })
-  }
 
   const indexOfLastItem = contractPage * contractItem;
   const indexOfFirstItem = indexOfLastItem - contractItem;
@@ -159,9 +130,26 @@ function Contracts() {
 
   useEffect(() => {
     getContract()
-    getAllAdmin()
-    // getContractCategory()
+
   }, [])
+
+  const handleExport = () => {
+    // Создаем новую книгу
+    const wb = XLSX.utils.book_new();
+
+    // Преобразуем данные таблицы в рабочий лист
+    const ws = XLSX.utils.json_to_sheet(tableData);
+
+    // Добавляем рабочий лист в книгу
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    // Создаем бинарный буфер
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+
+    // Создаем файл и инициируем его скачивание
+    const blob = new Blob([wbout], { type: 'application/octet-stream' });
+    saveAs(blob, 'data.xlsx');
+  };
   return (
     <div className='Contracts'>
       <Header />
@@ -181,7 +169,7 @@ function Contracts() {
             </h2>
 
             <div className='Contracts-content-search'>
-              <div className='Contracts-content-search-input'>
+              <div className='Contracts-content-search-input flexing'>
                 <label htmlFor="doc">
                   <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14" />
@@ -191,6 +179,9 @@ function Contracts() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder='Поиск...' id='doc' type="text" />
                 </label>
+                <button onClick={handleExport}>
+                  Скачать exel
+                </button>
               </div>
             </div>
 

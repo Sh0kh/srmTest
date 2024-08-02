@@ -264,6 +264,24 @@
     background-color: transparent;
     color: black;
 }
+.flexing{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.flexing button{
+    padding: 10px 5px ;
+    background-color: #2563EB;
+    color: white;
+    border: none;
+    border: 1px solid #2563EB;
+    border-radius: 10px;
+}
+.flexing button:hover{
+   background-color: transparent;
+   color: #2563EB;
+}
 @media(max-width:1800px){
     .Contracts-content-table{
         overflow-x: scroll;
