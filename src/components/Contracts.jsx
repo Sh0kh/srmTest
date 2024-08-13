@@ -133,23 +133,93 @@ function Contracts() {
 
   }, [])
 
+  
   const handleExport = () => {
-    // Создаем новую книгу
+    // Исключаем ненужные поля из данных таблицы
+    const filteredData = tableData.map(({
+      html,
+      category_contract_id,
+      client_id,
+      create_user_id,
+      createdAt,
+      updatedAt,
+      create_user,
+      document,
+      category_contract,
+      client,
+      image,
+      id_one,
+      id_two,
+      price_text,
+      phone_number,
+      id,
+      contract_date,
+      ...rest
+    }) => rest);
+  
+    // Обновляем заголовки столбцов
+    const headers = {
+      name: 'Имя',
+      title:'Наимевонаие объекта',
+      description:'Описание',
+      address:'Адрес',
+      date:'Дата',
+      price_info:'Вид определяемой стоимости',
+      price:'Цена',
+      passport_series:'Серия паспорта',
+      phone_number:'Телефон номер',
+      info_bank:'Информация банка ',
+      info_address:'Информация адреса',
+      inn:'ИНН',
+      rs:'РС',
+      mfo:'МФО',
+      oked:'ОКЭД'
+    };
+  
+    // Преобразуем данные в массив объектов с обновленными заголовками
+    const updatedData = filteredData.map(row => {
+      const updatedRow = {};
+      Object.keys(row).forEach(key => {
+        updatedRow[headers[key] || key] = row[key];
+      });
+      return updatedRow;
+    });
+  
+    // Создаем новую книгу Excel
     const wb = XLSX.utils.book_new();
-
-    // Преобразуем данные таблицы в рабочий лист
-    const ws = XLSX.utils.json_to_sheet(tableData);
-
-    // Добавляем рабочий лист в книгу
+  
+    // Преобразуем обновленные данные в рабочий лист
+    const ws = XLSX.utils.json_to_sheet(updatedData, { cellStyles: true });
+  
+    // Настраиваем ширину столбцов (200 пикселей для каждого столбца)
+    const columnWidths = Object.keys(updatedData[0]).map(() => ({ wpx: 200 }));
+    ws['!cols'] = columnWidths;
+  
+    // Применяем стили для каждой ячейки
+    Object.keys(ws).forEach(cell => {
+      if (cell[0] !== '!') { // исключаем метаданные, такие как '!ref' и '!cols'
+        ws[cell].s = {
+          alignment: {
+            horizontal: 'center',
+            vertical: 'center'
+          }
+        };
+      }
+    });
+  
+    // Добавляем рабочий лист в книгу Excel
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-    // Создаем бинарный буфер
+  
+    // Генерируем бинарный буфер для создания файла
     const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-
-    // Создаем файл и инициируем его скачивание
+  
+    // Создаем файл Blob и инициируем его скачивание
     const blob = new Blob([wbout], { type: 'application/octet-stream' });
     saveAs(blob, 'data.xlsx');
   };
+  
+  
+  
   return (
     <div className='Contracts'>
       <Header />
