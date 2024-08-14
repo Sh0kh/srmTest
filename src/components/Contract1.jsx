@@ -16,7 +16,6 @@ function Contract1() {
     const divRef = React.useRef();
     const [tentder, setTender] = useState([])
     const [data, setData] = useState([])
-
     useEffect(() => {
         const getContract = async () => {
             try {
@@ -32,6 +31,11 @@ function Contract1() {
                 setTender(response.data.category_contract.name)
                 setData(response.data)
                 setHtml(bodyContent);
+
+
+                const excelBlob = new Blob([response.data.document], { type: 'application/vnd.ms-excel' });
+                const excelURL = URL.createObjectURL(excelBlob);
+                setExcelURL(excelURL);
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     localStorage.removeItem('token');
@@ -42,6 +46,19 @@ function Contract1() {
 
         getContract();
     }, [id]);
+
+
+    const [excelURL, setExcelURL] = useState('');
+   
+    const downloadExcel = () => {
+        const link = document.createElement('a');
+        link.href = excelURL;
+        link.setAttribute('download', 'contract.xlsx'); // установите желаемое имя файла
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(excelURL);
+    };
 
     const downloadPDF = () => {
         html2canvas(divRef.current, {
@@ -200,6 +217,14 @@ function Contract1() {
                         />
                     </div>
                 )}
+                <div className='Customers-content-main end1'>
+                    <h2>
+                        Скачать загруженый файл
+                    </h2>
+                    <button onClick={downloadExcel} className="file-input-container end1">
+                    Скачать Excel документ
+                </button>
+                </div>
                 <div className='Customers-content-main end1'>
                     <h2>
                         Загрузить файл

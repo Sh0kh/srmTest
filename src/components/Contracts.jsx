@@ -83,7 +83,7 @@ function Contracts() {
   const [data, setData] = useState([]);
   const [admin, setAdmin ]= useState([])
   const [contractPage, setContractPage] = useState(1);
-  const contractItem = 3;
+  const contractItem = 10;
 
 // const storedId = localStorage.getItem('id');
   const getContract = () => {

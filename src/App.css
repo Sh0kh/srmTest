@@ -78,3 +78,9 @@ input[type="date"] {
   .end1 form{
     width: 100%;
   }
+  .Contracts-content-table{
+    overflow-x: scroll;
+   }
+   .Contracts-content-table table{
+    width: 1700px !important;
+   }
