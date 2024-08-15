@@ -154,6 +154,10 @@ function Contracts() {
       phone_number,
       id,
       contract_date,
+      rs,
+      mfo,
+      oked,
+      inn,
       ...rest
     }) => rest);
   
