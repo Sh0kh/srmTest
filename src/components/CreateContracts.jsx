@@ -352,7 +352,7 @@ function CreateContracts() {
   }
 
   // Физическое лицо
-  const [selectedFile, setSelectedFile] = useState([]);
+  // const [selectedFile, setSelectedFile] = useState([]);
   const [name, setName] = useState('')
   const [Passport, setPassport] = useState('')
   const [tel, setTel] = useState('')
@@ -370,8 +370,6 @@ function CreateContracts() {
   const [oked, setOked] = useState('')
   const [content2, setContent2] = useState(initialContent2);
   const idValue = localStorage.getItem('id')
-  const [selectedFile1, setSelectedFile1] = useState(null);
-  const [selectedFile2, setSelectedFile2] = useState(null);
   const [address2, setAddress2] = useState('')
   const [date2, setDate2] = useState('')
   const handleChange = (event) => {
@@ -380,78 +378,69 @@ function CreateContracts() {
   const handleChange2 = (event) => {
     setPrf(event.target.value);
   };
-  const handleFileChange1 = (event) => {
-    setSelectedFile1(event.target.files[0]);
-  };
-
-  const handleFileChange2 = (event) => {
-    setSelectedFile2(event.target.files[0]);
-  };
   const createContract = (e) => {
     e.preventDefault();
     const newData = {
-      name: name,
-      passport_series: Passport,
-      phone_number: '+998' + tel,
-      contract_date: Sana,
-      info_bank: bank,
-      info_address: address,
-      inn: inn,
-      rs: rs,
-      mfo: mfo,
+      name: String(name),
+      passport_series: String(Passport),
+      phone_number: '+998' + String(tel),
+      contract_date: String(Sana),
+      info_bank: String(bank),
+      info_address: String(address),
+      inn: String(inn),
+      rs: String(rs),
+      mfo: String(mfo),
       category_contract_id: isActive,
-      html: content,
-      title: title,
-      description: target,
-      price_info: prf,
-      price: price,
-      price_text: priceText,
-      oked: oked,
-      create_user_id: idValue,
-      address: address2
-    }
-    const formData = new FormData()
-    for (let key of Object.keys(newData)) {
-      formData.append(key, newData[key]);
-    }
-    const files = [];
-    if (selectedFile1) files.push(selectedFile1);
-    if (selectedFile2) files.push(selectedFile2);
-
-
-    formData.append(`files`, files);
-
-
-    axios.post('/contract', formData, {
+      html: String(content),
+      title: String(title),
+      description: String(target),
+      price_info: String(prf),
+      price: String(price),
+      price_text: String(priceText),
+      oked: String(oked),
+      create_user_id: Number(idValue),
+      address: String(address2),
+    };
+  
+    axios.post('/contract', newData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'multipart/form-data',
       },
     })
-      .then((respons) => {
+      .then(async (response) => {
+        const contractId = response.data.contract.id; // Предполагаем, что `id` возвращается в ответе
+  
+        // После успешного создания контракта загружаем изображения
+        await CreateFoto(contractId);
+        await CreateDoc(contractId)
+        // Вывод сообщения об успехе
         Toastify({
           text: "Добавлено!",
           duration: 3000,
-          gravity: "top", // `top` or `bottom`
-          position: "right", // `left`, `center` or `right`
+          gravity: "top",
+          position: "right",
           backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
         }).showToast();
-        setAddress('')
-        setBank('')
-        setInn('')
-        setMfo('')
-        setName('')
-        setRs('')
-        setTel('')
-        setSana('')
-        setPassport('')
-        setContent(initialContent)
-        setTitle('')
-        setTarget('')
-        setPrf('')
-        setPrice('')
-        setOked('')
-        setAddress2('')
+  
+        // Сброс состояния формы
+        setAddress('');
+        setBank('');
+        setInn('');
+        setMfo('');
+        setName('');
+        setRs('');
+        setTel('');
+        setSana('');
+        setPassport('');
+        setContent(initialContent);
+        setTitle('');
+        setTarget('');
+        setPrf('');
+        setPrice('');
+        setOked('');
+        setAddress2('');
+        
+        
       })
       .catch((error) => {
         Toastify({
@@ -461,13 +450,14 @@ function CreateContracts() {
           position: "right",
           backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
         }).showToast();
+  
         if (error.response && error.response.status === 401) {
           localStorage.removeItem('token');
           window.location.href = '/login';
         }
-        console.log(error);
-      })
+      });
   }
+  
 
   // Физическое лицо
 
@@ -493,24 +483,21 @@ function CreateContracts() {
       oked: oked,
       create_user_id: idValue,
     }
-    const formData = new FormData()
-    for (let key of Object.keys(newData)) {
-      formData.append(key, newData[key]);
-    }
-    const files = [];
-    if (selectedFile1) files.push(selectedFile1);
-    if (selectedFile2) files.push(selectedFile2);
 
 
-    formData.append(`files`, files);
 
-    axios.post('/contract', formData, {
+
+    axios.post('/contract', newData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'multipart/form-data',
       },
     })
-      .then((respons) => {
+      .then(async (response) => {
+        const contractId = response.data.contract.id; // Предполагаем, что `id` возвращается в ответе
+  
+        // После успешного создания контракта загружаем изображения
+        await CreateFoto(contractId);
+        await CreateDoc(contractId)
         Toastify({
           text: "Добавлено!",
           duration: 3000,
@@ -576,23 +563,16 @@ function CreateContracts() {
       create_user_id: idValue,
       date: date2
     }
-    const formData = new FormData()
-    for (let key of Object.keys(newData)) {
-      formData.append(key, newData[key]);
-    }
-    const files = [];
-    if (selectedFile1) files.push(selectedFile1);
-    if (selectedFile2) files.push(selectedFile2);
 
-
-    formData.append(`files`, files);
-    axios.post('/contract', formData, {
+    axios.post('/contract', newData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'multipart/form-data',
       },
     })
-      .then((respons) => {
+      .then( async (response) => {
+        const contractId = response.data.contract.id;
+        await CreateFoto(contractId);
+        await CreateDoc(contractId)
         Toastify({
           text: "Добавлено!",
           duration: 3000,
@@ -962,6 +942,74 @@ function CreateContracts() {
         </div>
      `)
   }, [name, address, tel, Passport, bank, Sana, mfo, title, target, prf, price, oked, priceText,]);
+
+  const [files, setFiles] = useState([]);
+
+// Функция для обработки изменений в input (выбор файлов)
+const postFoto = (e) => {
+  setFiles(prevFiles => [...prevFiles, ...Array.from(e.target.files)]);
+};
+
+// Функция для удаления файла из списка
+const removeFile = (index) => {
+  setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+};
+
+const uploadFile = (file, contractId) => {
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('contract_id', contractId); // Передаем ID контракта
+  
+  return axios.post('/image', formData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+// Функция для обработки отправки формы
+const CreateFoto = async (contractId) => {
+  try {
+    for (const file of files) {
+      await uploadFile(file, contractId);
+    }
+    setFiles([]); // Очищаем state после успешной загрузки
+  } catch (error) {
+    console.log('Ошибка при загрузке:', error);
+  }
+};
+
+const [filesDoc, setFilesdoc] = useState([]);
+
+const PostFile = (e) => {
+  setFilesdoc(prevFiles => [...prevFiles, ...Array.from(e.target.files)]);
+};
+
+const uploadFileDoc = (doc, contractId) => {
+  const formData = new FormData();
+  formData.append('document', doc);
+  formData.append('contract_id', contractId);
+  return axios.post('/document', formData, {
+    headers:{
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+const CreateDoc = async (contractId) => { 
+  try {
+    for (const doc of filesDoc) {
+      await uploadFileDoc(doc, contractId);
+    }
+    setFilesdoc([]); // Очищаем state после успешной загрузки
+  } catch (error) {
+    console.log('Ошибка при загрузке:', error);
+    console.log(filesDoc);
+  }
+};
+
   return (
     <div className='CreateContracts'>
       <Header />
@@ -1089,7 +1137,7 @@ function CreateContracts() {
             </label>
 
 
-            <div className="modal-foto">
+            {/* <div className="modal-foto">
               <h3>Фото</h3>
               <label className="file-input-container" htmlFor="photo">
                 <span className='soz'>Фото</span>
@@ -1097,8 +1145,8 @@ function CreateContracts() {
                   onChange={handleFileChange1}
                   id="photo" accept="image/*" type="file" />
               </label>
-            </div>
-            <div className="modal-foto">
+            </div> */}
+            {/* <div className="modal-foto">
               <h3>Файл</h3>
               <label className="file-input-container" htmlFor="photo">
                 <span className='soz'>Файл</span>
@@ -1106,7 +1154,7 @@ function CreateContracts() {
                   onChange={handleFileChange2}
                   id="photo" accept="image/*" type="file" />
               </label>
-            </div>
+            </div> */}
             <button type='submit'>Создать</button>
           </form>
           <form className={`${isActive === 2 ? "yozperson-active" : "dn"}`} onSubmit={createContract2}>
@@ -1254,24 +1302,6 @@ function CreateContracts() {
                 onChange={(e) => setBank(e.target.value)}
                 name="" id="info"></textarea>
             </label>
-            <div className="modal-foto">
-              <h3>Фото</h3>
-              <label className="file-input-container" htmlFor="photo">
-                <span className='soz'>Фото</span>
-                <input
-                  onChange={handleFileChange1}
-                  id="photo" accept="image/*" type="file" />
-              </label>
-              </div>
-              <div className="modal-foto">
-                <h3>Файл</h3>
-                <label className="file-input-container" htmlFor="photo">
-                  <span className='soz'>Файл</span>
-                  <input
-                    onChange={handleFileChange2}
-                    id="photo" accept="image/*" type="file" />
-                </label>
-              </div>
               <button type='submit'>Создать</button>
           </form>
           <form className={`${isActive === 3 ? "yozperson-active" : "dn"}`} onSubmit={createContract3}>
@@ -1429,26 +1459,66 @@ function CreateContracts() {
                 onChange={(e) => setBank(e.target.value)}
                 name="" id="info"></textarea>
             </label>
-            <div className="modal-foto">
-              <h3>Фото</h3>
-              <label className="file-input-container" htmlFor="photo">
-                <span className='soz'>Фото</span>
-                <input
-                  onChange={handleFileChange1}
-                  id="photo" accept="image/*" type="file" />
-              </label>
-            </div>
-            <div className="modal-foto">
-              <h3>Файл</h3>
-              <label className="file-input-container" htmlFor="photo">
-                <span className='soz'>Файл</span>
-                <input
-                  onChange={handleFileChange2}
-                  id="photo" accept="image/*" type="file" />
-              </label>
-            </div>
             <button type='submit'>Создать</button>
           </form>
+            <div className='CreateContract__foto'>
+            <div className="modal-foto">
+                <h3>Фото</h3>
+                <label className="file-input-container" htmlFor="photo">
+                  <span className='soz'>Фото</span>
+                  <input
+                    onChange={postFoto}
+                    multiple 
+                    id="photo" accept="image/*" type="file" />
+                </label>
+              </div>
+              <div className='CreateContract__foto__number'>
+                  <h2>
+                    Загружено фото :
+                  </h2>
+                  <span>
+                  {files.length}
+                  </span>
+                </div>
+                <div className='CreateContract__foto__preview'>
+            {files.length > 0 && (
+              <div>
+                {files.map((file, index) => (
+                  <div key={index} style={{ display: 'inline-block', margin: '5px' }}>
+                    <img
+                      src={URL.createObjectURL(file)} // Создать временный URL для изображения
+                      alt={`Предварительный просмотр ${index}`}
+                      style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                    />
+                    <button onClick={() => removeFile(index)} style={{ display: 'block', marginTop: '5px' }}>
+                      Удалить
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+            </div>
+            <div className='CreateContract__foto'>
+            <div className="modal-foto">
+                <h3>Файл</h3>
+                <label className="file-input-container" htmlFor="photo">
+                  <span className='soz'>Файл</span>
+                  <input
+                    onChange={PostFile}
+                    multiple 
+                    id="photo" accept="image/*" type="file" />
+                </label>
+              </div>
+              <div className='CreateContract__foto__number'>
+                  <h2>
+                    Загружено файл :
+                  </h2>
+                  <span>
+                  {filesDoc.length}
+                  </span>
+                </div>
+            </div>
         </div>
         <div className='CreateContracts-text'>
           <div className={`fizperson ${isActive === 2 ? "fizperson-active" : "dn"}`}>

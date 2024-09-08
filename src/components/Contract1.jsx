@@ -7,15 +7,17 @@ import CONFIG from '../Service/config';
 import html2canvas from 'html2canvas';
 /* eslint-disable-next-line */
 import jsPDF from 'jspdf';
-// import { image } from 'html2canvas/dist/types/css/types/image';
-import Toastify from 'toastify-js';
 import "toastify-js/src/toastify.css";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 function Contract1() {
     const { id } = useParams();
     const [html, setHtml] = useState('');
     const divRef = React.useRef();
     const [tentder, setTender] = useState([])
     const [data, setData] = useState([])
+    const [imageData, setImageData] = useState([])
+    const [document, setDocument] = useState([])
     useEffect(() => {
         const getContract = async () => {
             try {
@@ -25,17 +27,27 @@ function Contract1() {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
+
+    
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(response.data.html, 'text/html');
                 const bodyContent = doc.body.innerHTML;
-                setTender(response.data.category_contract.name)
-                setData(response.data)
+    
+                setTender(response.data.category_contract.name);
+                setData(response.data);
                 setHtml(bodyContent);
-
-
-                const excelBlob = new Blob([response.data.document], { type: 'application/vnd.ms-excel' });
-                const excelURL = URL.createObjectURL(excelBlob);
-                setExcelURL(excelURL);
+    
+                // Если есть несколько изображений, сохраняем их все
+                if (response.data.image && response.data.image.length > 0) {
+                    const allImages = response.data.image.map(img => img.image);
+                    setImageData(allImages); // Сохраняем массив изображений
+                }
+    
+                // Если есть несколько документов, сохраняем их все
+                if (response.data.document && response.data.document.length > 0) {
+                    const allDocuments = response.data.document.map(doc => doc.document);
+                    setDocument(allDocuments); // Сохраняем массив документов
+                }
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     localStorage.removeItem('token');
@@ -43,22 +55,11 @@ function Contract1() {
                 }
             }
         };
-
+    
         getContract();
     }, [id]);
-
-
-    const [excelURL, setExcelURL] = useState('');
-   
-    const downloadExcel = () => {
-        const link = document.createElement('a');
-        link.href = excelURL;
-        link.setAttribute('download', 'contract.xlsx'); // установите желаемое имя файла
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(excelURL);
-    };
+    
+    
 
     const downloadPDF = () => {
         html2canvas(divRef.current, {
@@ -89,60 +90,70 @@ function Contract1() {
     };
     const defaultImageUrl = 'https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg=';
 
-
-    const [editItem, setEditItem] = useState({
-        id: '', // Make sure to initialize `id` if it's required
-        document: ''
-    });
-    const [isSelectFile, setSelectedFile] = useState(null);
+    const downloadFile = async (fileUrl, fileName) => {
     
-    const postFoto = (event) => {
-        setSelectedFile(event.target.files[0]);
-    };
-    
-    const editContract = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        
-        if (isSelectFile) {
-            formData.append('document', isSelectFile);
-        } else {
-            formData.append('document', editItem.document);
+        try {
+            const response = await axios.get(fileUrl, {
+                responseType: 'blob',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            return { success: true, data: response.data, name: fileName };
+        } catch (error) {
+            console.error(`Error downloading file: ${fileName}`, error);
+            return { success: false };
         }
-        // Append other fields to formData as required, e.g.:
-        // formData.append('otherField', editItem.otherField);
-    
-        axios.put(`/contract/${id}`, formData, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
-                'Content-Type': 'multipart/form-data', // Optional, axios sets it automatically
-            },
-        })
-        .then((response) => {
-            Toastify({
-                text: "Изменено",
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-            }).showToast();
-        })
-        .catch((error) => {
-            Toastify({
-                text: "Ошибка!",
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-            }).showToast();
-            console.log(error);
-            
-            if (error.response && error.response.status === 401) {
-                localStorage.removeItem('token');
-                window.location.href = '/login';
-            }
-        });
     };
+    
+      
+    const downloadZip = async () => {
+        try {
+            const zip = new JSZip();
+    
+            // Скачивание и добавление всех документов
+            if (document.length > 0) {
+                for (let i = 0; i < document.length; i++) {
+                    const documentUrl = `${CONFIG.API_URL}${document[i]}`; // Получаем URL документа
+                    const downloadedDocument = await downloadFile(documentUrl, `document_${i + 1}.pdf`);
+                    if (downloadedDocument.success) {
+                        zip.file(downloadedDocument.name, downloadedDocument.data);
+                    } else {
+                        console.log(`Failed to download document ${i + 1}.`);
+                    }
+                }
+            } else {
+                console.log('No documents to download.');
+            }
+    
+            // Скачивание и добавление всех изображений
+            if (imageData.length > 0) {
+                for (let i = 0; i < imageData.length; i++) {
+                    const imageUrl = `${CONFIG.API_URL}${imageData[i]}`; // Получаем URL изображения
+
+                    const downloadedImage = await downloadFile(imageUrl, `image_${i + 1}.jpg`);
+                    if (downloadedImage.success) {
+                        zip.file(downloadedImage.name, downloadedImage.data);
+                    } else {
+                        console.log(`Failed to download image ${i + 1}.`);
+                    }
+                }
+            } else {
+                console.log('No images to download.');
+            }
+    
+            // Генерация ZIP и скачивание
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            saveAs(zipBlob, 'contract_files.zip');
+        } catch (error) {
+            console.error('Error generating ZIP file:', error);
+        }
+    };
+    
+    
+    
+      
+
     return (
         <div className='Contract1'>
 
@@ -221,31 +232,11 @@ function Contract1() {
                     <h2>
                         Скачать загруженый файл
                     </h2>
-                    <button onClick={downloadExcel} className="file-input-container end1">
+                    <button  className="file-input-container end1"  onClick={downloadZip}>
                     Скачать Excel документ
                 </button>
                 </div>
-                <div className='Customers-content-main end1'>
-                    <h2>
-                        Загрузить файл
-                    </h2>
-                    <form onSubmit={editContract}>
-                        <div className="modal-foto end1">
-                            <h3>Файл</h3>
-                            <label className="file-input-container end1" htmlFor="photo">
-                                <span className='soz'>Файл</span>
-                                <input
-
-                                    id="photo" onChange={postFoto} accept="image/*" type="file" />
-                            </label>
-                        </div>
-                        <button type='submit' className='file-input-container end1'>
-                            <span>
-                                Загрузить
-                            </span>
-                        </button>
-                    </form>
-                </div>
+            
             </div>
         </div>
     );

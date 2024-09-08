@@ -97,6 +97,9 @@ function Contracts() {
         const sortedData = response.data.sort((a, b) => new Date(a.contract_date) - new Date(b.contract_date));
         setData(sortedData);
         setTableData(response.data);
+        console.log(response.data.create_user.name);
+        console.log(response);
+        
       })
       .catch((error) => {
         if (error.response && error.response.status === 401) {
@@ -311,7 +314,7 @@ function Contracts() {
                         <h3>{item.contract_date.split('T')[0]}</h3>
                       </td>
                       <td>
-                        <h3>{localStorage.getItem('name')}</h3>
+                        <h3>{item.create_user.name}</h3>
                       </td>
                       <td className='contracts-nas'>
                         <div className='Table__grdi'>
