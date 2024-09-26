@@ -1507,7 +1507,7 @@ const CreateDoc = async (contractId) => {
                   <input
                     onChange={PostFile}
                     multiple 
-                    id="photo" accept="image/*" type="file" />
+                    id="photo" type="file" />
                 </label>
               </div>
               <div className='CreateContract__foto__number'>

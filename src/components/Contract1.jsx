@@ -5,7 +5,6 @@ import '../Style/Contract_q.css';
 import axios from 'axios';
 import CONFIG from '../Service/config';
 import html2canvas from 'html2canvas';
-/* eslint-disable-next-line */
 import jsPDF from 'jspdf';
 import "toastify-js/src/toastify.css";
 import JSZip from "jszip";
@@ -90,8 +89,7 @@ function Contract1() {
     };
     const defaultImageUrl = 'https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg=';
 
-    const downloadFile = async (fileUrl, fileName) => {
-    
+    const downloadFile = async (fileUrl, originalFileName) => {
         try {
             const response = await axios.get(fileUrl, {
                 responseType: 'blob',
@@ -99,9 +97,33 @@ function Contract1() {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
+    
+            const contentType = response.headers['content-type'];
+            let fileExtension = '';
+    
+            // Определяем расширение файла на основе его MIME-типа
+            if (contentType === 'application/pdf') {
+                fileExtension = '.pdf';
+            } else if (contentType === 'application/msword') {
+                fileExtension = '.doc';
+            } else if (contentType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                fileExtension = '.docx';
+            } else if (contentType.startsWith('image/')) {
+                fileExtension = `.${contentType.split('/')[1]}`; // Например, '.jpg' для 'image/jpeg'
+            } else {
+                console.error('Unsupported file type:', contentType);
+                return { success: false };
+            }
+    
+            // Проверяем, заканчивается ли оригинальное имя файла на предполагаемое расширение
+            let fileName = originalFileName;
+            if (!originalFileName.endsWith(fileExtension)) {
+                fileName += fileExtension;
+            }
+    
             return { success: true, data: response.data, name: fileName };
         } catch (error) {
-            console.error(`Error downloading file: ${fileName}`, error);
+            console.error(`Error downloading file: ${originalFileName}`, error);
             return { success: false };
         }
     };
@@ -114,8 +136,9 @@ function Contract1() {
             // Скачивание и добавление всех документов
             if (document.length > 0) {
                 for (let i = 0; i < document.length; i++) {
-                    const documentUrl = `${CONFIG.API_URL}${document[i]}`; // Получаем URL документа
-                    const downloadedDocument = await downloadFile(documentUrl, `document_${i + 1}.pdf`);
+                    const documentUrl = `${CONFIG.API_URL}${document[i]}`;
+                    const originalFileName = `document_${i + 1}`; // Можете использовать оригинальное имя файла, если оно доступно
+                    const downloadedDocument = await downloadFile(documentUrl, originalFileName);
                     if (downloadedDocument.success) {
                         zip.file(downloadedDocument.name, downloadedDocument.data);
                     } else {
@@ -129,9 +152,9 @@ function Contract1() {
             // Скачивание и добавление всех изображений
             if (imageData.length > 0) {
                 for (let i = 0; i < imageData.length; i++) {
-                    const imageUrl = `${CONFIG.API_URL}${imageData[i]}`; // Получаем URL изображения
-
-                    const downloadedImage = await downloadFile(imageUrl, `image_${i + 1}.jpg`);
+                    const imageUrl = `${CONFIG.API_URL}${imageData[i]}`;
+                    const originalFileName = `image_${i + 1}`; // Можете использовать оригинальное имя файла, если оно доступно
+                    const downloadedImage = await downloadFile(imageUrl, originalFileName);
                     if (downloadedImage.success) {
                         zip.file(downloadedImage.name, downloadedImage.data);
                     } else {
@@ -142,7 +165,6 @@ function Contract1() {
                 console.log('No images to download.');
             }
     
-            // Генерация ZIP и скачивание
             const zipBlob = await zip.generateAsync({ type: 'blob' });
             saveAs(zipBlob, 'contract_files.zip');
         } catch (error) {
@@ -233,7 +255,7 @@ function Contract1() {
                         Скачать загруженый файл
                     </h2>
                     <button  className="file-input-container end1"  onClick={downloadZip}>
-                    Скачать Excel документ
+                    Скачать файл
                 </button>
                 </div>
             
