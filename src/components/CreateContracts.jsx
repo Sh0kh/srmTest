@@ -401,7 +401,7 @@ function CreateContracts() {
       create_user_id: Number(idValue),
       address: String(address2),
     };
-  
+
     axios.post('/contract', newData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -409,7 +409,7 @@ function CreateContracts() {
     })
       .then(async (response) => {
         const contractId = response.data.contract.id; // Предполагаем, что `id` возвращается в ответе
-  
+
         // После успешного создания контракта загружаем изображения
         await CreateFoto(contractId);
         await CreateDoc(contractId)
@@ -421,7 +421,7 @@ function CreateContracts() {
           position: "right",
           backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
         }).showToast();
-  
+
         // Сброс состояния формы
         setAddress('');
         setBank('');
@@ -439,8 +439,8 @@ function CreateContracts() {
         setPrice('');
         setOked('');
         setAddress2('');
-        
-        
+
+
       })
       .catch((error) => {
         Toastify({
@@ -450,14 +450,14 @@ function CreateContracts() {
           position: "right",
           backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
         }).showToast();
-  
+
         if (error.response && error.response.status === 401) {
           localStorage.removeItem('token');
           window.location.href = '/login';
         }
       });
   }
-  
+
 
   // Физическое лицо
 
@@ -494,7 +494,7 @@ function CreateContracts() {
     })
       .then(async (response) => {
         const contractId = response.data.contract.id; // Предполагаем, что `id` возвращается в ответе
-  
+
         // После успешного создания контракта загружаем изображения
         await CreateFoto(contractId);
         await CreateDoc(contractId)
@@ -569,7 +569,7 @@ function CreateContracts() {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     })
-      .then( async (response) => {
+      .then(async (response) => {
         const contractId = response.data.contract.id;
         await CreateFoto(contractId);
         await CreateDoc(contractId)
@@ -945,70 +945,77 @@ function CreateContracts() {
 
   const [files, setFiles] = useState([]);
 
-// Функция для обработки изменений в input (выбор файлов)
-const postFoto = (e) => {
-  setFiles(prevFiles => [...prevFiles, ...Array.from(e.target.files)]);
-};
+  // Функция для обработки изменений в input (выбор файлов)
+  const postFoto = (e) => {
+    setFiles(prevFiles => [...prevFiles, ...Array.from(e.target.files)]);
+  };
 
-// Функция для удаления файла из списка
-const removeFile = (index) => {
-  setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
-};
+  // Функция для удаления файла из списка
+  const removeFile = (index) => {
+    setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+  };
 
-const uploadFile = (file, contractId) => {
-  const formData = new FormData();
-  formData.append('image', file);
-  formData.append('contract_id', contractId); // Передаем ID контракта
-  
-  return axios.post('/image', formData, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-};
+  const uploadFile = (file, contractId) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('contract_id', contractId); // Передаем ID контракта
 
-// Функция для обработки отправки формы
-const CreateFoto = async (contractId) => {
-  try {
-    for (const file of files) {
-      await uploadFile(file, contractId);
+    return axios.post('/image', formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  };
+
+  // Функция для обработки отправки формы
+  const CreateFoto = async (contractId) => {
+    try {
+      for (const file of files) {
+        await uploadFile(file, contractId);
+      }
+      setFiles([]); // Очищаем state после успешной загрузки
+    } catch (error) {
+      console.log('Ошибка при загрузке:', error);
     }
-    setFiles([]); // Очищаем state после успешной загрузки
-  } catch (error) {
-    console.log('Ошибка при загрузке:', error);
-  }
-};
+  };
 
-const [filesDoc, setFilesdoc] = useState([]);
+  const [filesDoc, setFilesdoc] = useState([]);
 
-const PostFile = (e) => {
-  setFilesdoc(prevFiles => [...prevFiles, ...Array.from(e.target.files)]);
-};
+  const PostFile = (e) => {
+    setFilesdoc(prevFiles => [...prevFiles, ...Array.from(e.target.files)]);
+  };
 
-const uploadFileDoc = (doc, contractId) => {
-  const formData = new FormData();
-  formData.append('document', doc);
-  formData.append('contract_id', contractId);
-  return axios.post('/document', formData, {
-    headers:{
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-};
+  const uploadFileDoc = (doc, contractId) => {
+    const formData = new FormData();
+    formData.append('document', doc);
+    formData.append('contract_id', contractId);
+    return axios.post('/document', formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  };
 
-const CreateDoc = async (contractId) => { 
-  try {
-    for (const doc of filesDoc) {
-      await uploadFileDoc(doc, contractId);
+  const CreateDoc = async (contractId) => {
+    try {
+      for (const doc of filesDoc) {
+        await uploadFileDoc(doc, contractId);
+      }
+      setFilesdoc([]); // Очищаем state после успешной загрузки
+    } catch (error) {
+      console.log('Ошибка при загрузке:', error);
+      console.log(filesDoc);
     }
-    setFilesdoc([]); // Очищаем state после успешной загрузки
-  } catch (error) {
-    console.log('Ошибка при загрузке:', error);
-    console.log(filesDoc);
-  }
-};
+  };
+
+  // Block 'submit with Enter'
+  const preventEnterSubmit = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
 
   return (
     <div className='CreateContracts'>
@@ -1029,6 +1036,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="name">
               <h3>Ф.И.О (Заказчик)</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 id='name' type="text" />
@@ -1036,6 +1044,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="title">
               <h3>Наименование обекта</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 id='title' type="text" />
@@ -1043,6 +1052,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="adres">
               <h3>Информация (Адрес)</h3>
               <textarea
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 name="" id="adres"></textarea>
@@ -1050,6 +1060,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="adres2">
               <h3>Адрес заказчика</h3>
               <textarea
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={address2}
                 onChange={(e) => setAddress2(e.target.value)}
                 name="" id="adres2"></textarea>
@@ -1097,6 +1108,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="price">
               <h3>Денежное вознаграждение</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 id='price' type="number" />
@@ -1104,6 +1116,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="ppinfo">
               <h3>Денежное вознаграждение (словах)</h3>
               <textarea
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={priceText}
                 onChange={(e) => setPriceText(e.target.value)}
                 name="" id="ppinfo"></textarea>
@@ -1111,6 +1124,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="pasport">
               <h3>Серия паспорта</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={Passport}
                 onChange={(e) => setPassport(e.target.value)}
                 id='pasport' type="text" />
@@ -1118,6 +1132,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="tel">
               <h3>Телефон номера</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 placeholder="+998"
                 value={tel}
                 onChange={(e) => setTel(e.target.value)}
@@ -1126,11 +1141,11 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="data">
               <h3>Дата контракта</h3>
               <input
-
-                placeholder="dd-mm-yyyy"
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={Sana}
                 onChange={(e) => setSana(e.target.value)}
-                type="datetime-local"
+                // type="datetime-local"
+                type='date'
                 id="meeting-time"
                 name="begin"
               />
@@ -1163,6 +1178,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="name">
               <h3>Заказчик</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 id='name' type="text" />
@@ -1170,6 +1186,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="title">
               <h3>Наименование обекта</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 id='title' type="text" />
@@ -1177,6 +1194,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="bank">
               <h3>Информация (адрес)</h3>
               <textarea
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 name="" id="bank"></textarea>
@@ -1184,6 +1202,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="adres2">
               <h3>Адрес заказчика</h3>
               <textarea
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={address2}
                 onChange={(e) => setAddress2(e.target.value)}
                 name="" id="adres2"></textarea>
@@ -1231,6 +1250,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="price">
               <h3>Денежное вознаграждение</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 id='price' type="number" />
@@ -1238,6 +1258,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="ppinfo">
               <h3>Денежное вознаграждение (словах)</h3>
               <textarea
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={priceText}
                 onChange={(e) => setPriceText(e.target.value)}
                 name="" id="ppinfo"></textarea>
@@ -1245,6 +1266,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="pasport">
               <h3>Серия паспорта</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={Passport}
                 onChange={(e) => setPassport(e.target.value)}
                 id='pasport' type="text" />
@@ -1252,6 +1274,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="inn">
               <h3>ИНН</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={inn}
                 onChange={(e) => setInn(e.target.value)}
                 id='inn' type="number" />
@@ -1259,6 +1282,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="tel">
               <h3>Телефон номера</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 placeholder="+998"
                 value={tel}
                 onChange={(e) => setTel(e.target.value)}
@@ -1267,6 +1291,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="rs">
               <h3>Р/с</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={rs}
                 onChange={(e) => setRs(e.target.value)}
                 id='rs' type="number" />
@@ -1274,6 +1299,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="mfo">
               <h3>МФО</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={mfo}
                 onChange={(e) => setMfo(e.target.value)}
                 id='mfo' type="number" />
@@ -1281,6 +1307,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="data">
               <h3>Дата контракта</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={Sana}
                 onChange={(e) => setSana(e.target.value)}
                 type="datetime-local"
@@ -1291,6 +1318,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="oked">
               <h3>ОКЭД</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={oked}
                 onChange={(e) => setOked(e.target.value)}
                 id='oked' type="number" />
@@ -1298,18 +1326,20 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="info">
               <h3>Информация (банк)</h3>
               <textarea
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={bank}
                 onChange={(e) => setBank(e.target.value)}
                 name="" id="info"></textarea>
             </label>
-              <button type='submit'>Создать</button>
+            <button type='submit'>Создать</button>
           </form>
-          <form className={`${isActive === 3 ? "yozperson-active" : "dn"}`} onSubmit={createContract3}>
+          <form onKeyDown={(e)=>preventEnterSubmit(e)} className={`${isActive === 3 ? "yozperson-active" : "dn"}`} onSubmit={createContract3}>
             <h2>Аукцион тендер</h2>
 
             <label htmlFor="name">
               <h3>Заказчик</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 id='name' type="text" />
@@ -1317,6 +1347,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="title">
               <h3>Наименование обекта</h3>
               <input
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 id='title' type="text" />
@@ -1324,6 +1355,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="bank">
               <h3>Информация (адрес)</h3>
               <textarea
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 name="" id="bank"></textarea>
@@ -1331,6 +1363,7 @@ const CreateDoc = async (contractId) => {
             <label htmlFor="adres2">
               <h3>Адрес заказчика</h3>
               <textarea
+                onKeyDown={(e)=>preventEnterSubmit(e)}
                 value={address2}
                 onChange={(e) => setAddress2(e.target.value)}
                 name="" id="adres2"></textarea>
@@ -1461,64 +1494,64 @@ const CreateDoc = async (contractId) => {
             </label>
             <button type='submit'>Создать</button>
           </form>
-            <div className='CreateContract__foto'>
+          <div className='CreateContract__foto'>
             <div className="modal-foto">
-                <h3>Фото</h3>
-                <label className="file-input-container" htmlFor="photo">
-                  <span className='soz'>Фото</span>
-                  <input
-                    onChange={postFoto}
-                    multiple 
-                    id="photo" accept="image/*" type="file" />
-                </label>
-              </div>
-              <div className='CreateContract__foto__number'>
-                  <h2>
-                    Загружено фото :
-                  </h2>
-                  <span>
-                  {files.length}
-                  </span>
+              <h3>Фото</h3>
+              <label className="file-input-container" htmlFor="photo">
+                <span className='soz'>Фото</span>
+                <input
+                  onChange={postFoto}
+                  multiple
+                  id="photo" accept="image/*" type="file" />
+              </label>
+            </div>
+            <div className='CreateContract__foto__number'>
+              <h2>
+                Загружено фото :
+              </h2>
+              <span>
+                {files.length}
+              </span>
+            </div>
+            <div className='CreateContract__foto__preview'>
+              {files.length > 0 && (
+                <div>
+                  {files.map((file, index) => (
+                    <div key={index} style={{ display: 'inline-block', margin: '5px' }}>
+                      <img
+                        src={URL.createObjectURL(file)} // Создать временный URL для изображения
+                        alt={`Предварительный просмотр ${index}`}
+                        style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                      />
+                      <button onClick={() => removeFile(index)} style={{ display: 'block', marginTop: '5px' }}>
+                        Удалить
+                      </button>
+                    </div>
+                  ))}
                 </div>
-                <div className='CreateContract__foto__preview'>
-            {files.length > 0 && (
-              <div>
-                {files.map((file, index) => (
-                  <div key={index} style={{ display: 'inline-block', margin: '5px' }}>
-                    <img
-                      src={URL.createObjectURL(file)} // Создать временный URL для изображения
-                      alt={`Предварительный просмотр ${index}`}
-                      style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                    />
-                    <button onClick={() => removeFile(index)} style={{ display: 'block', marginTop: '5px' }}>
-                      Удалить
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+              )}
+            </div>
           </div>
-            </div>
-            <div className='CreateContract__foto'>
+          <div className='CreateContract__foto'>
             <div className="modal-foto">
-                <h3>Файл</h3>
-                <label className="file-input-container" htmlFor="photo">
-                  <span className='soz'>Файл</span>
-                  <input
-                    onChange={PostFile}
-                    multiple 
-                    id="photo" type="file" />
-                </label>
-              </div>
-              <div className='CreateContract__foto__number'>
-                  <h2>
-                    Загружено файл :
-                  </h2>
-                  <span>
-                  {filesDoc.length}
-                  </span>
-                </div>
+              <h3>Файл</h3>
+              <label className="file-input-container" htmlFor="photo">
+                <span className='soz'>Файл</span>
+                <input
+                  onChange={PostFile}
+                  multiple
+                  id="photo" type="file" />
+              </label>
             </div>
+            <div className='CreateContract__foto__number'>
+              <h2>
+                Загружено файл :
+              </h2>
+              <span>
+                {filesDoc.length}
+              </span>
+            </div>
+          </div>
         </div>
         <div className='CreateContracts-text'>
           <div className={`fizperson ${isActive === 2 ? "fizperson-active" : "dn"}`}>
@@ -1529,12 +1562,16 @@ const CreateDoc = async (contractId) => {
               onModelChange={handleModelChange2}
               config={{
                 toolbarButtons: ['align', 'bold', 'italic', 'underline', 'paragraphFormat', 'alert'],
-                pluginsEnabled: ['align']
+                pluginsEnabled: ['align'],
+                events: {
+                  'keydown': preventEnterSubmit, // Froala uchun hodisani bog'lash
+                },
               }}
             />
           </div>
           <div className={`yozperson ${isActive === 1 ? "yozperson-active" : "dn"}`}>
             <FroalaEditorComponent
+              onKeyDown={preventEnterSubmit}
               tag='textarea'
               model={content}
               onModelChange={handleModelChange}
